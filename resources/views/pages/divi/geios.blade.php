@@ -26,7 +26,7 @@
 	@endfor
 @stop
 
-@section('title') <img src="{{ url('img/divi/gei.png') }}"> Geios @stop
+@section('title') <img src="{{ url('img/divi/gei-grey.png') }}"> Geios @stop
 @section('tag') The division of Earth, Spring, and Wealth @stop
 @section('cont') 
 	<br>

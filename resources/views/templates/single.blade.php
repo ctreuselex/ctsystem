@@ -24,9 +24,11 @@
     	<div class="main-page">
     		<div class="hero"></div>
     		<div class="content">
-    			<div class="title">@yield('title')</div>
-    			<div class="tag">@yield('tag')</div>
-    			<div class="cont">@yield('cont')</div>
+    			<div class="scroll">
+	    			<div class="title">@yield('title')</div>
+	    			<div class="tag">@yield('tag')</div>
+	    			<div class="cont">@yield('cont')</div>
+    			</div>
     		</div>
     	</div>
 
@@ -34,6 +36,7 @@
     	<div class="color-grade bot"></div>
 	</div>
 
+    <script src="{{ url('js/myma.js') }}"></script>
 	<script type="text/javascript">
 		$('.main-page .hero').css('background-image', "url('" + heroImage + "')");
 

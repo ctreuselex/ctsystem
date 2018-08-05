@@ -26,7 +26,7 @@
 	@endfor
 @stop
 
-@section('title') <img src="{{ url('img/divi/lum.png') }}"> Luminos @stop
+@section('title') <img src="{{ url('img/divi/lum-grey.png') }}"> Luminos @stop
 @section('tag') The division of Fire, Summer, and Power  @stop
 @section('cont') 
 	<br>

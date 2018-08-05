@@ -43,7 +43,7 @@
 		<div id="docenter" class="diamond outline"></div>
     	<div class="color-grade bot"></div>
 		<div class="logo">
-			<img src="{{ url('img/mirrorplane-logo.png') }}">
+			<img src="{{ url('img/mirrorplane-logo-2.png') }}">
 		</div>
 
 		<div class="newscast">

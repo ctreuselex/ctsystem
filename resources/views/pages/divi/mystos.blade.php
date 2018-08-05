@@ -26,7 +26,7 @@
 	@endfor
 @stop
 
-@section('title') <img src="{{ url('img/divi/mys.png') }}"> Mystos @stop
+@section('title') <img src="{{ url('img/divi/mys-grey.png') }}"> Mystos @stop
 @section('tag') The division of Water, Winter, and Change @stop
 @section('cont') 
 	<br>

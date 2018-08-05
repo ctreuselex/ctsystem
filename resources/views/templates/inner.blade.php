@@ -37,14 +37,13 @@
 
 	<style type="text/css">
 		body {
-            width: 100%;
-            height: 100vh;
-            background-image: url("{{ url('img/diamond.jpg') }}");
-            background-color: #eee;
-            background-size: 100px;
-            background-blend-mode: screen;
+            background-color: #BBD6EA;
+            background-image: url("{{ url('img/diamond-dark.jpg') }}");
             margin: 0 auto;
             overflow: hidden; }
+
+        /*.main-page .scroll:before { 
+            background-image: url("{{ url('img/repeat-load.jpg') }}"); }*/
 	</style>
 </head>
 

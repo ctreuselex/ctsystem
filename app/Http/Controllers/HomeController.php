@@ -12,31 +12,31 @@ use Parser;
 class HomeController extends Controller {
 
 	public function index() {
-        $skyStatus = $this->metas("skies"); 
-        $mirChars = $this->metas("chars"); 
+            $skyStatus = $this->metas("skies"); 
+            $mirChars = $this->metas("chars"); 
 
-	    foreach ($mirChars as $key => $row) {
-	        $name[$key]  = $row['name']; }
-	    array_multisort($name, SORT_ASC, $mirChars);
+            foreach ($mirChars as $key => $row) {
+                  $name[$key]  = $row['name']; }
+            array_multisort($name, SORT_ASC, $mirChars);
 
-		return view('pages/init')->with('skyStatus',$skyStatus)->with('mirChars',$mirChars);
+            return view('pages/init')->with('skyStatus',$skyStatus)->with('mirChars',$mirChars);
 	}
 
 	public function home() {
-        $skyStatus = $this->metas("skies"); 
-        $newsCasts = $this->metas("news"); 
+            $skyStatus = $this->metas("skies"); 
+            $newsCasts = $this->metas("news"); 
 		return view('pages/home')->with('skyStatus',$skyStatus)->with('newsCasts',$newsCasts);
 	}
 
 	public function mystic($myma) {
-        $viewmyma = 'pages/myma/'.$myma;
-        $skyStatus = $this->metas("skies"); 
+            $viewmyma = 'pages/myma/'.$myma;
+            $skyStatus = $this->metas("skies"); 
 		return view($viewmyma)->with('skyStatus',$skyStatus);
 	}
 
       public function city($divi) {
-        $viewmyma = 'pages/divi/'.$divi;
-        $skyStatus = $this->metas("skies"); 
+            $viewmyma = 'pages/divi/'.$divi;
+            $skyStatus = $this->metas("skies"); 
             return view($viewmyma)->with('skyStatus',$skyStatus);
       }
 

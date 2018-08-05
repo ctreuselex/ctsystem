@@ -66,51 +66,45 @@
 			</div>
 
 			<div class="menu-item" id="sm-divi">
-				<!-- DIVISTIONS -->
 				<div class="menu-title">City Divisions</div>
 				<a href="/city/luminos?skies=<?=$randomSky?>"><div class="menu-inner">Luminos</div></a>
 				<a href="/city/aeros?skies=<?=$randomSky?>"><div class="menu-inner">Aeros</div></a>
 				<a href="/city/mystos?skies=<?=$randomSky?>"><div class="menu-inner">Mystos</div></a>
 				<a href="/city/geios?skies=<?=$randomSky?>"><div class="menu-inner">Geios</div></a>
-				<!-- RINGS -->
-				<div class="menu-title">City Rings</div>
-				<div class="menu-inner">Nimbocolumbus</div>
-				<div class="menu-inner">Higher Ring</div>
-				<div class="menu-inner">Middle Ring</div>
-				<div class="menu-inner">Lower Ring</div>
 			</div>
 
 			<div class="menu-item" id="sm-myma">
-				<div class="menu-title">Basics</div>
-				<div class="menu-inner">Material Affinity</div>
-				<div class="menu-title">Mystical Manipulations</div>
-				<a href="/mystic/rudimenti?skies=<?=$randomSky?>"><div class="menu-inner">Rudimenti</div></a>
-				<a href="/mystic/cirkunesi?skies=<?=$randomSky?>"><div class="menu-inner">Cirkunesi</div></a>
-				<a href="/mystic/extenebri?skies=<?=$randomSky?>"><div class="menu-inner">Extenebri</div></a>
-				<a href="/mystic/invorti?skies=<?=$randomSky?>"><div class="menu-inner">Invorti</div></a>
-				<div class="menu-title">Special Arts</div>
-				<a href="/mystic/agriconti?skies=<?=$randomSky?>"><div class="menu-inner">Agriconti</div></a>
-				<a href="/mystic/sigiati?skies=<?=$randomSky?>"><div class="menu-inner">Sigiati</div></a>
-				<a href="/mystic/construkti?skies=<?=$randomSky?>"><div class="menu-inner">Construkti</div></a>
-				<a href="/mystic/tekinesi?skies=<?=$randomSky?>"><div class="menu-inner">Tekinesi</div></a>
-				<a href="/mystic/vuidemorti?skies=<?=$randomSky?>"><div class="menu-inner">Vuidemorti</div></a>
+				<div class="menu-title">Mystic Arts</div>
+				<a href="/mystic/rudimenti?skies=<?=$randomSky?>">	<div class="menu-inner">Rudimenti</div></a>
+				<a href="/mystic/agriconti?skies=<?=$randomSky?>">	<div class="menu-inner sub">Agriconti</div></a>
+				<a href="/mystic/sigiati?skies=<?=$randomSky?>">	<div class="menu-inner sub">Sigiati</div></a>
+				<a href="/mystic/cirkunesi?skies=<?=$randomSky?>">	<div class="menu-inner">Cirkunesi</div></a>
+				<a href="/mystic/construkti?skies=<?=$randomSky?>">	<div class="menu-inner sub">Construkti</div></a>
+				<a href="/mystic/extenebri?skies=<?=$randomSky?>">	<div class="menu-inner">Extenebri</div></a>
+				<a href="/mystic/tekinesi?skies=<?=$randomSky?>">	<div class="menu-inner sub">Tekinesi</div></a>
+				<a href="/mystic/vuidemorti?skies=<?=$randomSky?>">	<div class="menu-inner sub">Vuidemorti</div></a>
+				<a href="/mystic/invorti?skies=<?=$randomSky?>">	<div class="menu-inner">Invorti</div></a>
+				<div class="menu-title">Material Affinity</div>
+				<a href="#"><div class="menu-inner">Common</div></a>
+				<a href="#"><div class="menu-inner">Abstract</div></a>
+				<a href="#"><div class="menu-inner">Special</div></a>
 			</div>
 
 			<div class="menu-item" id="sm-orgs">
 				<div class="menu-title">Organizations</div>
-				<div class="menu-inner">The Dominion</div>
-				<div class="menu-inner">The Institute</div>
-				<div class="menu-inner">Psykeepers</div>
-				<div class="menu-inner">Children of Mandalas</div>
-				<div class="menu-inner">Landar Industries</div>
-				<div class="menu-inner">Tauroscene Corporation</div>
-				<div class="menu-inner">Corporal Works</div>
-				<div class="menu-inner">Midring Republic</div>
-				<div class="menu-inner">Carnival of Madness</div>
-				<div class="menu-inner">Howlers</div>
-				<div class="menu-inner">Order of the Void</div>
-				<div class="menu-inner">The Ark</div>
-				<div class="menu-inner">Rings United</div>
+				<a href="#"><div class="menu-inner">The Dominion</div></a>
+				<a href="#"><div class="menu-inner">The Institute</div></a>
+				<a href="#"><div class="menu-inner">Psykeepers</div></a>
+				<a href="#"><div class="menu-inner">Children of Mandalas</div></a>
+				<a href="#"><div class="menu-inner">Landar Industries</div></a>
+				<a href="#"><div class="menu-inner">Tauroscene Corporation</div></a>
+				<a href="#"><div class="menu-inner">Corporal Works</div></a>
+				<a href="#"><div class="menu-inner">Midring Republic</div></a>
+				<a href="#"><div class="menu-inner">Carnival of Madness</div></a>
+				<a href="#"><div class="menu-inner">Howlers</div></a>
+				<a href="#"><div class="menu-inner">Order of the Void</div></a>
+				<a href="#"><div class="menu-inner">The Ark</div></a>
+				<a href="#"><div class="menu-inner">Rings United</div></a>
 			</div>
 		</div>
 
@@ -137,8 +131,11 @@
 		var sColor = "<?=$sColor?>";
 
 		$(window).on('load', function() {
-			setTimeout( function() { $('.menu-btn').fadeIn() }, 1000);
-			setTimeout( function() { $('.menu-time').fadeIn() }, 1000);
+			$('#main-frame').contents().click(function (event) {
+				$('.menu-btn').show();
+				$('.menu-time').show();
+				$('.menu-action').show();
+			});
 		});
 	</script>
 @stop

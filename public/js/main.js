@@ -16,9 +16,18 @@ $(document).on('click', '.main-card a', function(event){
 		$('#main-frame').attr('src', link);
 		$('#main-frame').on('load', function() {
 			$('#main-frame').removeClass('page-load');
-			setTimeout( function() { $('.loading-screen').removeClass('loading') }, 300);
+			setTimeout( function() { 
+				$('.loading-screen').addClass('unload');
+				setTimeout( function() { 
+					$('.loading-screen').addClass('kept');
+					$('.loading-screen').removeClass('loading unload');
+					setTimeout( function() {
+						$('.loading-screen').removeClass('kept');
+					}, 1000);
+				}, 500);
+			}, 300);
 		});
-	}, 300);
+	}, 500);
 	
     $('.main-card .sub-menu').removeClass('open-menu');
 	setTimeout( function() {
@@ -27,6 +36,7 @@ $(document).on('click', '.main-card a', function(event){
 		$('.main-card iframe').removeClass('open-menu');
 	}, 300);	
 });
+
 
 // COLOR GRADE
 /*===================================================================*/
@@ -139,6 +149,7 @@ $(window).on('load', function() {
 		if ($('.main-card .main-menu').hasClass('open-menu')) {
 			// CLOSE MAIN MENU AND SUB MENU
 			if ($('.main-card .sub-menu').hasClass('open-menu')) {
+				$('.main-card .sub-menu .menu-item').removeClass('open');
 				$('.main-card .sub-menu').removeClass('open-menu');
 				setTimeout( function() {
 					$('.main-card .main-menu').removeClass('open-menu');
@@ -168,6 +179,7 @@ $(window).on('load', function() {
 				menuData = "";
 				$('.main-card .main-menu .menu-item').removeClass('active');
 				$('.main-card .sub-menu').removeClass('open-menu');
+				$('.main-card .sub-menu .menu-item').removeClass('open');
 			// OPEN SUB MENU
 			} else {
 				menuData = $(this).attr('id');
@@ -175,8 +187,9 @@ $(window).on('load', function() {
 				$(this).addClass('active');
 
 				$('.main-card .sub-menu').addClass('open-menu');
-				$('.main-card .sub-menu .menu-item').hide();
-				$('.main-card .sub-menu .menu-item#s' + menuData).show();
+				$('.main-card .sub-menu .menu-item').removeClass('open');
+				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
+				addMenuDelay('.menu-item#s' + menuData);
 			}
 		// CLICK DIFFIRENT MAIN MENU BTN
 		} else {
@@ -186,8 +199,9 @@ $(window).on('load', function() {
 				$('.main-card .main-menu .menu-item').removeClass('active');
 				$(this).addClass('active');
 
-				$('.main-card .sub-menu .menu-item').hide();
-				$('.main-card .sub-menu .menu-item#s' + menuData).show();
+				$('.main-card .sub-menu .menu-item').removeClass('open');
+				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
+				addMenuDelay('.menu-item#s' + menuData);
 			// CHANGE SUB MENU AND OPEN SUB MENU
 			} else {
 				menuData = $(this).attr('id');
@@ -195,11 +209,22 @@ $(window).on('load', function() {
 				$(this).addClass('active');
 
 				$('.main-card .sub-menu').addClass('open-menu');
-				$('.main-card .sub-menu .menu-item').hide();
-				$('.main-card .sub-menu .menu-item#s' + menuData).show();
+				$('.main-card .sub-menu .menu-item').removeClass('open');
+				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
+				addMenuDelay('.menu-item#s' + menuData);
 			}
 		}
 	});
+
+	function addMenuDelay(el) {
+		var tDelay = 0.00;
+		$(el  + ' a').each( function() {
+			$(this).css({ 
+				// 'background-color': "red",
+				'transition-delay': tDelay + "s" });
+			tDelay += 0.05;
+		});
+	}
 
 	$('.main-card .menu-action').on('click', function() { 
 		// CLOSE ACTION MENU

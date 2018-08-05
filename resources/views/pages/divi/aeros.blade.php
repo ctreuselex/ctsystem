@@ -26,7 +26,7 @@
 	@endfor
 @stop
 
-@section('title') <img src="{{ url('img/divi/aer.png') }}"> Aeros @stop
+@section('title') <img src="{{ url('img/divi/aer-grey.png') }}"> Aeros @stop
 @section('tag') The division of Air, Autumn, and Freedom @stop
 @section('cont') 
 	<br>

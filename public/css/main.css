@@ -8,7 +8,15 @@ body {
 	background-blend-mode: screen;
 	width: 100%;
 	height: 100vh;
-	font-family: "Raleway"; }
+	font-family: "Raleway";
+
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */ }
 a, a:hover, a:focus, a:active {
 	text-decoration: none; }
 
@@ -39,7 +47,8 @@ a, a:hover, a:focus, a:active {
 	        width: calc(100% - 80px);
 	        transition: 0.3s; }
     	.main-card #main-frame.page-load {
-    		opacity: 0; }
+    		opacity: 0;
+	    	transition: 0.5s; }
 
 /*LOADING SCREEN*/
 /*===================================================================*/
@@ -56,8 +65,7 @@ a, a:hover, a:focus, a:active {
 		position: absolute; top: 0;
 		width: 0%;
 		height: 100vh;
-		background-color: rgba(0,0,0,0.9);
-		transition: 0.5s; }
+		background-color: rgba(0,0,0,0.9); }
 	    .loading-screen:before { left: 0; }
 	    .loading-screen:after { right: 0; }
 
@@ -66,10 +74,12 @@ a, a:hover, a:focus, a:active {
     	width: 100%;
 		visibility: visible;
 		transition: 0.5s; }
-    .loading-screen.loading:before,
-    .loading-screen.loading:after {
-		width: 50%;
-		transition: 0.5s; }
+	    .loading-screen.loading:before,
+	    .loading-screen.loading:after {
+			width: 50%;
+			transition: 0.5s; }
+			.loading-screen.loading.unload:before { width: 0%; left: 50%; }
+		    .loading-screen.loading.unload:after { width: 0%; right: 50%; }
 
 	.loading-screen .loading-diamond {
 	    width: 100px;
@@ -89,29 +99,41 @@ a, a:hover, a:focus, a:active {
 			content: "";
 			position: absolute;
 			border: 50px solid white;
-			transition: 0.5s; }
+    		transform: rotate(0deg); }
 			.loading-screen .loading-diamond:before {
-				/*transform: scale(1) rotate(0deg);*/
 				top: -10px; left: -10px;
 				width: calc(100% + 20px);
-				height: calc(100% + 20px); }
+				height: calc(100% + 20px);
+				transition: 0.5s; }
 			.loading-screen .loading-diamond:after {
-				/*transform: scale(1) rotate(-45deg);*/
 				top: -30px; left: -30px;
 				width: calc(100% + 60px);
-				height: calc(100% + 60px); }
+				height: calc(100% + 60px);
+				transition: 0.2s; }
 
     	.loading-screen.loading .loading-diamond { 
     		transform: scale(1) rotate(45deg);
     		transition: 0.3s; }
     		.loading-screen.loading .loading-diamond:before { 
     			border-width: 2px;
-				/*transform: scale(1) rotate(90deg);*/
+				border-radius: 0%;
     			transition: 0.5s; }
+	    		.loading-screen.loading.unload .loading-diamond:before { 
+    				transform: scale(2) rotate(45deg);
+    				border-radius: 100%;
+	    			transition: 0.2s; }
+	    		.loading-screen.kept .loading-diamond:before {
+					border-width: 2px;
+					border-radius: 100%;
+	    			transform: scale(5) rotate(45deg); }
     		.loading-screen.loading .loading-diamond:after { 
     			border-width: 10px;
-				/*transform: scale(1) rotate(180deg);*/
     			transition: 0.8s; }
+	    		.loading-screen.kept .loading-diamond:after,
+	    		.loading-screen.loading.unload .loading-diamond:after { 
+    				border-width: 20px;
+    				transform: scale(1) rotate(180deg); 
+	    			transition: 0.4s; }
 
 /*MENU*/
 /*===================================================================*/
@@ -166,6 +188,7 @@ a, a:hover, a:focus, a:active {
 		width: 200px;
 		transition: 0.3s; }
 	.sub-menu .menu-item {
+		position: absolute; top: -30px;
 	    float: left;
 	    width: calc(100% + 17px);
 		max-height: 100%;
@@ -173,8 +196,17 @@ a, a:hover, a:focus, a:active {
 	    background-color: rgba(0,0,0,0.4);
 	    padding-left: 1px;
 	    overflow-y: auto;
+	    opacity: 0;
+	    visibility: hidden;
 	    transition: 0.5s;
-	    cursor: pointer; }
+	    cursor: pointer;
+	    transition: 0.3s; }
+		.sub-menu .menu-item.open {
+			top: 0;
+			opacity: 1;
+			visibility: visible;
+			transition: 0.3s; }
+
 		.sub-menu .menu-title,
 	    .sub-menu .menu-inner {
 	    	position: relative;
@@ -184,6 +216,18 @@ a, a:hover, a:focus, a:active {
 		    padding: 5px 20px;
 		    margin-bottom: 1px;
 		    transition: 0.5s; }
+		    .sub-menu .menu-item a { 
+		    	position: relative; left: -40%; 
+		    	opacity: 0; }
+			    .sub-menu .menu-item.open a { 
+			    	position: relative; left: 0; 
+			    	opacity: 1; 
+			    	transition: 0.3s; }
+
+			.sub-menu .menu-inner.sub {
+				background-color: rgba(0,0,0,0.2);
+				padding: 3px 20px;
+			 	padding-left: 30px; }
 		    .sub-menu .menu-inner i {
 			    position: absolute;
 			    right: 15px;
@@ -199,6 +243,7 @@ a, a:hover, a:focus, a:active {
 		    padding: 15px 20px; }
 
 .menu-action {
+	display: none;
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
@@ -233,9 +278,9 @@ a, a:hover, a:focus, a:active {
 	    transform: scale(0);
 	    transition: 0.5s; }
 	    .action-menu.open-menu:before {
-	    border: 2px solid white; 
-		transform: scale(1);
-		transition: 0.5s; }
+		    border: 2px solid white; 
+			transform: scale(1);
+			transition: 0.5s; }
 
 		.action-menu .action-title {
 		    position: absolute;
@@ -367,7 +412,7 @@ a, a:hover, a:focus, a:active {
     transform: rotate(45deg); }
     .diamond.block {
 	    background-color: grey;
-	    opacity: 0.7; }
+	    opacity: 0.6; }
     .diamond.outline {
 	    border: 2px solid white; }
 
@@ -380,25 +425,6 @@ a, a:hover, a:focus, a:active {
 
 	.diamond.ontop {
 		z-index: 3; }
-
-/*ANIMATIONS*/
-/*===================================================================*/
-@keyframes diamondGrow {
-	0% { transform: scale(0) rotate(45deg); opacity: 0; }
-	100% { transform: scale(1) rotate(45deg); opacity: 0.7; } }
-@keyframes diamondShrink {
-	0% { transform: scale(2) rotate(45deg); opacity: 0; }
-	100% { transform: scale(1) rotate(45deg); opacity: 0.7; } }
-@keyframes diamondDashLeft {
-	0% { transform: translateX(1000px) rotate(45deg); opacity: 0; }
-	100% { transform: translateX(0) rotate(45deg); opacity: 0.7; } }
-@keyframes diamondDashRight {
-	0% { transform: translateX(-1000px) rotate(45deg); opacity: 0; }
-	100% { transform: translateX(0) rotate(45deg); opacity: 0.7; } }
-
-@keyframes diamondBorderGrow {
-	0% { transform: scale(0) rotate(45deg); opacity: 0; border-width: 100px }
-	100% { transform: scale(1) rotate(45deg); opacity: 0.7; border-width: 2px } }
 
 /*MAIN PAGES*/
 /*===================================================================*/
@@ -434,13 +460,36 @@ a, a:hover, a:focus, a:active {
 
 	.main-page .content {
 	    float: left;
-	    width: calc(100% - 30%);
+	    width: calc(100%);
 	    height: 100vh;
-	    color: white;
-	    padding: 75px 50px 0; }
+	    color: white; }
+		.main-page.open .content {
+	    	width: calc(100% - 30%);
+		    transition: 0.5s; }
+
+	    .main-page .scroll {
+		    width: calc(100% + 17px);
+		    height: 100vh;
+		    padding: 50px 100px 0 50px;
+		    overflow-y: scroll; }
+
+	    	.main-page .scroll:before { 
+	    		animation: scrollLoop 1.5s infinite;
+	    		content: "";
+	    		position: absolute; right: 0;
+	    		width: 5px;
+    			background-color: white;
+				/*background-attachment: fixed;*/ }
+	    	.main-page .scroll:after {
+				content: "";
+				display: block;
+				height: 150px;
+				width: 100%; }
+
 	    .main-page .title {
 		    font-family: "Righteous";
 		    font-size: 30px;
+		    font-weight: bold;
 		    text-transform: uppercase;
 		    letter-spacing: -1px;
 		    margin-bottom: -10px; }
@@ -450,41 +499,68 @@ a, a:hover, a:focus, a:active {
 		    font-family: "Righteous";
 		    text-transform: uppercase;
 		    font-size: 18px;
+		    font-weight: bold;
 		    line-height: 15px;
 		    margin-top: 25px; }
 		.main-page .cont p {
     		text-indent: 50px;
     		margin-bottom: 5px; }
 
-	   	.main-page.with-swiper .content {
-			width: 100%;
-			padding: 0; }
-			.main-page.with-swiper .content .swiper-container {
-				width: 100%; }
-	   		.main-page.with-swiper .title {
-				position: absolute; top: 215px; left: 100px;
-				font-size: 50px;
-				z-index: 10; }
-				.main-page.with-swiper .title img {
-				    position: absolute; top: -150px;
-				    width: 150px;
-				    filter: brightness(1000) grayscale(1); }
-			.main-page.with-swiper .tag {
-				position: absolute; top: 275px; left: 100px;
-				z-index: 10; }
-			.main-page.with-swiper .cont {
-				width: calc(100% + 17px);
-			    height: calc(100vh - 300px);
-			    padding: 0 100px 0;
-			    overflow-y: scroll; }
-			   	.main-page.with-swiper .cont:after {
-					content: "";
-					display: block;
-					height: 75px;
-					width: 100%; }
-			    .main-page.with-swiper .cont img {
-				    width: 150px;
-				    float: right;
-				    margin-left: 15px;
-				    margin-bottom: 15px;
-				    filter: brightness(1000) grayscale(1); }
+/*MYMA CONTS*/
+/*===================================================================*/
+/*myma {
+    display: inline-block;
+    float: left;
+    width: 100%;
+    text-indent: 0;
+    margin-bottom: 5px; }*/
+myma {
+	margin-bottom: 5px; }
+	myma i {
+		position: relative;
+	    width: 25px;
+	    height: 25px;
+	    color: white;
+	    /*background-color: white;*/
+	    font-size: 14px;
+	    text-align: center;
+	    padding-top: 5px;
+	    text-indent: 0;
+	    border: 1px solid rgba(255,255,2550.5);
+	    border-radius: 100%;
+	    margin-right: 5px; }
+    /*myma .title {
+    	font-size: 20px !important;
+		letter-spacing: 0 !important;
+		text-transform: initial !important; }*/
+	/*myma .des {
+	    position: relative; top: -12px; left: -12px;
+	    border: 1px solid rgba(255,255,255,0.2);
+	    text-indent: 0;
+	    padding: 15px; }*/
+    myma .des {
+	    padding: 5px 0; }
+
+/*ANIMATIONS*/
+/*===================================================================*/
+@keyframes diamondGrow {
+	0% { transform: scale(0) rotate(45deg); opacity: 0; }
+	100% { transform: scale(1) rotate(45deg); opacity: 0.6; } }
+@keyframes diamondShrink {
+	0% { transform: scale(2) rotate(45deg); opacity: 0; }
+	100% { transform: scale(1) rotate(45deg); opacity: 0.6; } }
+@keyframes diamondDashLeft {
+	0% { transform: translateX(1000px) rotate(45deg); opacity: 0; }
+	100% { transform: translateX(0) rotate(45deg); opacity: 0.6; } }
+@keyframes diamondDashRight {
+	0% { transform: translateX(-1000px) rotate(45deg); opacity: 0; }
+	100% { transform: translateX(0) rotate(45deg); opacity: 0.6; } }
+
+@keyframes diamondBorderGrow {
+	0% { transform: scale(0) rotate(45deg); opacity: 0; border-width: 100px }
+	100% { transform: scale(1) rotate(45deg); opacity: 0.7; border-width: 2px } }
+
+@keyframes scrollLoop {
+	0% { top: calc(0% - 200px); height: 250px; }
+	50% { top: 50%; height: 50px; }
+	100% { top: calc(100% + 50px); height: 250px; } }

@@ -33,7 +33,7 @@
 
 	<style type="text/css">
 		.main-card {
-			background-image: url("{{ url('img/diamond.jpg') }}"); }
+			background-image: url("{{ url('img/diamond-dark.jpg') }}"); }
 	</style>
 </head>
 

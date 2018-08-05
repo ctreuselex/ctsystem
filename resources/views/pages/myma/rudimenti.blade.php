@@ -12,8 +12,13 @@
 @section('tag') "The Creation of Matter, the Creation of Life" @stop
 @section('cont') 
 	<p class="head">ORIGIN</p>
-	<p>Rudimenti is the most basic form of Myst Manipulation and has been practiced even before the actaul creation of the city. No one is certain about its true origin and who first discovered it but it has been common knowledge that there are multiple instances of its discovery throughout history.</p>
+	<p>Rudimenti is the most basic art of Myst Manipulation and has been practiced even before the actual creation of the city. No one is certain about its true origin and who first discovered it but it has been common knowledge that there are multiple instances of its discovery throughout history.</p>
 	<p class="head">PRACTICE</p>
-	<p>It is the creation of matter using the raw energy of Myst. Most Mystics are limited to their material affinity when it comes to what they can create, with the exception of those who practice Sigilioti, and without Cirkunesi, they are also not able to shape their creation to their will, leading to disastrous outcomes.</p>
-	<p>Rudimenti is the only source of new materials coming in to the city, which makes them essential to the survival of the entire population. This alone, makes them extremely valuable and often lead to the development of their snobby behaviour (see: Dominion).</p>	
+	<p>It is the creation of matter using the raw energy of Myst. Most Mystics are limited to their material affinity when it comes to what they can create, and without Cirkunesi, they are also not able to shape their creation to their will, leading to disastrous outcomes.</p>
+	<p>Rudimenti is the only source of new materials coming in to the city, which makes them essential to the survival of the entire population. This alone, makes them extremely valuable which often lead to the development of their snobby behaviour (see: Dominion).</p>	
+	<p>
+		<myma>rud01</myma>
+		<myma>rud02</myma>
+		<myma>rud03</myma>
+	</p>
 @stop
