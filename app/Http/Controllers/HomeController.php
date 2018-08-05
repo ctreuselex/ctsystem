@@ -51,7 +51,7 @@ class HomeController extends Controller {
 			array('name'=>'Auburn Leaves', 'mcolor'=>'#F3DA1B', 'scolor'=>'#ED5C19'),
 			array('name'=>'Urban Skyline', 'mcolor'=>'#AA47DE', 'scolor'=>'#EDC519'),
 			array('name'=>'Everest Peaks', 'mcolor'=>'#4793DE', 'scolor'=>'#19B9ED'),
-			array('name'=>'Morning Glory', 'mcolor'=>'#F9D50B', 'scolor'=>'#5CD91C'),
+			array('name'=>'Morning Glory', 'mcolor'=>'#F9D50B', 'scolor'=>'#68EA8E'),
 			array('name'=>'Plain Cyanide', 'mcolor'=>'#18FF81', 'scolor'=>'#009688'),
 			);
 		if ($req == "skies") return $skyStatus;
