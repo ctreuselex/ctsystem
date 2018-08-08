@@ -30,6 +30,12 @@
     <!-- jQuery -->
     <script src="{{ url('js/jquery.js') }}"></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url('js/bootstrap.js') }}"></script>
+
+    <!-- CUSTOM Script-->
+    <script src="{{ url('js/main.js') }}"></script>
+
 
 	<style type="text/css">
 		.main-card {
@@ -39,12 +45,6 @@
 
 <body>
 	@yield('main')	
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ url('js/bootstrap.js') }}"></script>
-
-    <!-- CUSTOM Script-->
-    <script src="{{ url('js/main.js') }}"></script>
 </body>
 
 </html>

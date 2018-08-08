@@ -55,12 +55,12 @@
 			    height: calc(100vh - 300px);
 			    padding: 0 100px 0;
 			    overflow-y: scroll; } 
-		    	.main-page.with-swiper .cont:before { 
+		    	/*.main-page.with-swiper .cont:before { 
 		    		animation: scrollLoop 1.5s infinite;
 		    		content: "";
 		    		position: absolute; right: 0;
 		    		width: 5px;
-	    			background-color: white; }
+	    			background-color: white; }*/
 			   	.main-page.with-swiper .cont:after {
 					content: "";
 					display: block;
@@ -157,7 +157,7 @@
 				diamondDes('#dblogoback', {
 					top: -20,
 					left: -10,
-					size: 500,
+					size: 400,
 					animation: 'diamondBorderGrow 0.5s',
 					delay: 1000 });
 			}

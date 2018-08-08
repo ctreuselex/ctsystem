@@ -1,4 +1,35 @@
 
+// STAT DETAILS
+var statDetails = [
+	{ id: 'health', name: 'Health', },
+	{ id: 'energy', name: 'Energy', },
+	{ id: 'myst', name: 'Myst', },
+	{ id: 'body', name: 'Body', },
+	{ id: 'mind', name: 'Mind', },
+	{ id: 'spirit', name: 'Spirit', },
+	{ id: 'affinity', name: 'Affinity', },
+	{ id: 'weapon', name: 'Weapon Effectiveness', },
+	{ id: 'heatresist', name: 'Heat Resistance', },
+	{ id: 'coldresist', name: 'Cold Resistance', },
+	{ id: 'sparkresist', name: 'Spark Resistance', },
+	{ id: 'pierceresist', name: 'Piercing Resistance', },
+	{ id: 'slashresist', name: 'Slashing Resistance', },
+	{ id: 'crushresist', name: 'Crushing Resistance', },
+	{ id: 'persuasion', name: 'Persuasion', },
+	{ id: 'bartering', name: 'Bartering', },
+	{ id: 'thievery', name: 'Thievery', },
+	{ id: 'energycost', name: 'Energy Cost', },
+	{ id: 'buff', name: '', },
+	];
+
+function findStatName(id) {
+	for (var i=0; i<statDetails.length; i++) {
+		if (id == statDetails[i]['id']) {
+			return statDetails[i]['name']
+		}
+	}				
+}
+
 // PAGE CHANGE 
 /*===================================================================*/
 $(document).on('click', '.main-card a', function(event){
@@ -29,14 +60,8 @@ $(document).on('click', '.main-card a', function(event){
 		});
 	}, 500);
 	
-    $('.main-card .sub-menu').removeClass('open-menu');
-	setTimeout( function() {
-		$('.main-card .main-menu').removeClass('open-menu');
-		$('.main-card .main-menu .menu-item').removeClass('active');
-		$('.main-card iframe').removeClass('open-menu');
-	}, 300);	
+	closeMainMenu();
 });
-
 
 // COLOR GRADE
 /*===================================================================*/
@@ -98,6 +123,7 @@ function diamondDes(el, details) {
 
 	function animateDiamond(el, animation) {
 		$(el).show();
+		$(el).css('animation', '');
 		$(el).css('animation', animation);
 	}
 
@@ -132,135 +158,16 @@ $(window).on('load', function() {
 
 });
 
-
-// MAIN MENU
-/*===================================================================*/
-$(window).on('load', function() {
-
-	function getTime() {
-		var dt = new Date();
-		var time = dt.getHours() + ":" + dt.getMinutes();
-
-		$('.menu-time .time span').html(time);
+function outFocus(focus, callback) {
+	if(focus) {
+		$('#main-frame').addClass('out-focus');
+		$('.menu-btn').addClass('out-focus');
+		$('.menu-time').addClass('out-focus');
+	} else {
+		$('#main-frame').removeClass('out-focus');
+		$('.menu-btn').removeClass('out-focus');
+		$('.menu-time').removeClass('out-focus');
 	}
 
-	$('.main-card .menu-btn').on('click', function() {
-		// CLOSE MAIN MENU
-		if ($('.main-card .main-menu').hasClass('open-menu')) {
-			// CLOSE MAIN MENU AND SUB MENU
-			if ($('.main-card .sub-menu').hasClass('open-menu')) {
-				$('.main-card .sub-menu .menu-item').removeClass('open');
-				$('.main-card .sub-menu').removeClass('open-menu');
-				setTimeout( function() {
-					$('.main-card .main-menu').removeClass('open-menu');
-					$('.main-card .main-menu .menu-item').removeClass('active');
-					$('.main-card iframe').removeClass('open-menu');
-				}, 300);	
-			// CLOSE  ONLY MAIN MENU
-			} else {
-				$('.main-card .sub-menu').removeClass('open-menu');
-				$('.main-card .main-menu').removeClass('open-menu');
-				$('.main-card .main-menu .menu-item').removeClass('active');
-				$('.main-card iframe').removeClass('open-menu');
-			}
-	 	// OPEN MAIN MENU
-		} else {
-			$('.main-card .main-menu').addClass('open-menu');
-			$('.main-card iframe').addClass('open-menu');
-		}
-	});
-
-	var menuData = "";
-	$('.main-card .main-menu .menu-item').on('click', function() {
-		// CLICK SAME MAIN MENU BTN
-		if (menuData == $(this).attr('id')) {
-			// CLOSE SUB MENU
-			if ($('.main-card .sub-menu').hasClass('open-menu')) {
-				menuData = "";
-				$('.main-card .main-menu .menu-item').removeClass('active');
-				$('.main-card .sub-menu').removeClass('open-menu');
-				$('.main-card .sub-menu .menu-item').removeClass('open');
-			// OPEN SUB MENU
-			} else {
-				menuData = $(this).attr('id');
-				$('.main-card .main-menu .menu-item').removeClass('active');
-				$(this).addClass('active');
-
-				$('.main-card .sub-menu').addClass('open-menu');
-				$('.main-card .sub-menu .menu-item').removeClass('open');
-				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
-				addMenuDelay('.menu-item#s' + menuData);
-			}
-		// CLICK DIFFIRENT MAIN MENU BTN
-		} else {
-			// CHANGE SUB MENU WITHOUT CLOSING SUB MENU
-			if ($('.main-card .sub-menu').hasClass('open-menu')) {
-				menuData = $(this).attr('id');
-				$('.main-card .main-menu .menu-item').removeClass('active');
-				$(this).addClass('active');
-
-				$('.main-card .sub-menu .menu-item').removeClass('open');
-				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
-				addMenuDelay('.menu-item#s' + menuData);
-			// CHANGE SUB MENU AND OPEN SUB MENU
-			} else {
-				menuData = $(this).attr('id');
-				$('.main-card .main-menu .menu-item').removeClass('active');
-				$(this).addClass('active');
-
-				$('.main-card .sub-menu').addClass('open-menu');
-				$('.main-card .sub-menu .menu-item').removeClass('open');
-				$('.main-card .sub-menu .menu-item#s' + menuData).addClass('open');
-				addMenuDelay('.menu-item#s' + menuData);
-			}
-		}
-	});
-
-	function addMenuDelay(el) {
-		var tDelay = 0.00;
-		$(el  + ' a').each( function() {
-			$(this).css({ 
-				// 'background-color': "red",
-				'transition-delay': tDelay + "s" });
-			tDelay += 0.05;
-		});
-	}
-
-	$('.main-card .menu-action').on('click', function() { 
-		// CLOSE ACTION MENU
-		if ($('.main-card .action-menu').hasClass('open-menu')) {
-			$('.main-card .action-menu').removeClass('open-menu');
-	 	// OPEN ACTION MENU
-		} else {
-			$('.main-card .action-menu').addClass('open-menu');
-			setActionBtns();
-		}
-	});
-
-	$('.main-card .action-menu .action-item').hover( function() { 
-		if ($(this).attr('id') == 'ai-call') $('.main-card .action-menu .action-title').html('Call My Father');
-		if ($(this).attr('id') == 'ai-time') $('.main-card .action-menu .action-title').html('Wake Me Up Sometime');
-		if ($(this).attr('id') == 'ai-inte') $('.main-card .action-menu .action-title').html('Waste My Time');
-		if ($(this).attr('id') == 'ai-part') $('.main-card .action-menu .action-title').html('Party With \"Friends\"');
-		if ($(this).attr('id') == 'ai-lock') $('.main-card .action-menu .action-title').html('Log Out & Lock the Gates');
-	}, function() {
-		$('.main-card .action-menu .action-title').html('');
-	});
-
-	function setActionBtns() {
-		var angle = 190,
-			size = 50; 
-			
-		$('.main-card .action-menu .action-item').each( function() {
-			var radians = angle * Math.PI / 180, 
-				radius = 385 / 2;
-
-			$(this).css({
-				'margin-top': (Math.cos( radians ) * radius - 50) + 'px',
-				'margin-left': (Math.sin( radians ) * radius - 50) + 'px',
-			});
-			angle += 17;
-		});
-	}
-
-});
+	setTimeout(callback(), 500);
+}

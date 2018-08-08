@@ -41,6 +41,7 @@ a, a:hover, a:focus, a:active {
 	    border: 0;
 	    overflow: hidden;
 	    opacity: 1;
+		filter: blur(0px);
 	    transition: 0.3s; }
 	    .main-card #main-frame.open-menu {
 	    	left: 80px;
@@ -49,6 +50,10 @@ a, a:hover, a:focus, a:active {
     	.main-card #main-frame.page-load {
     		opacity: 0;
 	    	transition: 0.5s; }
+
+	.main-card .out-focus {
+		filter: blur(3px) !important;
+    	transition: 0.3s; }    	
 
 /*LOADING SCREEN*/
 /*===================================================================*/
@@ -146,8 +151,10 @@ a, a:hover, a:focus, a:active {
 	font-size: 25px;
 	text-align: center;
 	padding: 22px 0;
+	filter: blur(0px);
 	cursor: pointer;
-    z-index: 20; }
+    z-index: 20;
+    transition: 0.3s; }
 
 .main-menu {
 	position: absolute; top: 0; left: -81px;
@@ -177,151 +184,384 @@ a, a:hover, a:focus, a:active {
     		border-left: 5px solid grey;
     		transition: 0.3s; }
 
-.sub-menu {
-	position: absolute; top: 0; left: 80px;
-	width: 0; height: 100%;
-	background-color: rgba(50,50,100,0.5);
-	overflow: hidden;
-	z-index: 20;
-	transition: 0.3s; }
-	.sub-menu.open-menu {
-		width: 200px;
+
+	/*MENU SUB MENU*/
+	/*===================================================================*/
+	.sub-menu {
+		position: absolute; top: 0; left: 80px;
+		width: 0; height: 100%;
+		background-color: rgba(50,50,100,0.5);
+		overflow: hidden;
+		z-index: 20;
 		transition: 0.3s; }
-	.sub-menu .menu-item {
-		position: absolute; top: -30px;
-	    float: left;
-	    width: calc(100% + 17px);
-		max-height: 100%;
-	    color: white;
-	    background-color: rgba(0,0,0,0.4);
-	    padding-left: 1px;
-	    overflow-y: auto;
-	    opacity: 0;
-	    visibility: hidden;
-	    transition: 0.5s;
-	    cursor: pointer;
-	    transition: 0.3s; }
-		.sub-menu .menu-item.open {
-			top: 0;
-			opacity: 1;
-			visibility: visible;
+		.sub-menu.open-menu {
+			width: 200px;
 			transition: 0.3s; }
-
-		.sub-menu .menu-title,
-	    .sub-menu .menu-inner {
-	    	position: relative;
+		.sub-menu .menu-item {
+			position: absolute; top: -30px;
+		    float: left;
+		    width: calc(100% + 17px);
+			max-height: 100%;
 		    color: white;
-		    background-color: rgba(0,0,0,0.3);
-		    text-transform: capitalize;
-		    padding: 5px 20px;
-		    margin-bottom: 1px;
-		    transition: 0.5s; }
-		    .sub-menu .menu-item a { 
-		    	position: relative; left: -40%; 
-		    	opacity: 0; }
-			    .sub-menu .menu-item.open a { 
-			    	position: relative; left: 0; 
-			    	opacity: 1; 
-			    	transition: 0.3s; }
+		    background-color: rgba(0,0,0,0.4);
+		    padding-left: 1px;
+		    overflow-y: auto;
+		    opacity: 0;
+		    visibility: hidden;
+		    transition: 0.5s;
+		    cursor: pointer;
+		    transition: 0.3s; }
+			.sub-menu .menu-item.open {
+				top: 0;
+				opacity: 1;
+				visibility: visible;
+				transition: 0.3s; }
 
-			.sub-menu .menu-inner.sub {
-				background-color: rgba(0,0,0,0.2);
-				padding: 3px 20px;
-			 	padding-left: 30px; }
-		    .sub-menu .menu-inner i {
-			    position: absolute;
-			    right: 15px;
-			    top: 8px; }
-	    .sub-menu .menu-inner:hover { 
-	    	transition: 0.3s; }
-		.sub-menu .menu-title {
-		    background-color: rgba(50,100,100,0.3);
-		    font-family: "Righteous";
-		    font-size: 20px;
-		    letter-spacing: -1px;
-		    line-height: 20px;
-		    padding: 15px 20px; }
+			.sub-menu .menu-title,
+		    .sub-menu .menu-inner {
+		    	position: relative;
+			    color: white;
+			    background-color: rgba(0,0,0,0.3);
+			    text-transform: capitalize;
+			    padding: 5px 20px;
+			    margin-bottom: 1px;
+			    transition: 0.5s; }
+			    .sub-menu .menu-item a { 
+			    	position: relative; left: -40%; 
+			    	opacity: 0; }
+				    .sub-menu .menu-item.open a { 
+				    	position: relative; left: 0; 
+				    	opacity: 1; 
+				    	transition: 0.3s; }
 
-.menu-action {
-	display: none;
-	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	width: 80px;
-	height: 80px;
-	color: white;
-	font-size: 25px;
-	text-align: center;
-	padding: 22px 0;
-	z-index: 20;
-	cursor: pointer; }
+				.sub-menu .menu-inner.sub {
+					background-color: rgba(0,0,0,0.2);
+					padding: 3px 20px;
+				 	padding-left: 30px; }
+			    .sub-menu .menu-inner i {
+				    position: absolute;
+				    right: 15px;
+				    top: 8px; }
+		    .sub-menu .menu-inner:hover { 
+		    	transition: 0.3s; }
+			.sub-menu .menu-title {
+			    background-color: rgba(50,100,100,0.3);
+			    font-family: "Righteous";
+			    font-size: 20px;
+			    letter-spacing: -1px;
+			    line-height: 20px;
+			    padding: 15px 20px; }
 
-.action-menu {
-    position: absolute; bottom: -220px; right: -220px;
-    width: 450px;
-    height: 450px;
-    border-radius: 100%;
-	background-color: rgba(50,50,100,0.5);
-    transform: scale(0);
-    z-index: 20;
-    transition: 0.3s; }
-	.action-menu.open-menu { 
-		transform: scale(1);
-		transition: 0.5s; }
-	.action-menu:before { 
-		content: "";
-		position: absolute; bottom: 0; right: 0;
-	    width: 425px;
-	    height: 425px;
+
+	/*MENU ACTION*/
+	/*===================================================================*/
+	.menu-action {
+		display: none;
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
+		width: 80px;
+		height: 80px;
+		color: white;
+		font-size: 25px;
+		text-align: center;
+		padding: 22px 0;
+		z-index: 31;
+		cursor: pointer; }
+
+	.action-menu {
+	    position: absolute; bottom: -220px; right: -220px;
+	    width: 450px;
+	    height: 450px;
 	    border-radius: 100%;
-	    border: 50px solid white;
+		background-color: rgba(50,50,100,0.5);
 	    transform: scale(0);
-	    transition: 0.5s; }
-	    .action-menu.open-menu:before {
-		    border: 2px solid white; 
+	    z-index: 31;
+	    transition: 0.3s; }
+		.action-menu.open-menu { 
 			transform: scale(1);
 			transition: 0.5s; }
-
-		.action-menu .action-title {
-		    position: absolute;
-		    bottom: calc(50% + 60px);
-		    right: calc(50% + 25px);
-		    width: 100px;
-		    font-size: 16px;
-		    font-weight: bold;
-		    text-align: right;
-		    color: white;
-		    line-height: 17px; }
-		.action-menu .action-item {
-		    position: absolute;
-		    top: calc(50% + 25px);
-		    left: calc(50% + 25px);
-		    width: 50px;
-		    height: 50px;
-		    color: grey;
-		    background-color: white;
-		    font-size: 20px;
-		    text-align: center;
+		.action-menu:before { 
+			content: "";
+			position: absolute; bottom: 0; right: 0;
+		    width: 425px;
+		    height: 425px;
 		    border-radius: 100%;
-		    padding-top: 10px;
-		    box-shadow: 0 3px 3px rgba(0,0,0,0.1);
-		    transition: 0.5s;
-		    cursor: pointer; }
-		    .action-menu .action-item:hover {
-		    	color: white;
-		    	transition: 0.3s; }
+		    border: 50px solid white;
+		    transform: scale(0);
+		    transition: 0.5s; }
+		    .action-menu.open-menu:before {
+			    border: 2px solid white; 
+				transform: scale(1);
+				transition: 0.5s; }
 
-.menu-time {
-	display: none;
-    position: absolute; top: 20px; right: 20px;
-    color: white;
-    font-size: 16px;
-    text-align: right;
-    line-height: 20px;
-    z-index: 20; }
-    .menu-time .time span { 
-    	font-size: 30px;
-    	font-family: "Righteous"; }
+			.action-menu .action-title {
+			    position: absolute;
+			    bottom: calc(50% + 60px);
+			    right: calc(50% + 25px);
+			    width: 100px;
+			    font-family: "Righteous";
+			    font-size: 20px;
+			    font-weight: bold;
+			    text-align: right;
+			    text-transform: uppercase;
+			    color: white;
+			    line-height: 17px; }
+			.action-menu .action-item {
+			    position: absolute;
+			    top: calc(50% + 25px);
+			    left: calc(50% + 25px);
+			    width: 50px;
+			    height: 50px;
+			    color: grey;
+			    background-color: white;
+			    font-size: 20px;
+			    text-align: center;
+			    border-radius: 100%;
+			    padding-top: 10px;
+			    box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+			    transition: 0.5s;
+			    cursor: pointer; }
+			    .action-menu .action-item:hover,
+			    .action-menu .action-item.current {
+			    	color: white;
+			    	transition: 0.3s; }
+			    .action-menu .action-item.hidden {
+			    	visibility: hidden; }
+
+
+	/*MENU TIME*/
+	/*===================================================================*/
+	.menu-time {
+		display: none;
+	    position: absolute; top: 20px; right: 20px;
+	    color: white;
+	    font-size: 16px;
+	    text-align: right;
+	    line-height: 20px;
+		filter: blur(0px);
+	    z-index: 20;
+	    transition: 0.3s; }
+	    .menu-time .time span { 
+	    	font-size: 30px;
+	    	font-family: "Righteous"; }
+
+	/*MENU PARTY*/
+	/*===================================================================*/
+	.menu-party {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+		background-color: rgba(50,50,100,0.5);
+	    padding: 0 50px;
+	    z-index: 30;
+	    opacity: 0;
+	    visibility: hidden;
+	    transition: 1s; }
+	    .menu-party.open {
+		    opacity: 1;
+		    visibility: visible;
+		    transition: 0.3s; }
+
+	    .menu-party .title {
+		    position: absolute;
+		    top: 20px;
+		    left: 75px;
+		    color: white;
+		    font-family: "Righteous";
+		    font-size: 45px;
+		    text-transform: uppercase;
+		    letter-spacing: -1px; }
+		.party-options {
+		    position: absolute;
+		    top: 42px;
+		    left: 300px; }
+		    .party-options .option {
+		    	position: relative; top: 0;
+			    float: left;
+			    color: rgba(255, 255, 255, 0.9);
+			    font-size: 22px;
+			    margin-right: 5px;
+			    cursor: pointer;
+			    transition: 0.5s; }
+			.party-options .option:hover {
+				top: -5px;
+				transition: 0.3s; }
+
+		.menu-party .chars {
+		    height: 100%; }
+	    .menu-party .char {
+	    	position: relative;
+		    float: left;
+		    width: calc(97% / 3);
+		    height: calc(100% - 150px);
+			background-color: rgba(0,0,0,0.5);
+		    color: white;
+		    margin: 75px calc(3% / 6) 0;
+		    box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+		    overflow: hidden;
+		    opacity: 0;
+		    transform: translateY(-100px);
+		    transition: 0.3s;
+		    transition-delay: 0s; }
+
+		    .menu-party .scroll {    
+		    	position: relative;
+		    	width: calc(100% + 17px);
+		    	height: 100%;    
+    			padding: 30px;
+		    	overflow-y: scroll;
+		    	overflow-x: hidden; }
+
+	    	.menu-party.open .char {
+	    		opacity: 1;
+	    		transform: translateY(0px);
+	    		transition: 0.5s; }
+		    	.menu-party .chars .char:nth-child(1) { transition-delay: 0.2s; }
+		    	.menu-party .chars .char:nth-child(2) { transition-delay: 0.3s; }
+		    	.menu-party .chars .char:nth-child(3) { transition-delay: 0.4s; }
+
+		    .menu-party .char .name {
+		    	position: relative;
+			    background-color: transparent;
+			    font-family: "Righteous";
+			    font-size: 20px;
+				text-transform: uppercase;
+			    border: 0;
+			    border-bottom: 1px solid rgba(255,255,255,0.5);
+			    width: 100%;
+			    padding: 0 15px;
+			    z-index: 10; }
+		    	.menu-party .char .name::placeholder { 
+		    		color: rgba(255,255,255,0.5); }
+			.menu-party .char .stats {
+				position: relative;
+			    float: left;
+			    width: 100%;
+			    margin-top: 5px;
+			    z-index: 10; }
+				.menu-party .char .stats:before {
+					float: left;
+					width: 100%;
+				    font-family: "Righteous";
+					text-transform: uppercase;
+				    padding: 0 15px;
+				    border-bottom: 1px solid rgba(255,255,255,0.5);
+				    margin-bottom: 1px; } 
+					.menu-party .char .attributes:before { content: "Stats"; } 
+					.menu-party .char .resistances:before { content: "Resistances"; }
+					.menu-party .char .social:before { content: "Social"; }
+					.menu-party .char .origin:before { content: "Origin"; }
+			    	.menu-party .char .traits:before { content: "Traits"; }
+			    	.menu-party .char .skills:before { content: "Skills"; }
+
+				.menu-party .char .stats .colrow {
+				    margin: 0 -0.5px; }
+					.menu-party .char .stats .col3 {
+					    float: left;
+					    width: calc(100% / 3);
+					    padding: 0 0.5px; }
+
+				.menu-party .char .stats .stat {
+		   			float: left;
+		   			width: 100%;
+				    background-color: rgba(0,0,0,0.3);
+				    color: rgba(255,255,255,0.5);
+				    padding: 5px 15px;
+				    margin-bottom: 1px; }
+				    .menu-party .char .stats .stat i {
+				    	color: white; }
+				    .menu-party .char .stats .stat .val {
+					    float: right;
+					    color: white;
+					    font-family: "Righteous"; }
+
+				.menu-party .char .resistances .stat i {
+     				display: inline-block;
+				    width: 18px; height: 18px;
+				    font-size: 10px;
+			        padding: 3px;
+				    border: 1px solid white;
+				    border-radius: 100%; }
+
+		   	.menu-party .char .attr {
+		   		position: relative;
+		   		float: left;
+		   		width: 100%;
+		   		background-color: rgba(0,0,0,0.3);
+			    color: white;
+			    padding: 5px 15px;
+			    margin-bottom: 1px;
+			    cursor: pointer;  }
+			    .menu-party .char .attr .inner-attr {
+    				text-transform: capitalize; }
+			    	.menu-party .char .attr .inner-attr.inactive { 
+			    		color: rgba(255, 255, 255, 0.5); }
+			    .menu-party .char .attr.compatible:before,
+			    .menu-party .char .attr.incompatible:before { 
+			    	content: "";
+			    	position: absolute;
+			    	top: 3px; right: 3px;
+			    	width: 10px; height: 10px;
+			    	background-color: grey;
+			    	border-radius: 100%; }
+				    .menu-party .char .attr.compatible:before { background-color: #0be8b5 }
+				    .menu-party .char .attr.incompatible:before { background-color: #ff4700 }
+			    .menu-party .char .attr .des {
+			    	display: none;
+				    background-color: rgba(0,0,0,0.3);
+				    width: calc(100% + 30px);
+				    margin: 0 0 -5px -15px;
+				    padding: 3px 15px;
+				    font-size: 12px; }
+
+	    	.menu-party.open .char.blank .scroll {
+			    visibility: hidden;
+			    top: -50px;
+			    opacity: 0;
+			    transition: 0.3s; }
+	    	.menu-party.open .char .scroll {
+			    visibility: visible;
+			    top: 0;
+			    opacity: 1;
+			    transition: 1s; }
+	    	.menu-party .char .scroll {
+			    visibility: hidden; }
+
+			.menu-party.open .char .build {
+			    position: absolute;
+			    bottom: 5px;
+			    right: 5px;
+			    line-height: 0;
+			    font-size: 20px;
+			    cursor: pointer; }
+		      	.menu-party.open .char .build.creator { display: none; }
+
+			    .menu-party.open .char.blank .build {
+				    font-size: 40px; }
+			      	.menu-party.open .char.blank .build.creator { 
+			      		display: block; 
+				      	bottom: calc(50% - 20px + 25px); 
+				      	right: calc(50% - 20px + 20px); }
+			      	.menu-party.open .char.blank .build.randomizer { 
+			      		bottom: calc(50% - 20px - 25px); 
+			      		right: calc(50% - 20px - 20px); }
+				    .menu-party.open .char.blank .build:before {
+					    content: "";
+					    width: 140%;
+					    height: 140%;
+					    position: absolute;
+					    top: -20%;
+					    left: -20%;
+					    border: 1px solid white;
+					    transform: rotate(45deg);
+					    transition: 0.3s; }
+
+		    	.menu-party.open .char.blank .build:hover:before {
+			    	box-shadow: 0 0 10px;
+			    	transition: 0.3s; }
 
 
 /*HOME*/
@@ -473,13 +713,12 @@ a, a:hover, a:focus, a:active {
 		    padding: 50px 100px 0 50px;
 		    overflow-y: scroll; }
 
-	    	.main-page .scroll:before { 
+	    	/*.main-page .scroll:before { 
 	    		animation: scrollLoop 1.5s infinite;
 	    		content: "";
 	    		position: absolute; right: 0;
 	    		width: 5px;
-    			background-color: white;
-				/*background-attachment: fixed;*/ }
+    			background-color: white; }*/
 	    	.main-page .scroll:after {
 				content: "";
 				display: block;
@@ -506,22 +745,23 @@ a, a:hover, a:focus, a:active {
     		text-indent: 50px;
     		margin-bottom: 5px; }
 
-/*MYMA CONTS*/
+    	.main-page .cont p.no-indent {
+    		text-indent: 0; }
+
+/*MYMA/AFFI CONTS*/
 /*===================================================================*/
-/*myma {
-    display: inline-block;
-    float: left;
-    width: 100%;
+.list-trait {
+	display: block;
+	margin-bottom: 5px;
     text-indent: 0;
-    margin-bottom: 5px; }*/
-myma {
-	margin-bottom: 5px; }
-	myma i {
+    border: 1px solid rgba(255,255,255, 0.2);
+    padding: 10px 20px; }
+	.list-trait i {
+		display: inline-block;
 		position: relative;
 	    width: 25px;
 	    height: 25px;
 	    color: white;
-	    /*background-color: white;*/
 	    font-size: 14px;
 	    text-align: center;
 	    padding-top: 5px;
@@ -529,17 +769,47 @@ myma {
 	    border: 1px solid rgba(255,255,2550.5);
 	    border-radius: 100%;
 	    margin-right: 5px; }
-    /*myma .title {
-    	font-size: 20px !important;
-		letter-spacing: 0 !important;
-		text-transform: initial !important; }*/
-	/*myma .des {
-	    position: relative; top: -12px; left: -12px;
-	    border: 1px solid rgba(255,255,255,0.2);
-	    text-indent: 0;
-	    padding: 15px; }*/
-    myma .des {
+    .list-trait .des {
 	    padding: 5px 0; }
+
+myma,
+affi,
+trait {
+	display: block;
+	margin-bottom: 5px;
+    text-indent: 0;
+    border: 1px solid rgba(255,255,255, 0.2);
+    padding: 10px 20px; }
+	myma i,
+	affi i,
+	trait i {
+		display: inline-block;
+		position: relative;
+	    width: 25px;
+	    height: 25px;
+	    color: white;
+	    font-size: 14px;
+	    text-align: center;
+	    padding-top: 5px;
+	    text-indent: 0;
+	    border: 1px solid rgba(255,255,2550.5);
+	    border-radius: 100%;
+	    margin-right: 5px; }
+	myma span,
+	affi span,
+	trait span {
+	    font-size: 12px;
+	    margin-left: 10px; }
+    myma .des,
+    affi .des,
+    trait .des {
+	    padding: 5px 0;}
+    myma .stat,
+    affi .stat,
+    trait .stat {
+	    font-size: 12px;
+	    padding: 5px 30px 0;
+	    text-transform: capitalize; }
 
 /*ANIMATIONS*/
 /*===================================================================*/

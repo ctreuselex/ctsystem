@@ -16,4 +16,9 @@
 	<p class="head">PRACTICE</p>
 	<p>With such promise of power, invoking a sigil is no trivial matter. Even the creation of the sigil requires perfect conception otherwise it will simply be a useless drawing. Aside from the massive requirement of drawing skills, knowledge of the Myst Core's "languange" is also need as the invoker must establish what they want to accomplish with the invoked sigil before the Myst Core even allows them to open the window. And most of the time, the Myst Core does not answer to simple problems.</p>
 	<p>Being a demanding task. Very few Sigiati exists in the entire city. But they are very well feared.</p>
+	<p>
+		<myma class="showname showdes">sig01</myma>
+	</p>
+	
+    <script src="{{ url('js/myma.js') }}"></script>
 @stop

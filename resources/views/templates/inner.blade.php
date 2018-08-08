@@ -34,6 +34,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.5/js/swiper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.5/js/swiper.min.js"></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url('js/bootstrap.js') }}"></script>
+    
+    <!-- CUSTOM Script-->
+    <script src="{{ url('js/main.js') }}"></script>
 
 	<style type="text/css">
 		body {
@@ -49,12 +54,6 @@
 
 <body>
 	@yield('main')
-	
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ url('js/bootstrap.js') }}"></script>
-
-    <!-- CUSTOM Script-->
-    <script src="{{ url('js/main.js') }}"></script>
 </body>
 
 </html>

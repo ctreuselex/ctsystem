@@ -36,7 +36,6 @@
     	<div class="color-grade bot"></div>
 	</div>
 
-    <script src="{{ url('js/myma.js') }}"></script>
 	<script type="text/javascript">
 		$('.main-page .hero').css('background-image', "url('" + heroImage + "')");
 
