@@ -71,11 +71,12 @@
 
         .main .tabs .tab {
             float: left;
-            width: calc(100% / 7);
+            width: calc(100% / 8);
             background-color: #7bdab3;
             color: white;
             font-weight: bold;
             text-align: center;
+            letter-spacing: -1px;
             border: 1px solid #eee;
             padding: 9px 15px;
             cursor: pointer; }
@@ -207,6 +208,7 @@
 
     <script type="text/javascript">
         var baseUrl = "<?=url('/')?>";
+        var mirTimeline = <?=json_encode($mirTimeline)?>;
         var mirChars = <?=json_encode($mirChars)?>;
         var charAffinities = <?=json_encode($charAffinities)?>;
         var charTraits = <?=json_encode($charTraits)?>;

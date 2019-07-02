@@ -17,6 +17,7 @@ Route::get('/home', 'HomeController@home');
 
 Route::get('/mystic/{myma}', 'HomeController@mystic')->name('myma');
 Route::get('/city/{divi}', 'HomeController@city')->name('divi');
+Route::get('/timeline', 'HomeController@timeline');
 Route::get('/profile/{char}', 'HomeController@character')->name('char');
 
 Route::get('/training', 'HomeController@training');

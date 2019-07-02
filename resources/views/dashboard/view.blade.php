@@ -9,6 +9,7 @@
 
 	<div class="main grid-view">
 		<div class="tabs">
+			<div class="tab" id="tab-timeline" 		onclick="createTable(this, 'timeline')">Timeline</div>
 			<div class="tab" id="tab-chars" 		onclick="createTable(this, 'chars')">Characters</div>
 			<div class="tab" id="tab-affinities" 	onclick="createTable(this, 'affinities')">Affinities</div>
 			<div class="tab" id="tab-traits" 		onclick="createTable(this, 'traits')">Traits</div>
@@ -28,6 +29,7 @@
 		function createTable(el, base) {
 			var tableDataString = "";
 
+			if (base == 'timeline') tableDataString = stringData(base, mirTimeline);
 			if (base == 'chars') tableDataString = stringData(base, mirChars);
 			if (base == 'affinities') tableDataString = stringData(base, charAffinities);
 			if (base == 'traits') tableDataString = stringData(base, charTraits);
@@ -66,6 +68,13 @@
 				tableDataString += "<td>Colors</td>";
 				tableDataString += "<td>Tags</td>";
 				tableDataString += "<td>Show</td>";
+				tableDataString += "<td>Actions</td>";
+
+			} else if (base == 'timeline') {
+
+				tableDataString += "<td>Date</td>";
+				tableDataString += "<td>Name</td>";
+				tableDataString += "<td>Main</td>";
 				tableDataString += "<td>Actions</td>";
 
 			} else {
@@ -124,6 +133,16 @@
 					tableDataString +=   "</td>";
 					tableDataString +=   "<td>";
 					tableDataString +=     "<div class='btn view' onclick='viewData(\"" + base + "\", \"" + tableData[i]['name'] +"\")'><i class='fas fa-eye'></i></div>";
+					tableDataString +=   "</td>";
+
+				} else if (base == 'timeline') {
+            		tableDataString += "id='" + tableData[i]['name'] + "'>";
+
+					tableDataString += 	"<td>" + tableData[i]['date'] + "</td>";
+					tableDataString += 	"<td>" + tableData[i]['name'] + "</td>";
+					tableDataString += 	"<td>" + tableData[i]['main'] + "</td>";
+					tableDataString +=   "<td>";
+					tableDataString +=     "<div class='btn view' onclick='viewData(\"" + base + "\", \"" + tableData[i]['date'] +"\")'><i class='fas fa-eye'></i></div>";
 					tableDataString +=   "</td>";
 
 				} else {
@@ -197,22 +216,36 @@
 
 		function inputData(base) {
 			$('.input-div .box').hide();
-			$('.input-div .box.char-' + base).show();
+			if (base == 'timeline') { 
+				$('.input-div .box.mir-timeline').show();
+			} else if (base == 'chars') { 
+				$('.input-div .box.mir-chars').show();
+			} else {
+				$('.input-div .box.char-' + base).show();
+			}
 		}
 
 		function viewData(base, id) {
 			var data;
 
+			if (base == 'timeline') { 
+				data = findDataByID(mirTimeline, id, 'date');
+				$('.mir-timeline #date').val(data['date']);
+				$('.mir-timeline #name').val(data['name']);
+				$('.mir-timeline #main').val(data['main']);
+				$('.mir-timeline #cont').val(data['cont']);
+			}
+
 			if (base == 'chars') { 
 				data = findDataByID(mirChars, id, 'name');
-				$('.char-chars #name').val(data['name']);
-				$('.char-chars #sur').val(data['sur']);
-				$('.char-chars #icon').val(data['icon']);
-				$('.char-chars #tags').val(data['tags']);
-				$('.char-chars #color').val(data['color']);
-				$('.char-chars #subcolor').val(data['subcolor']);
-				if (data['show']) $('.char-chars #show').prop('checked', true);
-				else $('.char-chars #show').prop('checked', false);
+				$('.mir-chars #name').val(data['name']);
+				$('.mir-chars #sur').val(data['sur']);
+				$('.mir-chars #icon').val(data['icon']);
+				$('.mir-chars #tags').val(data['tags']);
+				$('.mir-chars #color').val(data['color']);
+				$('.mir-chars #subcolor').val(data['subcolor']);
+				if (data['show']) $('.mir-chars #show').prop('checked', true);
+				else $('.mir-chars #show').prop('checked', false);
 			}
 
 			if (base == 'affinities') { 

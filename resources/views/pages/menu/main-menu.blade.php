@@ -39,6 +39,8 @@
 			<a href="/city/geios?skies=<?=$randomSky?>">				<div class="menu-inner">Geios</div></a>
 				<a href="/city/entrepreneurs?skies=<?=$randomSky?>">	<div class="menu-inner sub">Entrepreneurs</div></a>
 				<a href="/city/free-artists?skies=<?=$randomSky?>">		<div class="menu-inner sub">Free Artists</div></a>
+		<div class="menu-title">History</div>
+			<a href="/timeline?skies=<?=$randomSky?>">				<div class="menu-inner">Timeline</div></a>
 	</div>
 
 	<div class="menu-item" id="sm-myma">

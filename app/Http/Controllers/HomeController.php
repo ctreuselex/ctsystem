@@ -13,7 +13,7 @@ class HomeController extends Controller {
 
 	public function index() {
             $skyStatus = $this->metas("skies"); 
-            $mirChars = $this->getData('char-chars');
+            $mirChars = $this->getData('mir-chars');
             $charAffinities = $this->getData('char-affinities');
             $charTraits = $this->getData('char-traits');
             $charWeapons = $this->getData('char-weapons');
@@ -37,7 +37,7 @@ class HomeController extends Controller {
       public function character($char) {
             $viewchar = 'pages/chars/'.$char;
             $skyStatus = $this->metas("skies"); 
-            $mirChars = $this->getData('char-chars');
+            $mirChars = $this->getData('mir-chars');
             $charAffinities = $this->getData('char-affinities');
             $charTraits = $this->getData('char-traits');
             $charWeapons = $this->getData('char-weapons');
@@ -60,13 +60,22 @@ class HomeController extends Controller {
             return view($viewmyma)->with('skyStatus',$skyStatus);
       }
 
+      public function timeline() {
+            $viewmyma = 'pages/divi/timeline';
+            $skyStatus = $this->metas("skies"); 
+            $mirTimeline = $this->getData('mir-timeline');
+            $mirChars = $this->getData('mir-chars');
+            return view($viewmyma)->with('skyStatus',$skyStatus)->with('mirTimeline',$mirTimeline)->with('mirChars',$mirChars);
+      }
+
       
       // =====================================================================================================================
       // =====================================================================================================================
       // =====================================================================================================================
 
       public function dashboard() {
-            $mirChars = $this->getData('char-chars');
+            $mirTimeline = $this->getData('mir-timeline');
+            $mirChars = $this->getData('mir-chars');
             $charAffinities = $this->getData('char-affinities');
             $charTraits = $this->getData('char-traits');
             $charWeapons = $this->getData('char-weapons');
@@ -74,7 +83,7 @@ class HomeController extends Controller {
             $charStatus = $this->getData('char-status');
             $charGround = $this->getData('char-ground');
 
-            return view('dashboard/view')->with('mirChars',$mirChars)->with('charAffinities',$charAffinities)->with('charTraits',$charTraits)->with('charWeapons',$charWeapons)->with('charSkills',$charSkills)->with('charStatus',$charStatus)->with('charGround',$charGround);
+            return view('dashboard/view')->with('mirTimeline',$mirTimeline)->with('mirChars',$mirChars)->with('charAffinities',$charAffinities)->with('charTraits',$charTraits)->with('charWeapons',$charWeapons)->with('charSkills',$charSkills)->with('charStatus',$charStatus)->with('charGround',$charGround);
       }
 
       public function getData($txt) {
@@ -92,7 +101,8 @@ class HomeController extends Controller {
 
             $post_data = $_POST['info'];
 
-            if ($base == 'chars') $filename = storage_path('app/char-chars.txt');
+            if ($base == 'timeline') $filename = storage_path('app/mir-timeline.txt');
+            if ($base == 'chars') $filename = storage_path('app/mir-chars.txt');
             if ($base == 'affinities') $filename = storage_path('app/char-affinities.txt');
             if ($base == 'traits') $filename = storage_path('app/char-traits.txt');
             if ($base == 'weapons') $filename = storage_path('app/char-weapons.txt');

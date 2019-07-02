@@ -234,7 +234,8 @@ function diamondDes(el, details) {
 
 // TIME
 /*===================================================================*/
-$(window).on('load', function() {
+$(document).ready( function() {
+// $(window).on('load', function() {
 
 	setInterval( function() {
 		getTime();

@@ -46,7 +46,17 @@
 
 <div class="input-div">
 
-	<div class="box char-chars">
+	<div class="box mir-timeline">
+		<input type="text" id="date" placeholder="Date">
+		<input type="text" id="name" placeholder="Name">
+		<input type="text" id="main" placeholder="Main">
+		<textarea id="cont" placeholder=""></textarea>
+		<div class="table"></div>
+		<div class="btn" onclick="saveData('timeline')">Save</div>
+		<div class="btn" onclick="deleteData('timeline', 'name')">Delete</div>
+	</div>
+
+	<div class="box mir-chars">
 		<input type="text" id="name" placeholder="Name">
 		<input type="text" id="sur" placeholder="Surname">
 		<input type="text" id="icon" placeholder="Icon">
@@ -316,7 +326,6 @@
 			}
 		}
 
-
 		// STATUS
 		// ============================================================================================================
 		// ============================================================================================================
@@ -388,19 +397,53 @@
 			url;
 
 
+		// TIMELINE
+		// ============================================================================================================
+		// ============================================================================================================
+		if (base == 'timeline') {
+			var savedate = $('.mir-timeline #date').val();
+			var savename = $('.mir-timeline #name').val();
+			var savemain = $('.mir-timeline #main').val();
+			var savecont = $('.mir-timeline #cont').val();
+			// OVERRIDE
+			var found = false;
+			for (var i=0; i<mirTimeline.length; i++) {
+                if (mirTimeline[i]['date'] == savedate) {
+                    mirTimeline[i]['date'] = savedate;
+                    mirTimeline[i]['name'] = savename;
+                    mirTimeline[i]['main'] = savemain;
+                    mirTimeline[i]['cont'] = savecont;
+                    found = true;
+                    break;
+                }
+            }
+            // ADD
+            if(!found) {
+                mirTimeline.push({
+                    date: savedate,
+                    name: savename,
+                    main: savemain,
+                    cont: savecont,
+                })
+            }
+            url = "<?=URL::to('/dashboard/save/timeline')?>";
+            data = mirTimeline;
+		}
+
+
 		// CHARS
 		// ============================================================================================================
 		// ============================================================================================================
 		if (base == 'chars') { 
-			var saveid = $('.char-chars #name').val();
-			var savename = $('.char-chars #name').val();
-			var savesur = $('.char-chars #sur').val();
-			var saveicon = $('.char-chars #icon').val();
-			var savetags = $('.char-chars #tags').val();
-			var savecolor = $('.char-chars #color').val();
-			var savesubcolor = $('.char-chars #subcolor').val();
+			var saveid = $('.mir-chars #name').val();
+			var savename = $('.mir-chars #name').val();
+			var savesur = $('.mir-chars #sur').val();
+			var saveicon = $('.mir-chars #icon').val();
+			var savetags = $('.mir-chars #tags').val();
+			var savecolor = $('.mir-chars #color').val();
+			var savesubcolor = $('.mir-chars #subcolor').val();
 			var saveshow;
-			if ($('.char-chars #show').is(':checked')) saveshow = true 
+			if ($('.mir-chars #show').is(':checked')) saveshow = true 
 			else saveshow = false;
 
 			// OVERRIDE
