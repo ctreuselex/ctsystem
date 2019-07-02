@@ -38,12 +38,16 @@
 
     	<div class="color-grade top"></div>
 		<div id="dbcenter" class="diamond block"></div>
+
+		<div id="particles-js" style="display: none;"></div> 
+
 		<div id="dbleft" class="diamond block"></div>
 		<div id="dbright" class="diamond block"></div>
 		<div id="docenter" class="diamond outline"></div>
+
     	<div class="color-grade bot"></div>
 		<div class="logo">
-			<img src="{{ url('img/mirrorplane-logo-2.png') }}">
+			<img src="{{ url('img/mirrorplane-logo.png') }}">
 		</div>
 
 		<div class="newscast">
@@ -54,11 +58,12 @@
 	</div>
 
 	<script type="text/javascript">
+
 		var init = "<?=$init?>";
 		var mColor = "<?=$mColor?>";
 		var sColor = "<?=$sColor?>";
 
-		$(window).on('load', function() {
+		$(document).ready( function() {
 
 			if(init==0) {
 				// INIT BUTTON
@@ -83,6 +88,9 @@
 
 		// INIT MAIN FUNCTIONS
 		function initCore() {
+			$('#particles-js').fadeIn('slow');
+			initParticles();
+
 			$('.init').fadeOut( function() {
 				$('.load').fadeIn();
 
@@ -130,6 +138,35 @@
 					animation: 'diamondDashRight 0.3s',
 					delay: 1250 });
 			});
+		}
+
+		// PARTICLES
+		function initParticles() {
+			particlesJS("particles-js", 
+				{	"particles":{
+						"number":{"value":50,"density":{"enable":true,"value_area":800}},
+						"color":{"value":sColor},
+						"shape":{"type":"polygon","stroke":{"width":0,"color":"#000000"},
+							"polygon":{"nb_sides":4},
+							"image":{"src":"img/github.svg","width":100,"height":100}},
+						"opacity":{"value":1,"random":true,
+							"anim":{"enable":true,"speed":1,"opacity_min":0.1,"sync":false}},
+						"size":{"value":5,"random":true,
+							"anim":{"enable":true,"speed":1,"size_min":0.5,"sync":false}},
+						"line_linked":{"enable":true,"distance":50,"color":sColor,"opacity":0.5,"width":1},
+						"move":{"enable":true,"speed":1,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false,
+							"attract":{"enable":false,"rotateX":600,"rotateY":1200}}},
+					"interactivity":{
+						"detect_on":"canvas",
+						"events":{"onhover":{"enable":true,"mode":"grab"},
+							"onclick":{"enable":true,"mode":"push"},
+							"resize":true},
+						"modes":{"grab":{"distance":100,"line_linked":{"opacity":0.3}},
+							"bubble":{"distance":400,"size":4,"duration":0.3,"opacity":1,"speed":3},
+							"repulse":{"distance":200,"duration":0.4},
+							"push":{"particles_nb":4},
+							"remove":{"particles_nb":2}}},
+					"retina_detect":true});
 		}
 
 	</script>

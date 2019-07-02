@@ -21,14 +21,24 @@
     <link href="{{ url('css/main.css') }}" rel="stylesheet">
 
     <!-- Custom Fonts -->
+    <style type="text/css">
+        @font-face {
+          font-family: 'RPGAwesome';
+          src: url("{{ url('css/fonts/rpgawesome-webfont.eot?v=0.1.0') }}");
+          src: url("{{ url('css/fonts/rpgawesome-webfont.eot?#iefix&v=0.1.0') }}") format("embedded-opentype"), url("{{ url('css/fonts/rpgawesome-webfont.woff?v=0.1.0') }}") format("woff"), url("{{ url('css/fonts/rpgawesome-webfont.ttf?v=0.1.0') }}") format("truetype"), url("{{ url('css/fonts/rpgawesome-webfont.svg?v=0.1.0#rpg-awesome') }}") format("svg");
+          font-weight: normal;
+          font-style: normal;
+        }
+    </style>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url('css/rpg-awesome.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
-    <!-- <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 
     <!-- jQuery -->
     <script src="{{ url('js/jquery.js') }}"></script>
+    <script src="{{ url('js/jquery.cookie.js') }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{{ url('js/bootstrap.js') }}"></script>
@@ -41,6 +51,18 @@
 		.main-card {
 			background-image: url("{{ url('img/diamond-dark.jpg') }}"); }
 	</style>
+    
+    <script type="text/javascript"> 
+        <?php 
+            $imgcount = 20;
+            $portraits = array();
+            for ($i=1; $i<$imgcount+1; $i++) {
+                array_push($portraits, url('img/portraits/p'.$i.'.png'));
+            }
+            $jsportraits = json_encode($portraits);
+            echo "var portraits = ". $jsportraits . ";\n";
+        ?>
+    </script>
 </head>
 
 <body>

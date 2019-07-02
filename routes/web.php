@@ -17,3 +17,10 @@ Route::get('/home', 'HomeController@home');
 
 Route::get('/mystic/{myma}', 'HomeController@mystic')->name('myma');
 Route::get('/city/{divi}', 'HomeController@city')->name('divi');
+Route::get('/profile/{char}', 'HomeController@character')->name('char');
+
+Route::get('/training', 'HomeController@training');
+
+Route::get('/dashboard', 'HomeController@dashboard');
+Route::post('/dashboard/save/{base}', 'HomeController@saveData')->name('base');
+

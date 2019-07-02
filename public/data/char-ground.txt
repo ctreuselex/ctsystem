@@ -1,0 +1,115 @@
+[
+  {
+    "id": "fire",
+    "name": "Fire",
+    "icon": "ra ra-fire",
+    "des": "This ground is on fiyah ~",
+    "oncontact": false,
+    "stats": [
+      {
+        "value": 2,
+        "stat": "duration"
+      },
+      {
+        "value": "Deals 2 heat damage on contact",
+        "stat": "custom"
+      },
+      {
+        "value": "burn",
+        "stat": "status"
+      }
+    ]
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "icon": "ra ra-droplet",
+    "des": "Caution! Wet.",
+    "stats": [
+      {
+        "value": 4,
+        "stat": "duration"
+      },
+      {
+        "value": "drench",
+        "stat": "status"
+      }
+    ]
+  },
+  {
+    "id": "firewall-security",
+    "name": "Firewall Security",
+    "icon": "ra ra-fire",
+    "des": "Just like regular fire, but hotter and it blocks ranged projectile attacks as well.",
+    "oncontact": false,
+    "stats": [
+      {
+        "value": 2,
+        "stat": "duration"
+      },
+      {
+        "value": "Deals 4 heat damage on contact",
+        "stat": "custom"
+      },
+      {
+        "value": "burn",
+        "stat": "status"
+      }
+    ]
+  },
+  {
+    "id": "paper-crane",
+    "name": "Paper Crane",
+    "icon": "fa fa-paper-plane",
+    "des": "This area has a floating paper crane on it. <i>Suspicious.</i>",
+    "oncontact": false,
+    "stats": [
+      {
+        "value": 2,
+        "stat": "duration"
+      },
+      {
+        "value": -30,
+        "stat": "evasion"
+      }
+    ]
+  },
+  {
+    "id": "trailblazer",
+    "name": "Trailblazer",
+    "icon": "ra ra-reverse",
+    "des": "And from this point on, we'll be lightning!",
+    "oncontact": false,
+    "stats": [
+      {
+        "value": 2,
+        "stat": "duration"
+      },
+      {
+        "value": "haste",
+        "stat": "status"
+      }
+    ]
+  },
+  {
+    "id": "kinetic-control",
+    "name": "Kinetic Control",
+    "icon": "ra ra-reverse",
+    "oncontact": true,
+    "des": "An arrow a day keeps the enemies at bay.",
+    "stats": [
+      {
+        "value": 4,
+        "stat": "duration"
+      },
+      {
+        "value": "Deals 10 crushing damage on contact",
+        "stat": "custom"
+      },
+      {
+        "value": 3,
+        "stat": "knockback"
+      }
+    ]
+  }
+]

@@ -11,16 +11,12 @@
 	<div class="menu-item" id="sm-char">
 		<div class="menu-title">Contacts</div>
 		@foreach ($mirChars as $char)
-        	@if ($char['ico']!='' && $char['color']!='')
-        		@if ($char['name']=='moon')
-        			<a href="/profile/djerick">
-        				<div class="menu-inner d-{{ $char['name'] }}">{{ $char['name'] }}<i class="{{ $char['ico'] }}"></i></div>
-        			</a>
-        		@elseif ($char['name']!='djerick' && $char['name']!='dom' && $char['name']!='cin')
-        			<a href="/profile/{{ $char['name'] }}">
-        				<div class="menu-inner d-{{ $char['name'] }}">{{ $char['name'] }}<i class="{{ $char['ico'] }}"></i></div>
-        			</a>
-        		@endif
+        	@if (isset($char['show']))
+        		@if ($char['show'])
+	    			<a href="/profile/{{ $char['name'] }}?skies=<?=$randomSky?>">
+	    				<div class="menu-inner d-{{ $char['name'] }}">{{ $char['name'] }}<i class="{{ $char['icon'] }}"></i></div>
+	    			</a>
+	        	@endif
         	@endif
         @endforeach
 	</div>
@@ -35,12 +31,14 @@
 				<a href="/city/flood-folk?skies=<?=$randomSky?>">		<div class="menu-inner sub">Flood Folk</div></a>
 				<a href="/city/bluebloods?skies=<?=$randomSky?>">		<div class="menu-inner sub">Bluebloods</div></a>
 			<a href="/city/aeros?skies=<?=$randomSky?>">				<div class="menu-inner">Aeros</div></a>
+				<a href="/city/sky-jumper?skies=<?=$randomSky?>">		<div class="menu-inner sub">Sky Jumpers</div></a>
 				<a href="/city/urban-dwellers?skies=<?=$randomSky?>">	<div class="menu-inner sub">Urban Dwellers</div></a>
 			<a href="/city/mystos?skies=<?=$randomSky?>">				<div class="menu-inner">Mystos</div></a>
 				<a href="/city/aristocrats?skies=<?=$randomSky?>">		<div class="menu-inner sub">Aristocrats</div></a>
 				<a href="/city/bourgeios?skies=<?=$randomSky?>">		<div class="menu-inner sub">Bourgeois</div></a>
 			<a href="/city/geios?skies=<?=$randomSky?>">				<div class="menu-inner">Geios</div></a>
 				<a href="/city/entrepreneurs?skies=<?=$randomSky?>">	<div class="menu-inner sub">Entrepreneurs</div></a>
+				<a href="/city/free-artists?skies=<?=$randomSky?>">		<div class="menu-inner sub">Free Artists</div></a>
 	</div>
 
 	<div class="menu-item" id="sm-myma">
@@ -99,6 +97,10 @@
 			} else {
 				$('.main-card .main-menu').addClass('open-menu');
 				$('.main-card iframe').addClass('open-menu');
+
+				var iframe = $('.main-card iframe');
+				$('.main-page.for-char.open .menu-party', iframe.contents()).removeClass('open');
+				$('.main-page.for-char.open', iframe.contents()).addClass('menu-open');
 			}
 		});
 
@@ -154,7 +156,7 @@
 				$('.main-card iframe').removeClass('open-menu');
 				if (typeof callback !== 'undefined') callback();
 			}, 300);	
-		// CLOSE  ONLY MAIN MENU
+		// CLOSE ONLY MAIN MENU
 		} else {
 			$('.main-card .sub-menu').removeClass('open-menu');
 			$('.main-card .main-menu').removeClass('open-menu');
@@ -163,5 +165,9 @@
 			if (typeof callback !== 'undefined') callback();
 		}
 		menuData = "";
+
+		var iframe = $('.main-card iframe');
+		$('.main-page.for-char.open .menu-party', iframe.contents()).addClass('open');
+		$('.main-page.for-char.open', iframe.contents()).removeClass('menu-open');
 	}
 </script>

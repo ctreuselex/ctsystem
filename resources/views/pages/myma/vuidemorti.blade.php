@@ -2,7 +2,7 @@
 
 @section('metas')
 	<script type="text/javascript">
-		var heroImage = '<?=url('img/myma/vuidemorti.jpg')?>';
+		var heroImage = 'https://cdnb.artstation.com/p/assets/images/images/000/013/467/large/286_max.jpg?1400187685';
 		var mdColor = '#B027AE';
 		var sdColor = '#3797D5';
 	</script>
@@ -16,7 +16,7 @@
 	<p class="head">PRACTICE</p>
 	<p>From what is known of it, Vuidemorti is the complete removal of Myst in an area, causing Mystlock to people affected and rapid decaying to other material in the area. Mystlock includes dizziness, nausea, and lack of Myst, which might lead to death if not returned to normal quantities after a certain time.</p>
 	<p>
-		<myma class="showname showdes">vui01</myma>
+		<myma class="showname showdes">implosion</myma>
 	</p>
 	
     <script src="{{ url('js/myma.js') }}"></script>

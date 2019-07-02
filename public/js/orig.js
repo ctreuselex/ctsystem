@@ -12,9 +12,10 @@ var cityDivisions = [
 	{ 	id: 'aeros', 
 		name: 'Aeros',
 		mcolor: '#B027AE',
-		scolor: '#3797D5',
+		scolor: '#FF9800',
 		origins:[
 			{ id: 'urban-dweller', name: 'Urban Dweller', },
+			{ id: 'sky-jumper', name: 'Sky Jumper', },
 		]},
 
 	{ 	id: 'mystos', 
@@ -32,5 +33,6 @@ var cityDivisions = [
 		scolor: '#D8A71C',
 		origins:[
 			{ id: 'entrepreneur', name: 'Entrepeneur', },
+			{ id: 'free-artist', name: 'Free Artist', },
 		]},
 ];

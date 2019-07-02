@@ -1,19 +1,17 @@
 <div class="action-menu">
 	<div class="action-title"></div>
 	<div class="action-item" id="ai-team" onclick="openParty(this)"><i class="fas fa-users"></i></div>
+	<a href="/training?skies=<?=$randomSky?>"><div class="action-item" id="ai-test"><i class="fas fa-flag"></i></div></a>
 	<div class="action-item" id="ai-adve"><i class="fas fa-globe-americas"></i></div>
-	<div class="action-item hidden" id="ai-time"><i class="far fa-clock"></i></div>
 	<div class="action-item hidden" id="ai-part"><i class="fas fa-cocktail"></i></div>
 	<div class="action-item" id="ai-lock"><i class="fas fa-lock"></i></i></div>
 </div>
 
-@include('pages/menu/party-menu')
-
 <script type="text/javascript">
 	$('.main-card .action-menu .action-item').hover( function() { 
 		if ($(this).attr('id') == 'ai-team') $('.main-card .action-menu .action-title').html('My Party');
-		if ($(this).attr('id') == 'ai-adve') $('.main-card .action-menu .action-title').html('Adventure Mode');
-		if ($(this).attr('id') == 'ai-time') $('.main-card .action-menu .action-title').html('Wake Me Up Sometime');
+		if ($(this).attr('id') == 'ai-test') $('.main-card .action-menu .action-title').html('Training Grounds');
+		if ($(this).attr('id') == 'ai-adve') $('.main-card .action-menu .action-title').html('Go Forth');
 		if ($(this).attr('id') == 'ai-part') $('.main-card .action-menu .action-title').html('Party With \"Friends\"');
 		if ($(this).attr('id') == 'ai-lock') $('.main-card .action-menu .action-title').html('Log Out');
 	}, function() {

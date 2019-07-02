@@ -2,7 +2,7 @@
 
 @section('metas')
 	<script type="text/javascript">
-		var heroImage = '<?=url('img/myma/rudimenti.jpg')?>';
+		var heroImage = 'https://cdna.artstation.com/p/assets/images/images/008/775/484/large/alexandre-chaudret-bra-prophetie-royaume-lur-final-viewer.jpg?1515236222';
 		var mdColor = '#4227B0';
 		var sdColor = '#1EB7C9';
 	</script>
@@ -17,9 +17,9 @@
 	<p>It is the creation of matter using the raw energy of Myst. Most Mystics are limited to their material affinity when it comes to what they can create, and without Cirkunesi, they are also not able to shape their creation to their will, leading to disastrous outcomes.</p>
 	<p>Rudimenti is the only source of new materials coming in to the city, which makes them essential to the survival of the entire population. This alone, makes them extremely valuable which often lead to the development of their snobby behaviour (see: Dominion).</p>	
 	<p>
-		<myma class="showname showdes">rud01</myma>
-		<myma class="showname showdes">rud02</myma>
-		<myma class="showname showdes">rud03</myma>
+		<myma class="showname showdes">generation</myma>
+		<myma class="showname showdes">creation</myma>
+		<myma class="showname showdes">duplication</myma>
 	</p>
 	
     <script src="{{ url('js/myma.js') }}"></script>

@@ -7,7 +7,7 @@
 
 	<script type="text/javascript">
 		var mdColor = '#B027AE';
-		var sdColor = '#3797D5';
+		var sdColor = '#FF9800';
 	</script>
 @stop
 

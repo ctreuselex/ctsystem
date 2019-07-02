@@ -2,7 +2,7 @@
 
 @section('metas')
 	<script type="text/javascript">
-		var heroImage = '<?=url('img/myma/sigiati.jpg')?>';
+		var heroImage = 'https://cdna.artstation.com/p/assets/images/images/015/127/266/large/paul-canavan-rhysticstudy.jpg?1547151423';
 		var mdColor = '#4227B0';
 		var sdColor = '#1EB7C9';
 	</script>
@@ -17,7 +17,7 @@
 	<p>With such promise of power, invoking a sigil is no trivial matter. Even the creation of the sigil requires perfect conception otherwise it will simply be a useless drawing. Aside from the massive requirement of drawing skills, knowledge of the Myst Core's "languange" is also need as the invoker must establish what they want to accomplish with the invoked sigil before the Myst Core even allows them to open the window. And most of the time, the Myst Core does not answer to simple problems.</p>
 	<p>Being a demanding task. Very few Sigiati exists in the entire city. But they are very well feared.</p>
 	<p>
-		<myma class="showname showdes">sig01</myma>
+		<myma class="showname showdes">invocation</myma>
 	</p>
 	
     <script src="{{ url('js/myma.js') }}"></script>

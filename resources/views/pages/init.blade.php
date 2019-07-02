@@ -10,6 +10,9 @@
 	?>
 
 	<style type="text/css">
+		.tooltip-ico { background-color: {{ $sColor }} }
+		.tooltip-ico.active { background-color: {{ $mColor }} }
+		.tooltip-ico:hover { background-color: {{ $mColor }} }
 		.main-menu .menu-item:hover { background-color: {{ $sColor }} }
 		.main-menu .menu-item.active { border-color: {{ $mColor }}; }
 		.sub-menu .menu-inner:hover { background-color: {{ $mColor }} }
@@ -23,11 +26,14 @@
 		@foreach ($mirChars as $char)
 	    	<?php $ctscharcolor = $char['color']; if ($ctscharcolor=="") $ctscharcolor = "#333"; ?>
 	    	<?php $ctscharsubcolor = $char['subcolor']; if ($ctscharsubcolor=="") $ctscharcolor = "#d5d5d5"; ?>
-			.sub-menu .menu-inner:hover.d-{{ $char['name'] }}:hover {
+			.sub-menu .menu-inner.d-{{ $char['name'] }}:hover,
+			.sub-menu .menu-inner.d-{{ $char['name'] }}.current {
 		    	background-color: {{ $ctscharcolor }}; }   
-			.sub-menu .menu-inner:hover.d-{{ $char['name'] }}:hover i{
+			.sub-menu .menu-inner.d-{{ $char['name'] }}:hover i,
+			.sub-menu .menu-inner.d-{{ $char['name'] }}.current i{
 				color: {{ $ctscharsubcolor }}; }
 		@endforeach
+
 	</style>
 
 	<div class="main-card">
@@ -40,6 +46,8 @@
 
 		@include('pages/menu/action-menu')
 
+		@include('pages/menu/party-menu')
+
 		<div class="menu-btn"><i class="fas fa-bars"></i></div>
 		<div class="menu-action"><i class="far fa-dot-circle"></i></div>
 		<div class="menu-time">
@@ -49,16 +57,32 @@
 		</div>
 	</div>
 
-    <script src="{{ url('js/char.js') }}"></script>
+	<div class="tooltip-ico"><i class="fas fa-question-circle"></i></div>
+	<div class="tooltip-box">
+		<div class="title">Tooltips</div>
+		<div class="desc">Hover over stuff to see their description.</div>
+	</div>
+
     <script src="{{ url('js/orig.js') }}"></script>
-    <script src="{{ url('js/trts.js') }}"></script>
-    <script src="{{ url('js/affi.js') }}"></script>
-    <script src="{{ url('js/buff.js') }}"></script>
+    <script src="{{ url('js/myma.js') }}"></script>
+    <script src="{{ url('js/getr.js') }}"></script>
+    <script src="{{ url('js/char.js') }}"></script>
+    <script src="{{ url('js/field.js') }}"></script>
 	<script type="text/javascript">
 		// INITIALIZE
 		/*===================================================================*/
+		var mirChars = <?=json_encode($mirChars)?>;
+        var charAffinities = <?=json_encode($charAffinities)?>;
+        var charTraits = <?=json_encode($charTraits)?>;
+        var charWeapons = <?=json_encode($charWeapons)?>;
+        var charSkills = <?=json_encode($charSkills)?>;
+        var charStatus = <?=json_encode($charStatus)?>;
+        var charGround = <?=json_encode($charGround)?>;
+
+		initTooltip();
 		initChars();
 
+		var baseUrl = "<?=url('/')?>";
 		var mColor = "<?=$mColor?>";
 		var sColor = "<?=$sColor?>";
 
