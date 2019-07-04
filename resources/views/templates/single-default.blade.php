@@ -57,8 +57,8 @@
 	</div>
 
 	<script type="text/javascript">
-		var mdColor = '#21EFD9';
-		var sdColor = '#258D77';
+		var mdColor = "<?=$mColor?>";
+		var sdColor = "<?=$sColor?>";
 
 		$(window).on('load', function() {
 			initPage(mdColor, sdColor);

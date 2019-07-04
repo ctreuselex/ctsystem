@@ -72,7 +72,10 @@
 
 			} else if (base == 'timeline') {
 
-				tableDataString += "<td>Date</td>";
+				tableDataString += "<td>ID</td>";
+				tableDataString += "<td>Year</td>";
+				tableDataString += "<td>Season</td>";
+				tableDataString += "<td>Day</td>";
 				tableDataString += "<td>Name</td>";
 				tableDataString += "<td>Main</td>";
 				tableDataString += "<td>Actions</td>";
@@ -136,13 +139,19 @@
 					tableDataString +=   "</td>";
 
 				} else if (base == 'timeline') {
-            		tableDataString += "id='" + tableData[i]['name'] + "'>";
+            		tableDataString += "id='" + tableData[i]['id'] + "'>";
 
-					tableDataString += 	"<td>" + tableData[i]['date'] + "</td>";
+            		// DATE FORMAT
+					var seasonNames = ['', 'Summer', 'Fall', 'Winter', 'Spring'];
+
+					tableDataString += 	"<td>" + tableData[i]['id'] + "</td>";
+					tableDataString += 	"<td>" + tableData[i]['year'] + "</td>";
+					tableDataString += 	"<td>" + seasonNames[tableData[i]['season']] + "</td>";
+					tableDataString += 	"<td>" + tableData[i]['day'] + "</td>";
 					tableDataString += 	"<td>" + tableData[i]['name'] + "</td>";
 					tableDataString += 	"<td>" + tableData[i]['main'] + "</td>";
 					tableDataString +=   "<td>";
-					tableDataString +=     "<div class='btn view' onclick='viewData(\"" + base + "\", \"" + tableData[i]['date'] +"\")'><i class='fas fa-eye'></i></div>";
+					tableDataString +=     "<div class='btn view' onclick='viewData(\"" + base + "\", \"" + tableData[i]['id'] +"\")'><i class='fas fa-eye'></i></div>";
 					tableDataString +=   "</td>";
 
 				} else {
@@ -229,8 +238,11 @@
 			var data;
 
 			if (base == 'timeline') { 
-				data = findDataByID(mirTimeline, id, 'date');
-				$('.mir-timeline #date').val(data['date']);
+				data = findDataByID(mirTimeline, id, 'id');
+				$('.mir-timeline #id').val(data['id']);
+				$('.mir-timeline #year').val(data['year']);
+				$('.mir-timeline #season').val(data['season']);
+				$('.mir-timeline #day').val(data['day']);
 				$('.mir-timeline #name').val(data['name']);
 				$('.mir-timeline #main').val(data['main']);
 				$('.mir-timeline #cont').val(data['cont']);
@@ -246,6 +258,7 @@
 				$('.mir-chars #subcolor').val(data['subcolor']);
 				if (data['show']) $('.mir-chars #show').prop('checked', true);
 				else $('.mir-chars #show').prop('checked', false);
+				$('.mir-chars #forum').val(data['forum']);
 			}
 
 			if (base == 'affinities') { 

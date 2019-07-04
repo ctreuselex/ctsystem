@@ -46,16 +46,23 @@
 
 <div class="input-div">
 
+	<!-- TIMELINE -->
+	<!-- ============================================================================================================ -->
 	<div class="box mir-timeline">
-		<input type="text" id="date" placeholder="Date">
+		<input type="text" id="id" placeholder="ID">
+		<input type="text" id="year" placeholder="Year" style="width: calc(100% / 3)">
+		<input type="text" id="season" placeholder="Season" style="width: calc(100% / 3)">
+		<input type="text" id="day" placeholder="Day" style="width: calc(100% / 3)">
 		<input type="text" id="name" placeholder="Name">
 		<input type="text" id="main" placeholder="Main">
-		<textarea id="cont" placeholder=""></textarea>
+		<textarea id="cont" rows="40" style="height: unset; font-size: 12px;"></textarea>
 		<div class="table"></div>
 		<div class="btn" onclick="saveData('timeline')">Save</div>
-		<div class="btn" onclick="deleteData('timeline', 'name')">Delete</div>
+		<div class="btn" onclick="deleteData('timeline', 'date')">Delete</div>
 	</div>
 
+	<!-- CHARACTERS -->
+	<!-- ============================================================================================================ -->
 	<div class="box mir-chars">
 		<input type="text" id="name" placeholder="Name">
 		<input type="text" id="sur" placeholder="Surname">
@@ -64,6 +71,7 @@
 		<input class="half" type="text" value="Main Color" disabled><input class="half" type="text" id="color">
 		<input class="half" type="text" value="Sub Color" disabled><input class="half" type="text" id="subcolor">
 		<input class="half" type="text" value="Show" disabled><input class="half" type="checkbox" id="show">
+		<input type="text" id="forum" placeholder="Forum Name">
 		<div class="table"></div>
 		<div class="btn" onclick="saveData('chars')">Save</div>
 		<div class="btn" onclick="deleteData('chars', 'name')">Delete</div>
@@ -396,20 +404,24 @@
 		var data,
 			url;
 
-
 		// TIMELINE
 		// ============================================================================================================
 		// ============================================================================================================
 		if (base == 'timeline') {
-			var savedate = $('.mir-timeline #date').val();
+			var saveid = $('.mir-timeline #id').val();
+			var saveyear = $('.mir-timeline #year').val();
+			var saveseason = $('.mir-timeline #season').val();
+			var saveday = $('.mir-timeline #day').val();
 			var savename = $('.mir-timeline #name').val();
 			var savemain = $('.mir-timeline #main').val();
 			var savecont = $('.mir-timeline #cont').val();
 			// OVERRIDE
 			var found = false;
 			for (var i=0; i<mirTimeline.length; i++) {
-                if (mirTimeline[i]['date'] == savedate) {
-                    mirTimeline[i]['date'] = savedate;
+                if (mirTimeline[i]['id'] == saveid) {
+                    mirTimeline[i]['year'] = saveyear;
+                    mirTimeline[i]['season'] = saveseason;
+                    mirTimeline[i]['day'] = saveday;
                     mirTimeline[i]['name'] = savename;
                     mirTimeline[i]['main'] = savemain;
                     mirTimeline[i]['cont'] = savecont;
@@ -420,7 +432,10 @@
             // ADD
             if(!found) {
                 mirTimeline.push({
-                    date: savedate,
+                	id: saveid,
+                    year: saveyear,
+                    season: saveseason,
+                    day: saveday,
                     name: savename,
                     main: savemain,
                     cont: savecont,
@@ -428,6 +443,16 @@
             }
             url = "<?=URL::to('/dashboard/save/timeline')?>";
             data = mirTimeline;
+
+            // for (var i=0; i<mirTimeline.length; i++) {
+            // 	var date = mirTimeline[i]['date'];
+            // 	var split = date.split("|");
+            // 	mirTimeline[i]['date'] = "";
+            // 	mirTimeline[i]['year'] = split[0];
+            // 	mirTimeline[i]['season'] = split[1];
+            // 	mirTimeline[i]['day'] = split[2];
+            // }
+            // console.log(mirTimeline);
 		}
 
 
@@ -445,6 +470,7 @@
 			var saveshow;
 			if ($('.mir-chars #show').is(':checked')) saveshow = true 
 			else saveshow = false;
+			var saveforum = $('.mir-chars #forum').val();
 
 			// OVERRIDE
 			var found = false;
@@ -456,6 +482,7 @@
                     mirChars[i]['color'] = savecolor;
                     mirChars[i]['subcolor'] = savesubcolor;
                     mirChars[i]['show'] = saveshow;
+                    mirChars[i]['forum'] = saveforum;
                     found = true;
                     break;
                 }
@@ -470,6 +497,7 @@
                     color: savecolor,
                     subcolor: savesubcolor,
                     show: saveshow,
+                    forum: saveforum,
                 })
             }
             url = "<?=URL::to('/dashboard/save/chars')?>";
@@ -876,8 +904,12 @@
 		var saveid = $('.char-' + base + ' #id').val();
 		var data, url;
 
-		if (base == 'chars') { 
-			saveid = $('.char-' + base + ' #name').val();
+		if (base == 'timeline') { 
+			saveid = $('.mir-timeline #date').val();
+			data = mirTimeline;
+            url = "<?=URL::to('/dashboard/save/timeline')?>";
+		} else if (base == 'chars') { 
+			saveid = $('.mir-chars #name').val();
 			data = mirChars;
             url = "<?=URL::to('/dashboard/save/chars')?>";
 		} else if (base == 'affinities') { 
