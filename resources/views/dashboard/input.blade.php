@@ -66,6 +66,7 @@
 	<div class="box mir-chars">
 		<input type="text" id="name" placeholder="Name">
 		<input type="text" id="sur" placeholder="Surname">
+		<input type="text" id="year" placeholder="Birth Year">
 		<input type="text" id="icon" placeholder="Icon">
 		<textarea id="tags" placeholder="Tags"></textarea> 
 		<input class="half" type="text" value="Main Color" disabled><input class="half" type="text" id="color">
@@ -463,6 +464,7 @@
 			var saveid = $('.mir-chars #name').val();
 			var savename = $('.mir-chars #name').val();
 			var savesur = $('.mir-chars #sur').val();
+			var saveyear = $('.mir-chars #year').val();
 			var saveicon = $('.mir-chars #icon').val();
 			var savetags = $('.mir-chars #tags').val();
 			var savecolor = $('.mir-chars #color').val();
@@ -477,6 +479,7 @@
 			for (var i=0; i<mirChars.length; i++) {
                 if (mirChars[i]['name'] == savename) {
                     mirChars[i]['sur'] = savesur;
+                    mirChars[i]['year'] = saveyear;
                     mirChars[i]['icon'] = saveicon;
                     mirChars[i]['tags'] = savetags;
                     mirChars[i]['color'] = savecolor;
@@ -492,6 +495,7 @@
                 mirChars.push({
                     name: savename,
                     sur: savesur,
+                    year: saveyear,
                     icon: saveicon,
                     tags: savetags,
                     color: savecolor,

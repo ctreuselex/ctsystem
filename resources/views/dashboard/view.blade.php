@@ -252,6 +252,7 @@
 				data = findDataByID(mirChars, id, 'name');
 				$('.mir-chars #name').val(data['name']);
 				$('.mir-chars #sur').val(data['sur']);
+				$('.mir-chars #year').val(data['year']);
 				$('.mir-chars #icon').val(data['icon']);
 				$('.mir-chars #tags').val(data['tags']);
 				$('.mir-chars #color').val(data['color']);

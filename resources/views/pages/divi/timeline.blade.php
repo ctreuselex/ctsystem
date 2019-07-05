@@ -1,134 +1,7 @@
 @extends('templates.single-default')
 
 @section('metas')
-	<style type="text/css">
-		.main-page .cont-div .title {
-		    padding: 50px 20px !important; }
-		.main-page .cont-div .cont {
-			height: calc(100vh - 90px) !important;
-			padding: 0 0 !important;
-			overflow: hidden; }
-		.main-page .cont .tl-list {
-			float: left;
-			width: calc(40%);
-		    padding: 0;
-			height: calc(100vh - 90px);
-		 	overflow-y: hidden; }
-			.main-page .cont .tl-list .scroll {
-				height: 100%;
-				padding: 0 0 150px; }
-
-		 	.main-page .cont .tl-list .tl-br {
-		 		position: relative;
-			    float: left;
-			    position: relative;
-			    background: white;
-			    width: 50px;
-			    color: #333;
-			    font-size: 12px;
-			    font-weight: bold;
-			    text-align: right;
-			    padding: 0 5px;
-			    margin: 5px 0 -5px;
-			    z-index: 1; }
-		 		.main-page .cont .tl-list .tl-box {
-		 			position: relative; left: 20px;
-		 			width: calc(100% - 20px); }
-
-		.main-page .cont .tl-box .head {
-			float: left;
-			width: 100%;
-			background-color: rgba(0,0,0,0.5);
-			font-size: 14px;
-		    font-weight: initial;
-			border-left: 5px solid grey;
-			border-right: 5px solid grey;
-		    padding: 5px 15px;
-			margin: 0 0 1px;
-			cursor: pointer;
-			transition: 0.5s; }	
-			.main-page .cont .tl-box.open .head {
-				background-color: white;
-				color: #333; 
-				transition: 0.3s; }
-
-			.main-page .cont .tl-box .head .col {
-				float: left;
-				font-family: "Quicksand"; 
-				text-transform: initial;
-				/*width: calc(100% / 3);*/ }
-			.main-page .cont .tl-box .head .date { 
-				width: calc(25%);
-				font-size: 12px; }
-			.main-page .cont .tl-box .head .name { 
-				width: calc(75%);
-				font-weight: bold;
-				text-transform: capitalize; }
-
-		.main-page .cont .tl-display {
-			position: relative;
-			float: left;
-			width: 60%;
-			height: 100%;
-			background-color: rgba(0,0,0,0.7);
-    		font-size: 12px;
-			padding: 10px 15px 150px;
-			overflow-y: auto; }
-			.main-page .cont .tl-display .name {
-				position: relative; right: 0;
-			    font-family: "Righteous";
-			    font-size: 30px;
-			    font-weight: bold;
-				text-transform: capitalize;
-			    letter-spacing: -1px;
-		        line-height: 1;
-    			margin: 0 0 15px;
-			    opacity: 1;
-			    transition: 0.3s; }
-				.main-page .cont .tl-display.change .name {
-					right: -50px;
-					opacity: 0;
-					transition: 0.3s; }
-			.main-page .cont .tl-display .desc {
-				position: relative; right: 0;
-				opacity: 1;
-				transition: 0.5s; }
-				.main-page .cont .tl-display.change .desc {
-					right: -50px;
-					opacity: 0;
-					transition: 0.5s; }
-
-				.main-page .cont .tl-display .desc hr {
-					margin-bottom: 5px;
-					opacity: 0.5; }
-				.main-page .cont .tl-display .desc .mir-c {
-					display: inline-block;
-					font-weight: bold;
-					text-transform: capitalize;
-					/*line-height: 1.6;*/
-					padding: 1px 5px;
-					margin-top: 2px;
-    				border-radius: 3px; }
-				.main-page .cont .tl-display .desc .mir-f {
-					font-weight: bold;
-					line-height: 1.6;
-					padding: 1px 5px;
-    				border-radius: 3px; }
-
-				.main-page .cont .tl-display .desc textarea {
-			        background-color: transparent;
-				 	color: white;
-				    width: 100%;    
-				    /*height: calc(100vh - 200px);*/
-				    height: 300vh;
-				    border: 0; }
-
-
-			.main-page .cont .tl-display .edit { 
-				position: absolute; top: 0px; right: 0px;
-				font-size: 14px;
-				cursor: pointer; }
-	</style>
+	<link rel="stylesheet" type="text/css" href="{{ url('css/timeline.css') }}">
 @stop
 
 @section('title') Timeline @stop
@@ -152,12 +25,6 @@
 				<?php 
 					// DATE FORMAT
 					$seasonNames = ['', 'Summer', 'Fall', 'Winter', 'Spring'];
-					// $season = $seasonNames[$date[1]];
-					// $day = "";
-					// if ($date[2] > 0) {
-					// 	$d = explode('-', $date[2]);
-					// 	$day = "| " . $d[0];
-					// } //substr($date[2],0,2);
 
 					// CHARACTER COLOR
 					$lColor = "grey"; $rColor = "grey"; $cIco = "ra ra-horn-call";
@@ -195,11 +62,12 @@
 		var mirTimeline = <?=json_encode($mirTimeline)?>;
 		var mirChars = <?=json_encode($mirChars)?>;
 
-		var selectLog = "";
+		var selectYear = 0;
 
 		function openLog(el, id) {
 			var name = mirTimeline[id]['name'];
 			var cont = mirTimeline[id]['cont'];
+			selectYear = mirTimeline[id]['year'];
 
 			$('.tl-display').addClass('change');
 			setTimeout( function() {
@@ -207,7 +75,6 @@
 				$('.tl-display .desc').html(findCharacters(cont));
 				$('.tl-display').removeClass('change');
 			}, 500);
-
 
 			$('.tl-list .tl-box').removeClass('open');
 			$(el).addClass('open');
@@ -223,9 +90,7 @@
 				var part = split[i].split("-"),
 					character = "";
 
-				if (part[0] == 'c') split[i] = findName(part[1], 'c');
-				if (part[0] == 'f') split[i] = findName(part[1], 'f');
-				
+				if (part[0] == 'c' || part[0] == 'f' || part[0] == 'i') split[i] = findName(part[1], part[0]);
 			}
 
 			return split.join("");
@@ -245,6 +110,32 @@
 					if (icon == "") icon = "ra ra-player";
 					character += "<i class='" + icon + "' style='color: " + mirChars[i]['color'] + "'></i>";
 
+					var charCycle = selectYear - mirChars[i]['year'];
+					var charAge = Math.floor(((236*1.35)*(selectYear-mirChars[i]['year']))/365, 0);
+					if (mirChars[i]['year'] == "") {
+						charCycle = "??";
+						charAge = "??";
+					}
+
+					var charDetail = "";
+					charDetail += "<div class='details'>";
+					if (type == 'f') {
+						if (mirChars[i]['sur'] == "anon") charDetail += "<div class='detail n'> Anonymous </div>";
+						else charDetail += "<div class='detail n'> " + mirChars[i]['name'] + " " + mirChars[i]['sur'] + "</div>";
+					}
+
+					charDetail += "<div class='detail a'>";
+					if (name == "riza") {
+						charDetail += 	"@&mc;" + charCycle + "$pt;?";
+						charDetail += 	" | @&ae;" + charAge + "$gt;?";
+					} else {
+						charDetail += 	"MPC: " + charCycle;
+						charDetail += 	" | AGE: " + charAge;
+					}
+					charDetail += "</div>";
+
+					charDetail += "</div>";
+
 					if (type == 'c') {
 
 						if (name == "riza") {
@@ -253,8 +144,15 @@
 							character += " " + mirChars[i]['name'];
 							character += " " + mirChars[i]['sur'];
 						}
+						character += charDetail;
+
 					} else if (type == 'f') {
 						character += " " + mirChars[i]['forum'];
+						character += charDetail;
+
+					} else if (type == 'i') {
+						character += " " + mirChars[i]['name'];
+						character += " <span style='text-transform:uppercase'>" + mirChars[i]['sur'].substring(0, 1) + ".</span>";
 					}
 
 					character += "</span>";
@@ -282,7 +180,7 @@
 				$('.tl-display .desc').html('<textarea class="edit-log">');
 				$('.tl-display .desc textarea').val(cont);
 				isEditing = true;
-				editId = mirTimeline[id]['date'];
+				editId = mirTimeline[id]['id'];
 			} else {
 				saveLog();
 			}
@@ -294,7 +192,7 @@
 
 				var found = false;
 				for (var i=0; i<mirTimeline.length; i++) {
-	                if (mirTimeline[i]['date'] == editId) {
+	                if (mirTimeline[i]['id'] == editId) {
 	                    mirTimeline[i]['cont'] = cont;
 	                    found = true;
 	                    break;
