@@ -1,0 +1,437 @@
+:root {
+	--color-main: #222d32;
+	--color-secd: #009688;
+
+	--btn-shw: #8bc34a;
+	--btn-add: #00bcd4;
+	--btn-edt: #9c27b0;
+	--btn-dlt: #ff9800;
+
+	--sidebar-width: 250px;
+
+	--colored-plexy: #607d8bb3;
+}
+
+.dash .center {
+	width: 100%;
+	text-align: center; }
+
+.dash {
+	background-color: #d5d5d5;
+	font-family: "Quicksand"; }
+
+	.dash .sidebar {
+		float: left;
+		width: var(--sidebar-width); height: 100vh;
+		background-color: var(--color-main); }
+
+		.dash .sidebar .title {
+			float: left;
+			width: 100%;
+			color: white;
+			background-color: rgba(0,0,0,0.2);
+			font-family: "Righteous";
+			font-size: 16px;
+			text-transform: uppercase;
+			padding: 10px 15px; }
+
+		.dash .sidebar .menu {
+			float: left;
+			width: 100%;
+			color: white;
+			padding: 7px 15px;
+			border-bottom: 1px solid rgba(0,0,0,0.1);
+			transition: 0.3s; }
+			.dash .sidebar .menu.head { background-color: rgba(0,0,0,0.2); }
+			.dash .sidebar .menu.sub { padding-left: 30px; }
+			.dash .sidebar .menu.active { background-color: rgba(255,255,255,0.1); border-left: 3px solid white; transition: 0.3s; }
+
+			.dash .sidebar .menu i { display: inline-block; width: 20px; text-align: center; }
+
+	.dash .frame { 
+		position: relative;
+		float: left;
+		width: calc(100% - var(--sidebar-width));
+		height: 100vh; }
+		.dash .frame iframe {
+			float: left;
+			width: 100%; height: 100%;
+			border: 0; } 
+
+		.dash .frame .loader {
+		    position: absolute; top: 0; left: 0;
+		    width: 100%; height: 100%;
+		    background-color: var(--color-secd);
+		    visibility: hidden;
+		    opacity: 0;
+		    transition: 0.3s; }
+			.dash .frame.load .loader { visibility: visible; opacity: 1; transition: 0.3s; }
+
+			.dash .frame .loader .flex { display: flex; width: 100%; height: 100%; align-items: center; }
+			.dash .frame .loader .row { width: 100%; text-align: center; margin: 0; }
+			.dash .frame .loader .box { 
+				display: inline-block; 
+				width: 50px; height: 50px;
+				border: 10px solid white;
+				transform: rotate(45deg) scale(0);
+				transition: 0.3s; }
+				.dash .frame.load .loader .box {
+					border: 1px solid white; 
+					transform: rotate(45deg) scale(1);
+					transition: 0.3s; } 
+
+			.dash .frame .loader .box i {
+				animation: loadSpin 1s infinite linear;
+				color: white;
+				font-size: 30px; }
+
+/*ANIMATIONS*/
+/*========================================================================*/
+@keyframes loadSpin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+@keyframes gridBoxAnimation {
+	from { transform: translateY(-25px); opacity: 0; visibility: hidden; }
+	to { transform: translateY(0); opacity: 1; visibility: visible; }
+}
+
+/*MIRROR BUTTONS*/
+/*=====================================================================*/
+.mirror-grid .btn {
+	position: relative;
+	display: inline-flex; align-items: center;
+	height: 100%;
+    background-color: grey;
+    color: white;
+    font-family: "Quicksand";
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 3px solid rgba(0,0,0,0.1);
+    border-radius: 0;
+    padding: 5px 15px;
+    overflow: hidden;
+	transition: 0.3s; }
+	.mirror-grid .btn:before {
+		content: "";
+		position: absolute; top: 0; left: 0;
+		width: 100%; height: 100%;
+		background-color: rgba(0,0,0,0.3);
+	    transform: rotate(-45deg) scale(1.5) translateX(0%) translateY(55%);
+	    mix-blend-mode: overlay;
+	    transition: 0.3s; }
+		.mirror-grid .btn:hover:before {
+			background-color: rgba(255,255,255,0.3);
+			transform: rotate(-45deg) scale(1.5) translateX(0%) translateY(-55%);
+			transition: 0.3s; }
+
+	.mirror-grid .btn.shw { background-color: var(--btn-shw); }
+	.mirror-grid .btn.edt { background-color: var(--btn-edt); }
+	.mirror-grid .btn.dlt { background-color: var(--btn-dlt); }
+	.mirror-grid .btn.add {
+    	position: absolute; right: 0; top: 0;
+    	text-transform: none;
+    	background-color: var(--btn-add); }
+		.mirror-grid .btn .add i { margin: 0 5px 0 0; }
+
+	.mirror-grid .btn.active {
+		background-color: white;
+		color: grey;
+		transition: 0.3s; }
+
+/*MIRROR GRID*/
+/*========================================================================*/
+
+.mirror-grid {
+    float: left;
+    width: 100%;
+    height: 100vh; }
+
+	.mirror-grid .head { 
+		position: relative;
+		float: left;
+		width: 100%; height: 42px;
+		color: white;
+		background-color: #206b64;
+		font-family: "Righteous";
+		font-size: 16px;
+		text-transform: uppercase;
+		padding: 10px 15px; }
+
+	.mirror-grid .grid {
+		position: relative;
+		float: left;
+		width: 100%; height: calc(100% - 42px);
+		background-color: #14191b;
+		overflow-y: scroll; } 
+
+		.mirror-grid .grid .box {
+			animation: gridBoxAnimation 0.5s forwards;
+			position: absolute; top: 0; left: 0;
+			background-color: #283033;
+			border-radius: 5px;
+			border: 0 solid rgba(0,0,0,0.1);
+			border-top-width: 5px;
+			border-bottom-width: 10px;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+			opacity: 0; visibility: hidden;
+			overflow: hidden;
+			transition: 0.3s; }
+
+			.mirror-grid .grid .box .box-slash {
+				position: absolute; top: -65%; left: -65%;
+				width: 100%; height: 100%;
+				transform: rotate(45deg);
+				mix-blend-mode: hard-light;
+				opacity: 1;
+				z-index: 1;
+				transition: 0.3s; }
+			.mirror-grid .grid .box .icon {
+			    position: absolute; top: 5px; left: 10px;
+			    font-size: 24px;
+			    color: white;
+				z-index: 2; }
+			.mirror-grid .grid .box .image {
+			    float: left;
+			    width: 100%;
+			    height: 50%;
+			    background-color: black;
+			    background-size: cover;
+			    background-position: center;
+				transition: 0.3s; }
+		    .mirror-grid .grid .box .category {
+			    display: flex; align-items: center;
+			    position: absolute; top: calc(50% - 30px);
+			    height: 30px;
+			    color: white;
+			    font-family: "Righteous";
+			    font-weight: bold;
+			    padding: 0 15px;
+			    mix-blend-mode: hard-light;
+				transition: 0.3s; }
+			.mirror-grid .grid .box .cont {
+				float: left;
+				width: 100%;
+			    color: rgba(255,255,255,0.8);
+				padding: 5px 15px; 
+			    transition: 0.3s; }
+				.mirror-grid .grid .box .cont.name {
+				    display: inline-flex; align-items: center;
+				    background-color: #384247;
+				    font-size: 18px;
+				    font-family: "Righteous";
+				    text-transform: uppercase;
+				    white-space: nowrap; }
+			    .mirror-grid .grid .box .cont.description {
+				    font-size: 12px;
+				    line-height: 1.2; }
+
+			.mirror-grid .grid .box .btn-box {
+			    position: absolute; right: 0; bottom: -35px;
+			    width: 100%; height: 35px; 
+			    transition: 0.3s; }
+				.mirror-grid .grid .box:hover .btn-box { bottom: 0; transition: 0.3s; }
+				.mirror-grid .grid .box .btn { width: calc(100% / 3); }
+
+		.mirror-grid .grid.maximize { overflow-y: hidden; }
+			.mirror-grid .grid .box.maximize {
+			    top: 0 !important;
+			    left: 0 !important;
+			    width: 100% !important;
+			    height: 100% !important;
+			    border-radius: 0;
+			    opacity: 1;
+				transition: 0.3s; }
+			.mirror-grid .grid .box.top { z-index: 1; }
+
+			.mirror-grid .grid .box.maximize .box-slash {
+			    top: -95%; left: -90%;
+				transition: 0.3s; }
+			.mirror-grid .grid .box.maximize .image {
+			    float: left;
+			    width: calc(100% - 350px);
+			    height: 100%;
+				transition: 0.3s; }
+		    .mirror-grid .grid .box.maximize .category {
+		    	top: calc(100% - 35px);
+			    height: 35px;
+			    width: calc(100% - 350px);
+				transition: 0.3s; }
+			.mirror-grid .grid .box.maximize .cont {
+			    float: left;
+			    width: 350px; 
+			    transition: 0.3s; }
+			    .mirror-grid .grid .box.maximize .cont.description {
+				    padding: 15px; }
+			.mirror-grid .grid .box.maximize .btn-box {
+			    right: 0; bottom: 0;
+			    width: 350px; height: 35px; 
+			    transition: 0.3s; }
+
+/*POPUP FORM*/
+/*=====================================================================*/
+.mirror-grid .popup,
+.mirror-grid .diamond-alert {
+	display: none; align-items: center;
+	position: fixed; top: 0; left: 0; 
+	width: 100%;
+	height: 100vh;
+	background-color: var(--colored-plexy);
+	z-index: 9000; }
+    .mirror-grid .popup .flex, .diamond-alert .flex { 
+		display: flex; align-items: center; 
+		width: 100%; height: 100%; }
+    .mirror-grid .popup .row, .diamond-alert .row { margin: 0 auto; }
+
+    .mirror-grid .popup .box {
+		display: inline-block;
+		width: 400px;
+		max-height: 95vh;
+		background-color: white;
+		text-align: center;
+		border-radius: 10px;
+		border: 1px solid rgba(0,0,0,0.3);
+    	margin: 0;
+    	box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+		opacity: 0;
+		transform: translateY(-100px) scale(0.8);
+		overflow: hidden; }
+
+      	.mirror-grid .popup.open .box {
+			opacity: 1;
+			transform: translateY(0) scale(1); 
+			transition: 0.3s; }
+
+      	.mirror-grid .popup .box .title {
+            background-color: var(--color-secd);
+            color: white;
+			font-family: "Righteous";
+			font-size: 16px;
+			text-transform: uppercase;
+			text-align: left;
+			padding: 10px 15px; }
+		.mirror-grid .popup .box .scroll {
+			float: left;
+			width: 100%;
+			height: 100%;
+			text-align: left;
+			padding: 15px;
+			overflow-y: auto; } 
+        .mirror-grid .popup .box .close {
+			position: absolute; top: 8px; right: 15px;
+			color: white;
+			font-size: 20px;
+			cursor: pointer; }
+
+	.mirror-grid .diamond-alert .box {
+	 	position: relative;
+	 	display: inline-block;
+	 	width: 200px; height: 200px;
+	 	color: white;
+		transform: scale(0.8); }
+	 	.mirror-grid .diamond-alert .box:before,
+	 	.mirror-grid .diamond-alert .box:after {
+	 		content: "";
+	 		position: absolute; top: 0; left: 0;
+	 		width: 100%; height: 100%;
+	 		transform: rotate(45deg) scale(0);
+	 		z-index: -1; }
+	 		.mirror-grid .diamond-alert .box:before { background-color: grey; border: 50px solid white; opacity: 0; box-shadow: 0 0 50px grey; }
+	 		.mirror-grid .diamond-alert .box:after { border: 50px solid white; opacity: 1; }
+
+      	.mirror-grid .diamond-alert.open .box {
+			opacity: 1;
+			transform: scale(1); 
+			transition: 0.3s; }
+      		.mirror-grid .diamond-alert.open .box:before {
+      			border: 0px solid white;
+	 			opacity: 0.7;
+	 		 	transform: rotate(45deg) scale(1); 
+				transition: 0.3s; }
+	 		.mirror-grid .diamond-alert.open .box:after { 
+	 			border: 1px solid white;
+	 		 	opacity: 0;
+	 		 	transform: rotate(45deg) scale(1.2); 
+				transition: 0.5s; }
+
+      	.mirror-grid .diamond-alert .box .text { 
+      		margin: 0 0 10px; }
+      	.mirror-grid .diamond-alert .box .btn { margin: 0 5px; }
+
+      	.mirror-grid .diamond-alert.add .box:before { background-color: var(--btn-add); box-shadow: 0 0 100px 20px var(--btn-add); }
+      	.mirror-grid .diamond-alert.edt .box:before { background-color: var(--btn-edt); box-shadow: 0 0 100px 20px var(--btn-edt); }
+      	.mirror-grid .diamond-alert.dlt .box:before { background-color: var(--btn-dlt); box-shadow: 0 0 100px 20px var(--btn-dlt); }
+      	.mirror-grid .diamond-alert.add .box .btn { background-color: var(--btn-add); }
+      	.mirror-grid .diamond-alert.edt .box .btn { background-color: var(--btn-edt); }
+      	.mirror-grid .diamond-alert.dlt .box .btn { background-color: var(--btn-dlt); }
+
+/*INPUTS*/
+/*========================================================================*/
+.mirror-grid .input-box {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 5px 0; }
+
+    .mirror-grid .input-box label {
+	    position: absolute; left: 30px; top: 15px;
+		color: var(--color-main);
+		transition: 0.3s; }
+
+		.mirror-grid .input-box.focus label,
+		.mirror-grid .input-box.filled label,
+		.mirror-grid .input-box.color label {
+			left: 15px; top: 8px;
+			color: rgba(0,0,0,0.3);
+			font-size: 10px; 
+			transition: 0.3s; }
+
+	.mirror-grid .input-box input,
+	.mirror-grid .input-box textarea,
+	.mirror-grid .input-box select {
+	    float: left;
+	    width: 100%;
+		background-color: #eee;
+		font-size: 12px;
+	    border: 1px solid #eee;
+	    border-radius: 5px;
+	    padding: 15px 30px 5px; }
+	    .mirror-grid .input-box input[type="color"] {
+			height: 40px; }
+
+	.mirror-grid .input-box input:focus,
+	.mirror-grid .input-box textarea:focus,
+	.mirror-grid .input-box select:focus {
+		background-color: white;
+		border-color: var(--color-secd);
+		outline: 0; }
+
+	.mirror-grid .input-box.submit i {
+		position: absolute; right: 0; top: calc(50% - 7px);
+		color: white;
+		opacity: 0;
+		z-index: 1;
+	    transition: 0.3s;  }
+		.mirror-grid .input-box.submit.load i {
+			animation: loadSpin 1s infinite linear;
+		    right: 45px;
+		    opacity: 1;
+		    transition: 0.3s; }
+	.mirror-grid .input-box.submit input {
+	    float: right;
+	    width: 150px;
+	    background-color: var(--btn-add);
+	    color: white;
+	    font-size: 14px;
+	    font-weight: bold;
+	    border: 1px solid rgba(0,0,0,0.1);
+	    border-radius: 5px; 
+	    padding: 7px 0;
+	    opacity: 1;
+	    transition: 0.3s; }
+		.mirror-grid .input-box.submit.load input {
+			background-color: grey;
+			opacity: 0.5;
+			transition: 0.3s; }
