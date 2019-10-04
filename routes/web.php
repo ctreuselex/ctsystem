@@ -27,8 +27,9 @@ Route::post('/dashboard/save/{base}', 'HomeController@saveData')->name('base');
 
 Route::get('/dash', 'DashController@index');
 
+Route::resource('/dash/characters', 'DashCharactersController');
+Route::post('/dash/characters/saveDescription', array('as' => 'saveDescription', 'uses' => 'DashCharactersController@saveDescription'));
 Route::resource('/dash/affinities', 'DashAffinitiesController');
 Route::resource('/dash/divisions', 'DashDivisionsController');
 Route::resource('/dash/origins', 'DashOriginsController');
-Route::resource('/dash/organizations', 'DashOrganizationsController');
 

@@ -16,12 +16,7 @@ use App\Divisions;
 class DashOriginsController extends Controller {
 
 	public function index() {
-        $data = Origins::leftJoin('divisions', 'origins.division', '=', 'divisions.id')
-                ->select(
-                    'origins.*',
-                    'divisions.name as division_name',
-                    'divisions.color_primary as division_color' )
-                ->orderBy('name')->get();
+        $data = Origins::getData();
         $divisions = Divisions::orderBy('name')->get();
 
         return view('dash/origins', ['data' => $data, 'divisions' => $divisions]);
@@ -39,12 +34,7 @@ class DashOriginsController extends Controller {
         $post->color = $request->color;
         $post->save();
 
-        $data = Origins::leftJoin('divisions', 'origins.division', '=', 'divisions.id')
-                ->select(
-                    'origins.*',
-                    'divisions.name as division_name',
-                    'divisions.color_primary as division_color' )
-                ->orderBy('name')->get();
+        $data = Origins::getData();
         return response()->json($data);
     }
 
@@ -65,12 +55,7 @@ class DashOriginsController extends Controller {
         $post->color = $request->color;
         $post->save();
         
-        $data = Origins::leftJoin('divisions', 'origins.division', '=', 'divisions.id')
-                ->select(
-                    'origins.*',
-                    'divisions.name as division_name',
-                    'divisions.color_primary as division_color' )
-                ->orderBy('name')->get();
+        $data = Origins::getData();
         return response()->json($data);
     }
 
@@ -78,12 +63,7 @@ class DashOriginsController extends Controller {
         $post = Origins::findOrFail($id);
         $post->delete();
 
-        $data = Origins::leftJoin('divisions', 'origins.division', '=', 'divisions.id')
-                ->select(
-                    'origins.*',
-                    'divisions.name as division_name',
-                    'divisions.color_primary as division_color' )
-                ->orderBy('name')->get();
+        $data = Origins::getData();
         return response()->json($data);
     }
 }

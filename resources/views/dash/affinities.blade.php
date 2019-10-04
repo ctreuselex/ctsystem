@@ -11,6 +11,7 @@
 		grid.init({
 			el: $('.affinity-grid'),
 			title: 'Affinities',
+			subtitle: 'The medium in which Mystics perceive and manipulate Myst',
 			gridColors: { top: 'color', bot: 'color', ico: 'color', cat: 'color' },
 			gridContent: [
 				{ name: 'icon', tag: 'icon' },
@@ -27,8 +28,8 @@
 				inputs: [
 					{ name: 'Icon', tag: 'icon', type: 'text' },
 					{ name: 'Name', tag: 'name', type: 'text' },
-					{ name: 'Color', tag: 'color', type: 'txt' },
-					{ name: 'Image', tag: 'image', type: 'txt' },
+					{ name: 'Color', tag: 'color', type: 'color' },
+					{ name: 'Image', tag: 'image', type: 'text' },
 					{ name: 'Description', tag: 'description', type: 'textarea' },
 				],
 				link: window.location.pathname,
@@ -41,8 +42,8 @@
 				inputs: [
 					{ name: 'Icon', tag: 'icon', type: 'text' },
 					{ name: 'Name', tag: 'name', type: 'text' },
-					{ name: 'Color', tag: 'color', type: 'txt' },
-					{ name: 'Image', tag: 'image', type: 'txt' },
+					{ name: 'Color', tag: 'color', type: 'color' },
+					{ name: 'Image', tag: 'image', type: 'text' },
 					{ name: 'Description', tag: 'description', type: 'textarea' },
 				],
 				baseLink: window.location.pathname,

@@ -1,4 +1,8 @@
 
+var url = window.location;
+// var nullImage = "https://cdna.artstation.com/p/assets/images/images/013/479/940/large/dmytro-lisin-faceless-23333.jpg?1539788021";
+var nullImage = url.origin + '/img/default-img.png';
+
 $.ajaxSetup({
 	headers: {
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -28,120 +32,23 @@ $(document).on('click', 'a', function(event){
 	})
 });
 
-// CREATE TABLE
-/*===================================================================*/
-function createTable(options) {
-	var cont = '';
-
-	cont += '<div class="head">';
-	cont += 	getHeads();
-	cont += '</div>';
-	cont += '<div class="cont">';
-	for (var i=0; i<options['data'].length; i++) {
-		cont += '<div class="row">';
-		cont += 	getRowData( options['data'][i] );
-		cont += '</div>';
-	}
-	cont += '</div>';
-
-	$(options['el']).html(cont);
-	setTimeout( function() {
-		setButtonInteractions();
-	}, 100);
-
-	function getHeads() {
-		var cont = '';
-
-		for (var i=0; i<options['columns'].length; i++) {
-			var column = options['columns'][i];
-
-			cont += '<div class="col">';
-			cont += 	column['name'];
-			cont += '</div>';
-		}
-
-		cont += '<div class="col"></div>';
-		return cont;
-	}
-
-	function getRowData(row) {
-		var cont = '';
-
-		for (var i=0; i<options['columns'].length; i++) {
-			var column = options['columns'][i];
-
-			cont += '<div class="col ' + column['tag'] + '">';
-			if (column['color'] != '') cont += column.print( row[ column['tag'] ], row[ column['color'] ] );
-			else cont += 	column.print( row[ column['tag'] ] );
-			cont += '</div>';
-		}
-
-		cont += '<div class="col btn-box">';
-		cont +=		'<div class="btn edt" id="' + row['id'] + '"><i class="fas fa-edit"></i></div>';
-		cont +=		'<div class="btn dlt" id="' + row['id'] + '"><i class="fas fa-trash"></i></div>';
-		cont += '</div>';
-		return cont;
-	}
-
-	function setButtonInteractions() {
-
-		// EDIT ROW
-		$('.btn.edt', options['el']).each( function() {
-			var btn = $(this);
-			var id = $(btn).attr('id');
-			popupEdit( $(btn), id );
-		});
-
-		// DELETE ROW
-		$('.btn.dlt', options['el']).on('click', function() {
-
-			var btn = $(this);
-			$(btn).addClass('active');
-			var id = $(btn).attr('id');
-
-	    	diamondPop({
-	    		class: 'dlt',
-	    		text: 'Delete ' + options['title'] + '?',
-	    		buttons: [
-					{ text: 'Yep', id: 'yes', func: function() { deleteData( options['link'] + '/' + id ) } },
-					{ text: 'Nope', id: 'no', func: function() { closeDiamondPop( $(btn) ) } },
-				]});
-	    });
-	}
-}
-
-function deleteData(link) {
-	var data = {};
-	data['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-	$.ajax({
-        type: 'DELETE',
-        url: link,
-        data: data,
-        success: function(response) {
-        	mainData = response;
-        	loadData();
-        	closeDiamondPop();
-      	},
-        error: function(xhr,ajaxOptions,throwError) {
-			alert(throwError);
-		},
-        complete: function(){
-      	}
-    });
-}
-
 // CREATE GRID
 /*===================================================================*/
 var mirrorGrid = {
 	main: this,
 	options: {
 		el: null,
-		title: 'Default',
+		title: '',
+		subtitle: '',
 		gridColumns: 6, 
 		gridSpacing: 10,
 		gridHeight: 300,
-		gridColors: { top: 'color', bot: 'color', ico: 'color', cat: 'color' },
+		gridColors: { 
+			top: 'color', 
+			bot: 'color', 
+			ico: 'color', 
+			cat: 'color',
+			aff: 'color', },
 		gridContent: [
 			{ name: 'name', tag: 'name' },
 		],
@@ -190,7 +97,9 @@ var mirrorGrid = {
 		var cont = '';
 		cont += '<div class="head">';
 		cont += 	this.options.title;
+		cont += 	'<span class="sub">' + this.options.subtitle + '</span>';
 		cont += 	'<div class="btn add"><center><i class="fas fa-plus"></i> Add New</center></div>';
+		cont += 	'<div class="search"><i class="fas fa-search"></i> <input type="text" placeholder="Search"></div>';
 		cont += '</div>';
 		return cont;
 	},
@@ -198,45 +107,85 @@ var mirrorGrid = {
 		var cont = '';
 		cont += '<div class="grid">';
 		cont += '</div>';
+		cont += '<div class="nothing">';
+		cont += 	'Oof, there\'s no data here';
+		cont += '</div>';
 		return cont;
 	},
-	setGridInteractions() {
+	setGridInteractions: function() {
 		var self = this;
 		$('.btn.add', this.options.el).on('click', function() {
 		 	self.popup.setup( self.options.addData );
 		});
+
+		$('.search input', this.options.el).on('change', function() {
+			var search = $(this).val();
+		 	self.loadBoxes(search);
+		});
 	},
 
-	loadBoxes: function() {
+	loadBoxes: function(search='') {
 		var grid = $('.grid', this.options.el);
 		var data = this.options.data;
+		var delay = 0;
 
 		for (var i=0; i<data.length; i++) {
 			var item = data[i];
 			var box = $('.box#' + item['id'], grid);
-			if ( box.length == 0 ) {
+
+			// APPEND BOX AFTER ADDING
+			if ( box.length == 0 ) { 
 				$(grid).append( this.getBox(item, i) );
 				box = $('.box#' + item['id'], grid);
+				delay = i * 0.05;
+				this.updateBox(box, item, delay);
 				this.setBoxInteractions( box );
 				this.popup.popOut();
-			} else {
-				this.updateBox(box, item);
+
+			// UPDATE BOX AFTER EDITING
+			} else { 
+				this.updateBox(box, item, delay);
 				$(box).css('top', this.getBoxTop(i));
 				$(box).css('left', this.getBoxLeft(i));
 				this.popup.popOut();
 			}
 		}
 
+		var self = this;
+		var searchCount = 0;
+		var delay = 0;
 		$('.box', grid).each( function() {
 			var id = $(this).attr('id');
+			// REMOVE DELETED BOX
 			if (!getData(id, data)) $(this).remove();
-		})
+
+ 			// SEARCH BOXES
+			if (search != '') {
+				if ( $('.name', this).html().toLowerCase().indexOf(search) >= 0 ) {
+					$(this).removeClass('filter');
+					delay = searchCount * 0.05;
+					$(this).css('animation-delay', delay + 's');
+					$(this).css('top', self.getBoxTop(searchCount));
+					$(this).css('left', self.getBoxLeft(searchCount));
+					searchCount += 1;
+				} else {
+					$(this).addClass('filter');
+				}
+			} else {
+				$(this).removeClass('filter');
+				delay = searchCount * 0.05;
+				$(this).css('animation-delay', delay + 's');
+				searchCount += 1;
+			}
+		});
+
+		if (searchCount == 0) { $('.nothing', self.options.el).addClass('open');
+		} else $('.nothing', self.options.el).removeClass('open');
 	},
 	getBox: function(item, i) {
 		var cont = '';
 		cont += '<div class="box" id="' + item['id'] + '" ';
 		cont += 	'style="';
-		cont += 	'animation-delay: ' + (i * 0.1) + 's;';
 		cont += 	'width: ' + this.getBoxSize() + 'px;';
 		cont += 	'height: ' + this.options.gridHeight + 'px;';
 		cont += 	'top: ' + this.getBoxTop(i) + 'px;';
@@ -244,22 +193,26 @@ var mirrorGrid = {
 		cont += 	'margin-bottom: ' + this.options.gridSpacing + 'px;';
 		cont += 	'border-top-color: ' + item[this.options.gridColors.top] + ';';
 		cont += 	'border-bottom-color: ' + item[this.options.gridColors.bot] + ';';
-		cont += 	'box-shadow: 0 0 10px ' + item[this.options.gridColors.bot] + ';';
 		cont += 	'">';
-		cont += 	'<div class="box-slash" style="';
-		cont += 		'background-color: ' + item[this.options.gridColors.ico] + ';';
-		cont += 		'box-shadow: 0 0 50px ' + item[this.options.gridColors.ico] + ';';
+		cont += 	'<div class="box-gradient" style="';
+		cont += 		'background-image: linear-gradient(to bottom, ' + item[this.options.gridColors.top] + ', ' + item[this.options.gridColors.bot] + ');';
 		cont += 		'"></div>';
-		cont +=			this.getBoxData(item);
-		cont += '<div class="btn-box">';
-		cont +=		'<div class="btn shw" id="' + item['id'] + '"><i class="fas fa-expand"></i></div>';
-		cont +=		'<div class="btn edt" id="' + item['id'] + '"><i class="fas fa-edit"></i></div>';
-		cont +=		'<div class="btn dlt" id="' + item['id'] + '"><i class="fas fa-trash"></i></div>';
-		cont += '</div>';
+		cont += 	'<div class="box-container">';
+		cont += 		'<div class="box-slash" style="';
+		cont += 			'background-color: ' + item[this.options.gridColors.ico] + ';';
+		cont += 			'box-shadow: 0 0 50px ' + item[this.options.gridColors.ico] + ';';
+		cont += 			'"></div>';
+		cont +=				this.getBoxData(item);
+		cont += 		'<div class="btn-box">';
+		cont +=				'<div class="btn shw" id="' + item['id'] + '"><i class="fas fa-expand"></i></div>';
+		cont +=				'<div class="btn edt" id="' + item['id'] + '"><i class="fas fa-edit"></i></div>';
+		cont +=				'<div class="btn dlt" id="' + item['id'] + '"><i class="fas fa-trash"></i></div>';
+		cont += 		'</div>';
+		cont += 	'</div>';
 		cont += '</div>';
 		return cont;
 	},
-	getBoxSize: function() { return (this.options.el.width() / this.options.gridColumns) - (this.options.gridSpacing * 2); },
+	getBoxSize: function() { return (this.options.el.width() / this.options.gridColumns) - ((this.options.gridSpacing * (2 / this.options.gridColumns) + this.options.gridSpacing)); },
 	getBoxTop: function(i) { return Math.floor(i / this.options.gridColumns) * (this.options.gridHeight + this.options.gridSpacing) + this.options.gridSpacing; },
 	getBoxLeft: function(i) { return (i % this.options.gridColumns) * this.getBoxSize() + (this.options.gridSpacing * (i % this.options.gridColumns + 1)); },
 	getBoxData: function(item) {
@@ -269,34 +222,43 @@ var mirrorGrid = {
 
 			if (content['name'] == 'icon') {
 				cont += '<div class="icon">';
-				cont += 	'<i class="' + item[content['tag']] + '"/>';
+				cont += 	'<i></i>';
 				cont += '</div>';
 
 			} else if (content['name'] == 'image') {
-				cont += '<div class="image" style="';
-				cont += 	'background-image: url(' + item[content['tag']] + ');';
-				cont += 	'">';
+				cont += '<div class="image">';
 				cont += '</div>';
 
 			} else if (content['name'] == 'category') {
-				cont += '<div class="category" style="';
-				cont += 	'background-color: ' + item[this.options.gridColors.cat] + ';';
-				cont += 	'">';
-				cont += 	item[content['tag']];
+				cont += '<div class="category">';
 				cont += '</div>';
 
-			} else {
-				cont += '<div class="cont ' + content['name'] + '">';
-				cont += 	item[content['tag']];
+			} else if (content['name'] == 'affinity') {
+				cont += '<div class="affinity">';
+				cont += 	'<div class="ico">';
+				cont += 		'<i></i>';
+				cont += 	'</div>';
+				cont += '</div>';
+
+			} else if (content['name'] == 'name') {
+				cont += '<div class="name">';
+				cont += '</div>';
+
+			} else if (content['name'] == 'description') {
+				cont += '<div class="description">';
+				cont += 	'<textarea disabled></textarea>';
+				cont += 	'<i class="fas fa-save save"></i>';
 				cont += '</div>';
 			}
 		}
 		return cont;
 	},
-	updateBox: function(box, item) {
+	updateBox: function(box, item, delay) {
+		$(box).css('animation-delay', delay + 's');
 		$(box).css('border-top-color', item[this.options.gridColors.top]);
 		$(box).css('border-bottom-color', item[this.options.gridColors.bot]);
 		$(box).css('box-shadow', '0 0 10px ' + item[this.options.gridColors.bot]);
+		$('.box-gradient', box).css('background-image', 'linear-gradient(to bottom, ' + item[this.options.gridColors.top] + ', ' + item[this.options.gridColors.bot] + ')');
 		$('.box-slash', box).css('background-color', item[this.options.gridColors.ico]);
 		$('.box-slash', box).css('box-shadow', '0 0 10px ' + item[this.options.gridColors.ico]);
 
@@ -307,14 +269,28 @@ var mirrorGrid = {
 				$('.icon i', box).attr('class', item[content['tag']]);
 
 			} else if (content['name'] == 'image') {
-				$('.image', box).css('background-image', 'url(' + item[content['tag']] + ')');
+				if (item[content['tag']]) {
+					$('.image', box).css('background-image', 'url(' + item[content['tag']] + ')');
+				} else {
+					$('.image', box).css('background-image', 'url(' + nullImage + ')');
+				}
 
 			} else if (content['name'] == 'category') {
 				$('.category', box).css('background-color', item[this.options.gridColors.cat]);
-				$('.category', box).html(item[content['tag']]);
+				if (content['tag']) $('.category', box).html(item[content['tag']]);
+				else if (content['tags']) $('.category', box).html(getContentTags(content['tags'], item, content['seperator']));
 
-			} else {
-				$('.cont.' + content['name'], box).html(item[content['tag']]);
+			} else if (content['name'] == 'affinity') {
+				$('.affinity', box).css('background-color', item[this.options.gridColors.aff]);
+				$('.affinity i', box).attr('class', item[content['tag']]);
+
+			} else if (content['name'] == 'name') {
+				if (content['tag']) $('.' + content['name'], box).html(item[content['tag']]);
+				else if (content['tags']) $('.' + content['name'], box).html(getContentTags(content['tags'], item, content['seperator']));
+
+			} else if (content['name'] == 'description') {
+				if (content['tag']) $('.' + content['name'] + ' textarea', box).val(item[content['tag']]);
+				else if (content['tags']) $('.' + content['name'] + ' textarea', box).val(getContentTags(content['tags'], item, content['seperator']));
 			}
 		}
 	},
@@ -323,20 +299,33 @@ var mirrorGrid = {
 		var popup = this.popup;
 		var diamondAlert = this.diamondAlert;
 
+		$(box).hover(function() {
+			$('.grid .box', options.el).addClass('unfocused');
+			$(this).removeClass('unfocused');
+		}, function() {
+			$('.grid .box', options.el).removeClass('unfocused');
+		});
+
 		$('.btn.shw', box).on('click', function() {
 			var id = $(this).attr('id');
 
 			if ( $(box).hasClass('maximize') ) {
-			 	$('.grid', options.el).removeClass('maximize');
-			 	$('.grid .box', options.el).removeClass('maximize');
-			 	setTimeout( function() { $(box).removeClass('top'); },300);
 			 	$(this).html('<i class="fas fa-expand"></i>');
+			 	$(options.el).removeClass('maximize');
+			 	$('.grid .box', options.el).removeClass('maximize');
+			 	$('.description textarea', box).prop('disabled', true);
+			 	setTimeout( function() { 
+			 		$(box).removeClass('top'); 
+			 		$('.grid', options.el).animate({ scrollTop: $(box).css('top') }, 300);
+			 	}, 300);
+
 			} else {
-			 	$('.grid', options.el).addClass('maximize');
-			 	$('.grid', options.el).animate({ scrollTop: 0 }, 300);
+			 	$(this).html('<i class="fas fa-compress"></i>');
+			 	$(options.el).addClass('maximize');
 			 	$(box).addClass('maximize');
 			 	$(box).addClass('top');
-			 	$(this).html('<i class="fas fa-compress"></i>');
+			 	$('.description textarea', box).prop('disabled', false);
+			 	$('.grid', options.el).animate({ scrollTop: 0 }, 300);
 			}
 		});
 
@@ -390,6 +379,41 @@ var mirrorGrid = {
 				]
 			});
 	    });
+
+		$('.description .save', box).on('click', function() {
+			var data = {};
+			data['_token'] = $('meta[name="csrf-token"]').attr('content');
+			data['id'] = $(box).attr('id');
+			data['description'] = $('.description textarea', box).val();
+
+            $.ajax({
+                type: 'POST',
+                url: options.editData.baseLink + '/saveDescription',
+                data: data,
+		        success: function(response) {
+		        	options.data = response;
+			    	diamondAlert.setup({
+			    		class: 'edt',
+			    		text: options.editData.alertSuccess,
+			    		buttons: [
+							{ text: 'Okay', id: 'okay', func: function(self) { 
+								self.popOut(); 
+								self.main.loadBoxes(); } },
+						]
+					});
+		      	},
+	            error: function(xhr,ajaxOptions,throwError) {
+			    	diamondAlert.setup({
+			    		class: 'edt',
+			    		text: throwError,
+			    		buttons: [
+							{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); } },
+						]
+					});
+	    		},
+	            complete: function() {}
+		    });
+		});
 	},
 
 	popup: {
@@ -434,11 +458,23 @@ var mirrorGrid = {
 						cont += 	'<label>' + input['name'] + '</label>';
 
 						if (input['type'] == 'textarea') {
-							if (options['data']) cont += '<textarea id="' + input['tag'] + '" rows="8">' + options['data'][input['tag']] + '</textarea>';
-							else cont += '<textarea id="' + input['tag'] + '" rows="8"></textarea>';
+							if (options['data'] && options['data'][input['tag']]) {
+								cont += '<textarea id="' + input['tag'] + '" rows="8">' + options['data'][input['tag']] + '</textarea>';
+							} else {
+								cont += '<textarea id="' + input['tag'] + '" rows="8"></textarea>';
+							}
+
+						} else if (input['type'] == 'color') {
+							if (options['data'] && options['data'][input['tag']]) {
+								cont += '<input id="' + input['tag'] + '" type="text" value="' + options['data'][input['tag']] + '" autocomplete="off">';
+								cont += '<input type="color" value="' + options['data'][input['tag']] + '">';
+							} else {
+								cont += '<input id="' + input['tag'] + '" type="text" value="" autocomplete="off">';
+								cont += '<input type="color" value="">';
+							}
 
 						} else if (input['type'] == 'select') {
-							if (options['data']) {
+							if (options['data'] && options['data'][input['tag']]) {
 								cont += '<select id="' + input['tag'] + '" value="' + options['data'][input['tag']] + '">';
 								cont += 	getSelectOptions(input['from'], options['data'][input['tag']]);
 								cont += '</select>';
@@ -449,8 +485,11 @@ var mirrorGrid = {
 							}
 						
 						} else {
-							if (options['data']) cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="' + options['data'][input['tag']] + '" autocomplete="off">';
-							else cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="" autocomplete="off">';
+							if (options['data'] && options['data'][input['tag']]) {
+								cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="' + options['data'][input['tag']] + '" autocomplete="off">';
+							} else {
+								cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="" autocomplete="off">';
+							}
 						}
 
 						cont += '</div>';
@@ -473,6 +512,13 @@ var mirrorGrid = {
 				self.popIn();
 				inputBox( $('.popup') );
 				$('.popup .close', self.el).on('click', function() { self.popOut() });
+
+				$('.input-box.color input[type="text"]', self.el).on('change', function() {
+					$('input[type="color"]', $(this).parent()).val( $(this).val());
+				});
+				$('.input-box.color input[type="color"]', self.el).on('change', function() {
+					$('input[type="text"]', $(this).parent()).val( $(this).val() );
+				});
 
 				$('.popup input[type="submit"]', self.el).on('click', function() {
 					var btn = $(this);
@@ -497,7 +543,9 @@ var mirrorGrid = {
 					    		class: diamondClass,
 					    		text: options.alertSuccess,
 					    		buttons: [
-									{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); self.main.loadBoxes(); } },
+									{ text: 'Okay', id: 'okay', func: function(self) { 
+										self.popOut(); 
+										self.main.loadBoxes(); } },
 								]
 							});
 				      	},
@@ -610,13 +658,25 @@ function getData(id, data) {
 	return false;
 }
 
+function getContentTags(tags, item, seperator) {
+	var cont = '';
+	for (var i=0; i<tags.length; i++) {
+		if (i!=0) cont += seperator;
+		if (item[tags[i]] && item[tags[i]] != 'null') cont += item[tags[i]];
+		else cont += '';
+	}
+	return cont;
+}
+
 function getSelectOptions(data, select=null) {
 	var cont = '';
 	for (var i=0; i<data.length; i++) {
 		var d = data[i];
 		cont += '<option value="' + d['id'] + '" ';
-					if (select) if (select == d['id']) cont += ' selected';
+		if (select) if (select == d['id']) cont += ' selected';
 		cont += 	'>' ;
+		cont += 	'<i class="' + d['icon'] + '"></i>';
+		cont += 	' - ';
 		cont += 	d['name'];
 		cont += '</option>';
 	}

@@ -130,11 +130,7 @@
 	.mirror-grid .btn.shw { background-color: var(--btn-shw); }
 	.mirror-grid .btn.edt { background-color: var(--btn-edt); }
 	.mirror-grid .btn.dlt { background-color: var(--btn-dlt); }
-	.mirror-grid .btn.add {
-    	position: absolute; right: 0; top: 0;
-    	text-transform: none;
-    	background-color: var(--btn-add); }
-		.mirror-grid .btn .add i { margin: 0 5px 0 0; }
+	.mirror-grid .btn.add { background-color: var(--btn-add); }
 
 	.mirror-grid .btn.active {
 		background-color: white;
@@ -147,7 +143,8 @@
 .mirror-grid {
     float: left;
     width: 100%;
-    height: 100vh; }
+    height: 100vh;
+    overflow: hidden; }
 
 	.mirror-grid .head { 
 		position: relative;
@@ -159,6 +156,39 @@
 		font-size: 16px;
 		text-transform: uppercase;
 		padding: 10px 15px; }
+		.mirror-grid .head .sub {
+			font-size: 12px;
+		    font-family: "Quicksand";
+		    text-transform: none;
+		    margin: 0 10px; } 
+
+		.mirror-grid .head .btn.add {
+	    	position: absolute; right: 250px; top: 0;
+	    	text-transform: none;
+	    	transition: 0.3s; }
+			.mirror-grid .head .btn.add i { margin: 0 5px 0 0; }
+
+		.mirror-grid .head .search {
+		    position: absolute; right: 0; top: 0;
+		    width: 250px; height: 100%;
+		    visibility: visible;
+		    transition: 0.3s; }
+			.mirror-grid .head .search i {
+				position: absolute; right: 15px; top: 13px; }
+			.mirror-grid .head .search input {
+				float: left;
+				width: 100%; height: 100%;
+				background-color: #1b2428;
+				color: white;
+				font-size: 14px;
+			    font-family: "Quicksand";
+			    text-transform: none;
+				border: 0;
+				padding: 0 15px; }
+				.mirror-grid .head .search input:focus { outline: 0; }
+
+		.mirror-grid.maximize .head .btn.add { right: 0; transition: 0.3s; }
+		.mirror-grid.maximize .head .search { width: 0; visibility: hidden; transition: 0.3s; }
 
 	.mirror-grid .grid {
 		position: relative;
@@ -166,20 +196,44 @@
 		width: 100%; height: calc(100% - 42px);
 		background-color: #14191b;
 		overflow-y: scroll; } 
+		.mirror-grid .grid::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: var(--color-main); }
+		.mirror-grid .grid::-webkit-scrollbar {
+			width: 10px;
+			background-color: var(--color-main); }
+		.mirror-grid .grid::-webkit-scrollbar-thumb {
+			background-color: var(--color-secd);
+			border: 0 }
 
 		.mirror-grid .grid .box {
+			display: block;
 			animation: gridBoxAnimation 0.5s forwards;
 			position: absolute; top: 0; left: 0;
-			background-color: #283033;
 			border-radius: 5px;
 			border: 0 solid rgba(0,0,0,0.1);
 			border-top-width: 5px;
 			border-bottom-width: 10px;
 			box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 			opacity: 0; visibility: hidden;
-			overflow: hidden;
+			filter: grayscale(0);
 			transition: 0.3s; }
+			.mirror-grid .grid .box.filter {
+				display: none;
+				animation: gridBoxAnimation 0.5s reverse backwards; }
+			.mirror-grid .grid .box.unfocused { filter: grayscale(0.8); }
 
+			.mirror-grid .grid .box .box-gradient {
+				position: absolute; top: 0; left: 0;
+				width: 100%; height: 100%;
+				filter: blur(5px);
+				transform: scaleY(1.05);
+				z-index: -1; }
+			.mirror-grid .grid .box .box-container {
+				position: relative; top: 0; left: 0;
+				width: 100%; height: 100%;
+				background-color: #283033;
+				overflow: hidden; }
 			.mirror-grid .grid .box .box-slash {
 				position: absolute; top: -65%; left: -65%;
 				width: 100%; height: 100%;
@@ -196,37 +250,65 @@
 			.mirror-grid .grid .box .image {
 			    float: left;
 			    width: 100%;
-			    height: 50%;
+			    height: 55%;
 			    background-color: black;
 			    background-size: cover;
 			    background-position: center;
 				transition: 0.3s; }
 		    .mirror-grid .grid .box .category {
 			    display: flex; align-items: center;
-			    position: absolute; top: calc(50% - 30px);
+			    position: absolute; top: calc(55% - 30px);
 			    height: 30px;
 			    color: white;
 			    font-family: "Righteous";
-			    font-weight: bold;
+    			font-size: 12px;	
+			    white-space: nowrap;
 			    padding: 0 15px;
 			    mix-blend-mode: hard-light;
+			    z-index: 1;
 				transition: 0.3s; }
-			.mirror-grid .grid .box .cont {
+			.mirror-grid .grid .box .affinity {
+			    position: absolute; top: calc(50%); right: 0;
+			    width: 30px;
+			    height: 30px;
+			    transform: rotate(45deg);
+			    mix-blend-mode: hard-light;
+			    z-index: 1;
+				transition: 0.3s; }
+	    		.mirror-grid .grid .box .affinity .ico { 
+				    color: white;
+				    font-size: 18px;
+				    text-align: center;
+	    			transform: rotate(-45deg) translateX(-2px) translateY(2px); }
+			.mirror-grid .grid .box .name {
+			    display: inline-flex; align-items: center;
+				float: left;
+				width: 100%; height: 32px;
+			    background-color: #384247;
+		    	color: rgba(255,255,255,0.8);
+			    font-size: 16px;
+			    font-family: "Righteous";
+			    text-transform: capitalize;
+			    white-space: nowrap;
+				padding: 5px 15px; 
+			    transition: 0.3s; }
+		    .mirror-grid .grid .box .description {
 				float: left;
 				width: 100%;
 			    color: rgba(255,255,255,0.8);
 				padding: 5px 15px; 
 			    transition: 0.3s; }
-				.mirror-grid .grid .box .cont.name {
-				    display: inline-flex; align-items: center;
-				    background-color: #384247;
-				    font-size: 18px;
-				    font-family: "Righteous";
-				    text-transform: uppercase;
-				    white-space: nowrap; }
-			    .mirror-grid .grid .box .cont.description {
-				    font-size: 12px;
-				    line-height: 1.2; }
+			    .mirror-grid .grid .box .description textarea {
+				    float: left;
+				    width: 100%; height: 200px;
+				    background-color: transparent;
+				    font-size: 10px;
+				    line-height: 1.2;
+				    border: 0;
+				    overflow: hidden; }
+			    .mirror-grid .grid .box .description .save {
+				    visibility: hidden;
+				    opacity: 0; }
 
 			.mirror-grid .grid .box .btn-box {
 			    position: absolute; right: 0; bottom: -35px;
@@ -235,7 +317,7 @@
 				.mirror-grid .grid .box:hover .btn-box { bottom: 0; transition: 0.3s; }
 				.mirror-grid .grid .box .btn { width: calc(100% / 3); }
 
-		.mirror-grid .grid.maximize { overflow-y: hidden; }
+		.mirror-grid.maximize .grid { overflow-y: hidden; }
 			.mirror-grid .grid .box.maximize {
 			    top: 0 !important;
 			    left: 0 !important;
@@ -259,12 +341,35 @@
 			    height: 35px;
 			    width: calc(100% - 350px);
 				transition: 0.3s; }
-			.mirror-grid .grid .box.maximize .cont {
+			.mirror-grid .grid .box.maximize .affinity {
+			    position: absolute; top: calc(32px - 15px); right: 15px;
+			    width: 30px;
+			    height: 30px;
+			    transform: rotate(45deg);
+			    mix-blend-mode: hard-light;
+			    z-index: 1;
+				transition: 0.3s; }
+			.mirror-grid .grid .box.maximize .name {
 			    float: left;
 			    width: 350px; 
 			    transition: 0.3s; }
-			    .mirror-grid .grid .box.maximize .cont.description {
-				    padding: 15px; }
+		    .mirror-grid .grid .box.maximize .description {
+			    float: left;
+			    width: 350px; height: calc(100% - 32px - 35px); 
+			    padding: 0;
+			    transition: 0.3s; }
+		    	.mirror-grid .grid .box.maximize .description textarea {
+		    		height: 100%; 
+				    font-size: 12px;
+			        line-height: 1.4;
+		    		padding: 25px 15px; }
+		    		.mirror-grid .grid .box.maximize .description textarea:focus { outline: 0; }
+			    .mirror-grid .grid .box.maximize .description .save {
+			    	position: absolute; bottom: 50px; right: 15px; 
+			    	font-size: 20px;
+				    visibility: visible;
+				    opacity: 1;
+				    cursor: pointer; }
 			.mirror-grid .grid .box.maximize .btn-box {
 			    right: 0; bottom: 0;
 			    width: 350px; height: 35px; 
@@ -367,23 +472,39 @@
       	.mirror-grid .diamond-alert.edt .box .btn { background-color: var(--btn-edt); }
       	.mirror-grid .diamond-alert.dlt .box .btn { background-color: var(--btn-dlt); }
 
+    .mirror-grid .nothing {
+	    position: absolute; left: -50%; top: 42px;
+	    width: 100%;
+	    color: rgba(255,255,255,0.5);
+	    text-align: center;
+	    padding: 10px;
+		opacity: 0;
+		visibility: hidden;
+	    z-index: 100;
+		transition: 0.3s; }
+    	.mirror-grid .nothing.open { 
+    		left: 0px;
+    		opacity: 1;
+    		visibility: visible;
+    		transition: 0.3s; }
+
 /*INPUTS*/
 /*========================================================================*/
 .mirror-grid .input-box {
     position: relative;
     float: left;
-    width: 100%;
-    padding: 5px 0; }
+    width: 100%;    
+    margin: 0 0 5px; }
 
     .mirror-grid .input-box label {
-	    position: absolute; left: 30px; top: 15px;
+	    position: absolute; left: 30px; top: 10px;
 		color: var(--color-main);
 		transition: 0.3s; }
 
 		.mirror-grid .input-box.focus label,
 		.mirror-grid .input-box.filled label,
 		.mirror-grid .input-box.color label {
-			left: 15px; top: 8px;
+			left: 15px; top: 3px;
 			color: rgba(0,0,0,0.3);
 			font-size: 10px; 
 			transition: 0.3s; }
@@ -399,7 +520,7 @@
 	    border-radius: 5px;
 	    padding: 15px 30px 5px; }
 	    .mirror-grid .input-box input[type="color"] {
-			height: 40px; }
+			height: 39px; }
 
 	.mirror-grid .input-box input:focus,
 	.mirror-grid .input-box textarea:focus,
@@ -407,6 +528,13 @@
 		background-color: white;
 		border-color: var(--color-secd);
 		outline: 0; }
+
+	.mirror-grid .input-box.color input[type="color"] {
+	    position: absolute; right: 0; top: 0;
+	    width: 100px;
+	    border-top-left-radius: 0;
+	    border-bottom-left-radius: 0;
+	    padding: 5px; }
 
 	.mirror-grid .input-box.submit i {
 		position: absolute; right: 0; top: calc(50% - 7px);

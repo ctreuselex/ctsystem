@@ -7,13 +7,12 @@
 	<script type="text/javascript">
 		var mainData = <?=json_encode($data)?>;
 		var divisions = <?=json_encode($divisions)?>;
-
-		console.log(mainData);
-
+		
 		var grid = mirrorGrid;
 		grid.init({
 			el: $('.origin-grid'),
 			title: 'Origins',
+			subtitle: 'Individuals alike tend to flock together',
 			gridColors: { top: 'color', bot: 'division_color', ico: 'color', cat: 'division_color' },
 			gridContent: [
 				{ name: 'icon', tag: 'icon' },
@@ -32,8 +31,8 @@
 					{ name: 'Division', tag: 'division', type: 'select', from: divisions },
 					{ name: 'Icon', tag: 'icon', type: 'text' },
 					{ name: 'Name', tag: 'name', type: 'text' },
-					{ name: 'Image', tag: 'image', type: 'txt' },
-					{ name: 'Color', tag: 'color', type: 'txt' },
+					{ name: 'Image', tag: 'image', type: 'text' },
+					{ name: 'Color', tag: 'color', type: 'color' },
 					{ name: 'Description', tag: 'description', type: 'textarea' },
 				],
 				link: window.location.pathname,
@@ -47,8 +46,8 @@
 					{ name: 'Division', tag: 'division', type: 'select', from: divisions },
 					{ name: 'Icon', tag: 'icon', type: 'text' },
 					{ name: 'Name', tag: 'name', type: 'text' },
-					{ name: 'Image', tag: 'image', type: 'txt' },
-					{ name: 'Color', tag: 'color', type: 'txt' },
+					{ name: 'Image', tag: 'image', type: 'text' },
+					{ name: 'Color', tag: 'color', type: 'color' },
 					{ name: 'Description', tag: 'description', type: 'textarea' },
 				],
 				baseLink: window.location.pathname,
