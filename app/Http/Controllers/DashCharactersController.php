@@ -18,11 +18,17 @@ use App\Origins;
 class DashCharactersController extends Controller {
 
 	public function index() {
-        $data = Characters::getData();
+        $characters = Characters::getData();
         $affinities = Affinities::orderBy('name')->get();
+        $divisions = Divisions::orderBy('name')->get();
         $origins = Origins::orderBy('name')->get();
 
-        return view('dash/characters', ['data' => $data, 'affinities' => $affinities, 'origins' => $origins]);
+        return view('dash/characters', [
+            'characters' => $characters, 
+            'affinities' => $affinities, 
+            'divisions' => $divisions, 
+            'origins' => $origins
+        ]);
 	}
 
     public function create() { }
@@ -42,8 +48,8 @@ class DashCharactersController extends Controller {
         $post->description = $request->description;
         $post->save();
 
-        $data = Characters::getData();
-        return response()->json($data);
+        $characters = Characters::getData();
+        return response()->json($characters);
     }
 
     public function show($id) {
@@ -68,16 +74,16 @@ class DashCharactersController extends Controller {
         $post->description = $request->description;
         $post->save();
 
-        $data = Characters::getData();
-        return response()->json($data);
+        $characters = Characters::getData();
+        return response()->json($characters);
     }
 
     public function destroy($id) {
         $post = Characters::findOrFail($id);
         $post->delete();
 
-        $data = Characters::getData();
-        return response()->json($data);
+        $characters = Characters::getData();
+        return response()->json($characters);
     }
 
     public function saveDescription() {
@@ -87,8 +93,17 @@ class DashCharactersController extends Controller {
         $post->description = Input::get('description');
         $post->save();
 
-        $data = Characters::getData();
-        return response()->json($data);
+        $characters = Characters::getData();
+        return response()->json($characters);
+    }
+
+    public function getData() {
+        $name = Input::get('name');
+
+        $characters = Characters::where('name', $name)->first();
+        $characters->block_id = Input::get('block_id');
+        $characters->alt = Input::get('alt');
+        return response()->json($characters);
     }
 }
     

@@ -1,0 +1,418 @@
+:root {
+	--grid-dark: #14191b;
+	--grid-light: #1b2428;
+
+	--btn-shw: #00bcd4;
+	--btn-edt: #9c27b0;
+	--btn-dlt: #ff9800;
+}
+
+/*MIRROR GRID*/
+/*========================================================================*/
+
+.mirror-grid {
+    float: left;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden; }
+
+	.mirror-grid .head { 
+		position: relative;
+		float: left;
+		width: 100%; height: 42px;
+		color: white;
+		background-color: var(--color-main); }
+		.mirror-grid .head .title {
+			display: inline-flex; align-items: center;
+			height: 100%;
+			background-color: rgba(0,0,0,0.2);
+			font-family: "Righteous";
+			font-size: 16px;
+			text-transform: uppercase;
+			padding: 0 15px; } 
+		.mirror-grid .head .sub {
+			display: inline-flex; align-items: center;
+			height: 100%;
+			font-size: 12px;
+			padding: 0 15px; } 
+
+		.mirror-grid .head .showing {
+	    	position: absolute; right: 375px; top: 0;
+	    	font-size: 10px;
+	    	font-family: "Quicksand";
+	    	text-transform: none;
+	    	padding: 5px 15px;
+	    	transition: 0.3s; }
+
+		.mirror-grid .head .button.add {
+			display: flex; align-items: center;
+	    	position: absolute; right: 250px; top: 0;
+	    	background-color: rgba(0,0,0,0.4);
+	    	width: 125px; height: 100%;
+	    	text-transform: none;
+	    	cursor: pointer;
+	    	transition: 0.3s; }
+			.mirror-grid .head .button.add:hover { background-color: var(--btn-shw); transition: 0.3s; }
+			.mirror-grid .head .button.add .row { width: 100%; text-align: center; margin: 0; };
+			.mirror-grid .head .button.add i,
+			.mirror-grid .head .button.add svg { margin: 0 5px 0 0; }
+
+		.mirror-grid .head .search {
+		    position: absolute; right: 0; top: 0;
+		    width: 250px; height: 100%;
+		    opacity: 1;
+		    transition: 0.3s; }
+			.mirror-grid .head .search i,
+			.mirror-grid .head .search svg {
+				position: absolute; right: 15px; top: 13px; }
+			.mirror-grid .head .search input {
+				float: left;
+				width: 100%; height: 100%;
+				background-color: var(--grid-light);
+				color: white;
+				font-size: 14px;
+			    font-family: "Quicksand";
+			    text-transform: none;
+				border: 0;
+				padding: 0 15px; }
+				.mirror-grid .head .search input:focus { outline: 0; }
+
+	.mirror-grid .grid {
+		position: relative;
+		float: left;
+		width: 100%; height: calc(100% - 42px);
+		background-color: var(--grid-dark);
+		overflow-y: scroll; } 
+		.mirror-grid .grid::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: var(--color-secd); }
+		.mirror-grid .grid::-webkit-scrollbar {
+			width: 10px;
+			background-color: var(--color-secd); }
+		.mirror-grid .grid::-webkit-scrollbar-thumb {
+			background-color: var(--color-main);
+			border: 0 }
+
+		.mirror-grid .grid .box {
+			display: block;
+			position: absolute; top: 0; left: 0;
+			border-radius: 5px;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+			/*opacity: 0; visibility: hidden;*/
+			transition: 0.3s; }
+			.mirror-grid .grid .box.filter { display: none; }
+			.mirror-grid .grid .box .gradient {
+				position: absolute; top: 0; left: 0;
+				width: 100%; height: 100%;
+				filter: blur(3px);
+				transform: scaleY(1); }
+
+			.mirror-grid .grid .box .content {
+				position: relative; top: 0; left: 0;
+				width: 100%; height: 100%;
+				background-color: var(--grid-light);
+				border: 0 solid rgba(0,0,0,0.1);
+				border-top-width: 3px;
+				border-bottom-width: 5px;
+				border-radius: 5px;
+				overflow: hidden; }
+				.mirror-grid .grid .box .content .slash {
+					position: absolute; top: -50px; left: -50px;
+					width: 100px; height: 100px;
+					transform: rotate(45deg);
+					mix-blend-mode: hard-light;
+					opacity: 1;
+					z-index: 2; }
+
+				.mirror-grid .grid .box .content .icon {
+				    position: absolute; top: 5px; left: 10px;
+				    font-size: 20px;
+				    color: white;
+					z-index: 3; }
+				.mirror-grid .grid .box .content .image { 
+					position: absolute; top: 0; left: 0;
+				    width: 100%;
+				    height: 100%;
+				    background-position: center;
+				    background-size: cover;
+				    z-index: 1;
+				    transition: 0.3s; }
+				.mirror-grid .grid .box .affinity {
+					display: flex; align-items: center;
+				    position: absolute; bottom: 17px; right: 10px;
+				    width: 30px;
+				    height: 30px;
+				    transform: rotate(45deg);
+				    mix-blend-mode: hard-light;
+				    z-index: 4;
+					transition: 0.3s; }
+					.mirror-grid .grid .box .affinity .center { 
+						width: 100%; 
+						text-align: center; 
+						margin: 0; 
+						transform: rotate(-45deg); }
+		    		.mirror-grid .grid .box .affinity .icon { 
+		    			position: relative; top: unset; left: unset;
+					    color: white;
+					    font-size: 16px;
+					    text-align: center; }
+
+			    .mirror-grid .grid .box .category {
+				    display: flex; align-items: center;
+				    position: absolute; bottom: 32px;
+				    height: 30px;
+				    color: white;
+	    			font-size: 10px;
+	    			font-weight: bolder;
+				    white-space: nowrap;
+				    padding: 0 15px;
+				    mix-blend-mode: hard-light;
+				    z-index: 3;
+					transition: 0.3s; }
+				.mirror-grid .grid .box .content .name { 
+					position: absolute; bottom: 0; left: 0;
+				    display: flex; align-items: center;
+					width: 100%;
+				    background-color: var(--grid-dark);
+			    	color: white;
+				    font-size: 16px;
+				    font-family: "Righteous";
+				    text-transform: capitalize;
+				    white-space: nowrap;
+					padding: 5px 15px;
+					mix-blend-mode: luminosity;
+					z-index: 3; }
+				.mirror-grid .grid .box .description { 
+					position: absolute; left: 50%; top: 0;
+					opacity: 0; visibility: hidden; }
+					.mirror-grid .grid .box .description .text {
+					    color: white;
+					    font-size: 12px; 
+					    line-height: 1.5;
+					    white-space: pre-wrap; 
+					    padding: 75px 15px 15px; }
+					    .mirror-grid .grid .box .description .text .dataBlock { font-weight: bold; }
+						    .mirror-grid .grid .box .description .text .dataBlock i, 
+						    .mirror-grid .grid .box .description .text .dataBlock svg { margin: 0 3px 0 0; }
+						    .mirror-grid .grid .box .description .text .dataBlock.reload { cursor: pointer; }
+
+				.mirror-grid .grid .box .content .buttons { 
+					position: absolute; top: 0; left: 0;
+					width: 100%; height: 100%;
+					opacity: 0; visibility: hidden;
+					mix-blend-mode: hard-light;
+					z-index: 4;
+					transition: 0.3s;  }
+					.mirror-grid .grid .box:hover .content .buttons { 
+					 	opacity: 1; visibility: visible;
+					  	transition: 0.3s; }
+					.mirror-grid .grid .box .content .buttons .button {
+						position: absolute; top: calc(50% - 20px); left: calc(50% - 20px);
+						display: flex; align-items: center;
+						width: 40px;
+						height: 40px;
+						background-color: var(--grid-dark);
+						color: white;
+						cursor: pointer;
+						transform: rotate(45deg) translate(0, 0);
+						transition: 0.3s; } 
+						.mirror-grid .grid .box .content .buttons .button .row { width: 100%; text-align: center; margin: 0; transform: rotate(-45deg); };
+						.mirror-grid .grid .box:hover .content .buttons .button { transition: 0.3s; }
+						.mirror-grid .grid .box:hover .content .buttons .button.shw { transform: rotate(45deg) translate(-20px, -20px); }
+						.mirror-grid .grid .box:hover .content .buttons .button.edt { transform: rotate(45deg) translate(-20px, 20px); }
+						.mirror-grid .grid .box:hover .content .buttons .button.dlt { transform: rotate(45deg) translate(20px, -20px); }
+						.mirror-grid .grid .box:hover .content .buttons .button.shw:hover { background-color: var(--btn-shw) }
+						.mirror-grid .grid .box:hover .content .buttons .button.edt:hover { background-color: var(--btn-edt) }
+						.mirror-grid .grid .box:hover .content .buttons .button.dlt:hover { background-color: var(--btn-dlt) }
+
+	.mirror-grid.maximize .grid { overflow-y: hidden; }
+		.mirror-grid .grid .box.maximize {
+		    left: 0 !important;
+		    width: 100% !important;
+		    height: 100% !important;
+		    border-radius: 0;
+		    opacity: 1;
+			transition: 0.3s; }
+			.mirror-grid .grid .box.top { z-index: 100; }
+
+			.mirror-grid .grid .box.maximize .gradient {
+				opacity: 0;
+				visibility: hidden;
+				transition: 0.3s; }
+
+				.mirror-grid .grid .box.maximize .content { border-radius: 0; }
+				.mirror-grid .grid .box.maximize .image { width: 50%; }
+				.mirror-grid .grid .box.maximize .category { left: 50%; bottom: calc(100% - 32px - 30px); }
+				.mirror-grid .grid .box.maximize .affinity { right: 30px; bottom: calc(100% - 47px); }
+				.mirror-grid .grid .box.maximize .name { left: 50%; bottom: calc(100% - 32px); }
+				.mirror-grid .grid .box.maximize .description { 
+					left: 50%; top: 0;
+					opacity: 1; visibility: visible; }
+
+				.mirror-grid .grid .box.maximize .content .buttons .button { left: calc(50% - 41px) }
+				.mirror-grid .grid .box.maximize .content .buttons .button .row { transform: rotate(0deg); }
+				.mirror-grid .grid .box.maximize .content .buttons .button.shw { transform: rotate(0deg) translate(0, -41px); }
+				.mirror-grid .grid .box.maximize .content .buttons .button.edt { transform: rotate(0deg) translate(0, 0); }
+				.mirror-grid .grid .box.maximize .content .buttons .button.dlt { transform: rotate(0deg) translate(0, 41px); }
+
+/*POPUP*/
+/*========================================================================*/
+.mirror-grid .popup {
+	display: flex; align-items: center;
+	position: fixed; top: 0; left: 0; 
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.9);
+	z-index: 9000; 
+	opacity: 0; visibility: hidden;
+	transition: 0.3s;}
+	.mirror-grid .popup.open {
+		opacity: 1; visibility: visible;
+		transition: 0.3s; }
+
+    .mirror-grid .popup .flex {
+		display: flex; align-items: center; 
+		width: 100%; height: 100%; }
+    .mirror-grid .popup .row { margin: 0 auto; }
+
+    .mirror-grid .popup .box {
+		display: inline-block;
+		width: 300px;
+		max-height: 95vh;
+		background-color: var(--color-secd);
+		text-align: center;
+		border-radius: 10px;
+		border: 1px solid rgba(0,0,0,0.3);
+    	margin: 0;
+    	box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+		opacity: 0;
+		transform: translateY(-100px) scale(0.8);
+		overflow: hidden; }
+
+      	.mirror-grid .popup.open .box {
+			opacity: 1;
+			transform: translateY(0) scale(1); 
+			transition: 0.3s; }
+
+	      	.mirror-grid .popup .box .title {
+	            background-color: var(--color-main);
+	            color: white;
+				font-family: "Righteous";
+				font-size: 16px;
+				text-transform: uppercase;
+				text-align: left;
+				padding: 10px 15px; }
+			.mirror-grid .popup .box .scroll {
+				float: left;
+				width: 100%;
+				height: 100%;
+				text-align: left;
+				padding: 10px;
+				overflow-y: auto; } 
+				.mirror-grid .popup .box .scroll .col {
+				    float: left;
+					width: 100%;
+				    padding: 5px; }
+
+	        .mirror-grid .popup .box .close {
+				position: absolute; top: 10px; right: 15px;
+				color: white;
+				font-size: 20px;
+				opacity: 1;
+				cursor: pointer; }
+
+/*INPUTS*/
+/*========================================================================*/
+.mirror-grid .input-box {
+    position: relative;
+    float: left;
+    width: 100%;    
+    margin: 0 0 5px; }
+
+    .mirror-grid .input-box label {
+	    position: absolute; left: 30px; top: 10px;
+		color: var(--color-secd);
+		transition: 0.3s; }
+
+		.mirror-grid .input-box.focus label,
+		.mirror-grid .input-box.filled label,
+		.mirror-grid .input-box.color label {
+			left: 15px; top: 3px;
+			color: rgba(0,0,0,0.3);
+			font-size: 10px; 
+			transition: 0.3s; }
+
+	.mirror-grid .input-box input,
+	.mirror-grid .input-box textarea,
+	.mirror-grid .input-box select {
+	    float: left;
+	    width: 100%;
+		background-color: #eee;
+		font-size: 12px;
+	    border: 1px solid #eee;
+	    border-radius: 5px;
+	    padding: 15px 30px 5px; }
+	    .mirror-grid .input-box input[type="color"] {
+			height: 39px; }
+
+	.mirror-grid .input-box input:focus,
+	.mirror-grid .input-box textarea:focus,
+	.mirror-grid .input-box select:focus {
+		background-color: white;
+		border-color: var(--color-main);
+		outline: 0; }
+
+	.mirror-grid .input-box.color input[type="color"] {
+	    position: absolute; right: 0; top: 0;
+	    width: 100px;
+	    border-top-left-radius: 0;
+	    border-bottom-left-radius: 0;
+	    padding: 5px; }
+
+	.mirror-grid .input-box.multi-select label {
+		position: relative; left: 30px;
+    	color: var(--color-secd);
+    	font-size: 14px; }
+	.mirror-grid .input-box .ms-container {
+	    width: 100%; }
+	    .mirror-grid .input-box .ms-container .ms-selectable, 
+	    .mirror-grid .input-box .ms-container .ms-selection {
+		    width: 49%; }
+		.mirror-grid .input-box .ms-container .ms-list {
+			overflow-y: scroll;
+			overflow-x: hidden; }
+		.mirror-grid .input-box .ms-container .ms-selectable li.ms-elem-selectable, 
+		.mirror-grid .input-box .ms-container .ms-selection li.ms-elem-selection {
+		    font-size: 12px;
+		    white-space: nowrap; }
+
+	.mirror-grid .input-box.submit i ,
+	.mirror-grid .input-box.submit svg {
+		position: absolute; right: 0; top: calc(50% - 7px);
+		color: white;
+		opacity: 0;
+		z-index: 1;
+	    transition: 0.3s;  }
+		.mirror-grid .input-box.submit.load i,
+		.mirror-grid .input-box.submit.load svg {
+			animation: loadSpin 1s infinite linear;
+		    right: 30px;
+		    opacity: 1;
+		    transition: 0.3s; }
+	.mirror-grid .input-box.submit input {
+	    float: right;
+	    width: 150px;
+	    background-color: grey;
+	    color: white;
+	    font-size: 14px;
+	    font-weight: bold;
+	    border: 1px solid rgba(0,0,0,0.1);
+	    border-radius: 5px; 
+	    padding: 7px 0;
+	    margin: 0 5px;
+	    opacity: 1;
+	    transition: 0.3s; }
+		.mirror-grid .input-box.submit.load input {
+			background-color: grey;
+			opacity: 0.5;
+			transition: 0.3s; }

@@ -66,5 +66,25 @@ class DashOriginsController extends Controller {
         $data = Origins::getData();
         return response()->json($data);
     }
+
+    public function saveDescription() {
+        $id = Input::get('id');
+
+        $post = Origins::findOrFail($id);
+        $post->description = Input::get('description');
+        $post->save();
+
+        $data = Origins::getData();
+        return response()->json($data);
+    }
+
+    public function getData() {
+        $name = Input::get('name');
+
+        $data = Origins::where('name', $name)->first();
+        $data->block_id = Input::get('block_id');
+        $data->alt = Input::get('alt');
+        return response()->json($data);
+    }
 }
     

@@ -1,13 +1,8 @@
 
 var url = window.location;
-// var nullImage = "https://cdna.artstation.com/p/assets/images/images/013/479/940/large/dmytro-lisin-faceless-23333.jpg?1539788021";
 var nullImage = url.origin + '/img/default-img.png';
 
-$.ajaxSetup({
-	headers: {
-		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	}
-});
+$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
 // PAGE CHANGE 
 /*===================================================================*/
@@ -33,26 +28,27 @@ $(document).on('click', 'a', function(event){
 });
 
 // CREATE GRID
-/*===================================================================*/
-var mirrorGrid = {
-	main: this,
-	options: {
+// /*===================================================================*/
+function mirrorGrid(options) {
+	construct = {
 		el: null,
 		title: '',
 		subtitle: '',
-		gridColumns: 6, 
-		gridSpacing: 10,
-		gridHeight: 300,
-		gridColors: { 
-			top: 'color', 
-			bot: 'color', 
-			ico: 'color', 
-			cat: 'color',
-			aff: 'color', },
-		gridContent: [
-			{ name: 'name', tag: 'name' },
-		],
 		data: null,
+		box: {
+			columns: 6,
+			spacing: 10,
+			height: 300,
+			colors: { 
+				top: 'color', 
+				bot: 'color', 
+				ico: 'color', 
+				cat: 'color',
+				aff: 'color', },
+			content: [
+				{ name: 'name', tag: 'name' },
+			],
+		},
 		addData: {
 			method: 'POST',
 			title: "Add New",
@@ -61,7 +57,7 @@ var mirrorGrid = {
 			inputs: [
 				{ name: 'name', tag: 'name', type: 'text' },
 			],
-			link: window.location.pathname,
+			link: url.pathname,
 		},
 		editData: {
 			method: 'PUT',
@@ -71,154 +67,94 @@ var mirrorGrid = {
 			inputs: [
 				{ name: 'name', tag: 'name', type: 'text' },
 			],
-			baseLink: window.location.pathname,
+			baseLink: url.pathname,
 		},
 		deleteData: {
 			alertQuestion: "Delete?",
 			alertSuccess: "Deleted!",
-			link: window.location.pathname,
+			link: url.pathname,
 		},
-	},
-	init: function(options) {
-		$.extend(this.options, options);
-		this.options.el.addClass('mirror-grid');
-		this.options.el.html('');
-		this.options.el.append( this.setHead() );
-		this.options.el.append( this.setGrid() );
-		this.loadBoxes();
+		items: [],
+	}
+	$.extend(construct, options);
+	this.init();
+}
 
-		this.popup.main = this;
-		this.popup.el = options.el;
-		this.diamondAlert.main = this;
-		this.diamondAlert.el = options.el;
-		this.setGridInteractions();
+$.extend(mirrorGrid.prototype, {
+	init: function() {
+		construct.el.addClass('mirror-grid');
+		construct.el.html( this.buildGrid() );
+		this.buildBoxes();
+
+		console.log(construct.items);
 	},
-	setHead: function() {
+	buildGrid: function() {
 		var cont = '';
 		cont += '<div class="head">';
-		cont += 	this.options.title;
-		cont += 	'<span class="sub">' + this.options.subtitle + '</span>';
+		cont += 	construct.title;
+		cont += 	'<span class="sub">' + construct.subtitle + '</span>';
+		cont += 	'<div class="showing"></div>';
 		cont += 	'<div class="btn add"><center><i class="fas fa-plus"></i> Add New</center></div>';
 		cont += 	'<div class="search"><i class="fas fa-search"></i> <input type="text" placeholder="Search"></div>';
 		cont += '</div>';
+
+		cont += '<div class="grid"></div>';
+		cont += '<div class="nothing"> Oof, I found nothing. </div>';
 		return cont;
 	},
-	setGrid: function() {
-		var cont = '';
-		cont += '<div class="grid">';
-		cont += '</div>';
-		cont += '<div class="nothing">';
-		cont += 	'Oof, there\'s no data here';
-		cont += '</div>';
-		return cont;
-	},
-	setGridInteractions: function() {
-		var self = this;
-		$('.btn.add', this.options.el).on('click', function() {
-		 	self.popup.setup( self.options.addData );
-		});
+	buildBoxes: function() {
+		var grid = $('.grid', construct.el);
+		for (var i=0; i<construct.data.length; i++) {
+			var data = construct.data[i];
+			var box = Object.create(mirrorBox);
+			// var box = new mirrorBox({
+			// 	grid: grid,
+			// 	box: construct.box,
+			// 	data: data,
+			// })
+			box.construct.grid = grid;
+			box.construct.box = construct.box;
+			box.construct.data = data;
 
-		$('.search input', this.options.el).on('change', function() {
-			var search = $(this).val();
-		 	self.loadBoxes(search);
-		});
-	},
+			grid.append( box.buildBox(i) );
+			box.updateBox();
+			// box.updateBlocks();
 
-	loadBoxes: function(search='') {
-		var grid = $('.grid', this.options.el);
-		var data = this.options.data;
-		var delay = 0;
-
-		for (var i=0; i<data.length; i++) {
-			var item = data[i];
-			var box = $('.box#' + item['id'], grid);
-
-			// APPEND BOX AFTER ADDING
-			if ( box.length == 0 ) { 
-				$(grid).append( this.getBox(item, i) );
-				box = $('.box#' + item['id'], grid);
-				delay = i * 0.05;
-				this.updateBox(box, item, delay);
-				this.setBoxInteractions( box );
-				this.popup.popOut();
-
-			// UPDATE BOX AFTER EDITING
-			} else { 
-				this.updateBox(box, item, delay);
-				$(box).css('top', this.getBoxTop(i));
-				$(box).css('left', this.getBoxLeft(i));
-				this.popup.popOut();
-			}
+			construct.items.push(box);
 		}
-
-		var self = this;
-		var searchCount = 0;
-		var delay = 0;
-		$('.box', grid).each( function() {
-			var id = $(this).attr('id');
-			// REMOVE DELETED BOX
-			if (!getData(id, data)) $(this).remove();
-
- 			// SEARCH BOXES
-			if (search != '') {
-				if ( $('.name', this).html().toLowerCase().indexOf(search) >= 0 ) {
-					$(this).removeClass('filter');
-					delay = searchCount * 0.05;
-					$(this).css('animation-delay', delay + 's');
-					$(this).css('top', self.getBoxTop(searchCount));
-					$(this).css('left', self.getBoxLeft(searchCount));
-					searchCount += 1;
-				} else {
-					$(this).addClass('filter');
-				}
-			} else {
-				$(this).removeClass('filter');
-				delay = searchCount * 0.05;
-				$(this).css('animation-delay', delay + 's');
-				searchCount += 1;
-			}
-		});
-
-		if (searchCount == 0) { $('.nothing', self.options.el).addClass('open');
-		} else $('.nothing', self.options.el).removeClass('open');
 	},
-	getBox: function(item, i) {
+});
+
+var mirrorBox = {
+	construct: { dataBlocks: [], },
+	buildBox: function(i) {
 		var cont = '';
-		cont += '<div class="box" id="' + item['id'] + '" ';
+		cont += '<div class="box" id="' + construct.data['id'] + '" ';
 		cont += 	'style="';
 		cont += 	'width: ' + this.getBoxSize() + 'px;';
-		cont += 	'height: ' + this.options.gridHeight + 'px;';
+		cont += 	'height: ' + construct.box.height + 'px;';
 		cont += 	'top: ' + this.getBoxTop(i) + 'px;';
 		cont += 	'left: ' + this.getBoxLeft(i) + 'px;';
-		cont += 	'margin-bottom: ' + this.options.gridSpacing + 'px;';
-		cont += 	'border-top-color: ' + item[this.options.gridColors.top] + ';';
-		cont += 	'border-bottom-color: ' + item[this.options.gridColors.bot] + ';';
+		cont += 	'margin-bottom: ' + construct.box.spacing + 'px;';
 		cont += 	'">';
-		cont += 	'<div class="box-gradient" style="';
-		cont += 		'background-image: linear-gradient(to bottom, ' + item[this.options.gridColors.top] + ', ' + item[this.options.gridColors.bot] + ');';
-		cont += 		'"></div>';
+		cont += 	'<div class="box-gradient"></div>';
 		cont += 	'<div class="box-container">';
-		cont += 		'<div class="box-slash" style="';
-		cont += 			'background-color: ' + item[this.options.gridColors.ico] + ';';
-		cont += 			'box-shadow: 0 0 50px ' + item[this.options.gridColors.ico] + ';';
-		cont += 			'"></div>';
-		cont +=				this.getBoxData(item);
+		cont += 		'<div class="box-slash"></div>';
+		cont +=				this.getBoxData( construct.data );
 		cont += 		'<div class="btn-box">';
-		cont +=				'<div class="btn shw" id="' + item['id'] + '"><i class="fas fa-expand"></i></div>';
-		cont +=				'<div class="btn edt" id="' + item['id'] + '"><i class="fas fa-edit"></i></div>';
-		cont +=				'<div class="btn dlt" id="' + item['id'] + '"><i class="fas fa-trash"></i></div>';
+		cont +=				'<div class="btn shw" id="' + construct.data['id'] + '"><i class="fas fa-expand"></i></div>';
+		cont +=				'<div class="btn edt" id="' + construct.data['id'] + '"><i class="fas fa-edit"></i></div>';
+		cont +=				'<div class="btn dlt" id="' + construct.data['id'] + '"><i class="fas fa-trash"></i></div>';
 		cont += 		'</div>';
 		cont += 	'</div>';
 		cont += '</div>';
 		return cont;
 	},
-	getBoxSize: function() { return (this.options.el.width() / this.options.gridColumns) - ((this.options.gridSpacing * (2 / this.options.gridColumns) + this.options.gridSpacing)); },
-	getBoxTop: function(i) { return Math.floor(i / this.options.gridColumns) * (this.options.gridHeight + this.options.gridSpacing) + this.options.gridSpacing; },
-	getBoxLeft: function(i) { return (i % this.options.gridColumns) * this.getBoxSize() + (this.options.gridSpacing * (i % this.options.gridColumns + 1)); },
-	getBoxData: function(item) {
+	
+	getBoxData: function(data) {
 		var cont = '';
-		for (var i=0; i<this.options.gridContent.length; i++) {
-			var content = this.options.gridContent[i];
+		for (var i=0; i<construct.box.content.length; i++) {
+			var content = construct.box.content[i];
 
 			if (content['name'] == 'icon') {
 				cont += '<div class="icon">';
@@ -246,384 +182,271 @@ var mirrorGrid = {
 
 			} else if (content['name'] == 'description') {
 				cont += '<div class="description">';
-				cont += 	'<textarea disabled></textarea>';
-				cont += 	'<i class="fas fa-save save"></i>';
+				cont += 	'<div class="text"></div>';
+				cont += 	'<textarea></textarea>';
+				cont += 	'<div class="des-btn edit"><i class="fas fa-edit"></i></div>';
+				cont += 	'<div class="des-btn save"><i class="fas fa-save"></i></div>';
 				cont += '</div>';
 			}
 		}
 		return cont;
 	},
-	updateBox: function(box, item, delay) {
-		$(box).css('animation-delay', delay + 's');
-		$(box).css('border-top-color', item[this.options.gridColors.top]);
-		$(box).css('border-bottom-color', item[this.options.gridColors.bot]);
-		$(box).css('box-shadow', '0 0 10px ' + item[this.options.gridColors.bot]);
-		$('.box-gradient', box).css('background-image', 'linear-gradient(to bottom, ' + item[this.options.gridColors.top] + ', ' + item[this.options.gridColors.bot] + ')');
-		$('.box-slash', box).css('background-color', item[this.options.gridColors.ico]);
-		$('.box-slash', box).css('box-shadow', '0 0 10px ' + item[this.options.gridColors.ico]);
+	updateBox: function() {
+		construct.el = this.getElement();
+		// $(box).css('animation-delay', delay + 's');
+		$(construct.el).css('border-top-color', construct.data[construct.box.colors.top]);
+		$(construct.el).css('border-bottom-color', construct.data[construct.box.colors.bot]);
+		$('.box-gradient', construct.el).css('background-image', 'linear-gradient(to bottom, ' + construct.data[construct.box.colors.top] + ', ' + construct.data[construct.box.colors.bot] + ')');
+		$('.box-slash', construct.el).css('background-color', construct.data[construct.box.colors.ico]);
+		$('.box-slash', construct.el).css('box-shadow', '0 0 10px ' + construct.data[construct.box.colors.ico]);
 
-		for (var i=0; i<this.options.gridContent.length; i++) {
-			var content = this.options.gridContent[i];
+		for (var i=0; i<construct.box.content.length; i++) {
+			var content = construct.box.content[i];
 
 			if (content['name'] == 'icon') {
-				$('.icon i', box).attr('class', item[content['tag']]);
+				$('.icon i', construct.el).attr('class', construct.data[content['tag']]);
 
 			} else if (content['name'] == 'image') {
-				if (item[content['tag']]) {
-					$('.image', box).css('background-image', 'url(' + item[content['tag']] + ')');
+				if (construct.data[content['tag']]) {
+					$('.image', construct.el).css('background-image', 'url(' + construct.data[content['tag']] + ')');
 				} else {
-					$('.image', box).css('background-image', 'url(' + nullImage + ')');
+					$('.image', construct.el).css('background-image', 'url(' + nullImage + ')');
 				}
 
 			} else if (content['name'] == 'category') {
-				$('.category', box).css('background-color', item[this.options.gridColors.cat]);
-				if (content['tag']) $('.category', box).html(item[content['tag']]);
-				else if (content['tags']) $('.category', box).html(getContentTags(content['tags'], item, content['seperator']));
+				$('.category', construct.el).css('background-color', construct.data[options.gridColors.cat]);
+				if (content['tag']) {
+					$('.category', construct.el).html(construct.data[content['tag']]);
+				} else if (content['tags']) {
+					$('.category', construct.el).html(getContentTags(content['tags'], construct.data, content['seperator']));
+				}
 
 			} else if (content['name'] == 'affinity') {
-				$('.affinity', box).css('background-color', item[this.options.gridColors.aff]);
-				$('.affinity i', box).attr('class', item[content['tag']]);
+				$('.affinity', construct.el).css('background-color', construct.data[options.gridColors.aff]);
+				$('.affinity i', construct.el).attr('class', construct.data[content['tag']]);
 
 			} else if (content['name'] == 'name') {
-				if (content['tag']) $('.' + content['name'], box).html(item[content['tag']]);
-				else if (content['tags']) $('.' + content['name'], box).html(getContentTags(content['tags'], item, content['seperator']));
+				if (content['tag']) {
+					$('.' + content['name'], construct.el).html(construct.data[content['tag']]);
+				} else if (content['tags']) {
+					$('.' + content['name'], construct.el).html(getContentTags(content['tags'], construct.data, content['seperator']));
+				}
 
 			} else if (content['name'] == 'description') {
-				if (content['tag']) $('.' + content['name'] + ' textarea', box).val(item[content['tag']]);
-				else if (content['tags']) $('.' + content['name'] + ' textarea', box).val(getContentTags(content['tags'], item, content['seperator']));
+				// $('.' + content['name'] + ' .text', construct.el).html( this.getDescriptionBlocks(construct.data['id'], construct.data[content['tag']]) );
 			}
 		}
 	},
-	setBoxInteractions: function(box) {
-		var options = this.options;
-		var popup = this.popup;
-		var diamondAlert = this.diamondAlert;
-
-		$(box).hover(function() {
-			$('.grid .box', options.el).addClass('unfocused');
-			$(this).removeClass('unfocused');
-		}, function() {
-			$('.grid .box', options.el).removeClass('unfocused');
-		});
-
-		$('.btn.shw', box).on('click', function() {
-			var id = $(this).attr('id');
-
-			if ( $(box).hasClass('maximize') ) {
-			 	$(this).html('<i class="fas fa-expand"></i>');
-			 	$(options.el).removeClass('maximize');
-			 	$('.grid .box', options.el).removeClass('maximize');
-			 	$('.description textarea', box).prop('disabled', true);
-			 	setTimeout( function() { 
-			 		$(box).removeClass('top'); 
-			 		$('.grid', options.el).animate({ scrollTop: $(box).css('top') }, 300);
-			 	}, 300);
-
-			} else {
-			 	$(this).html('<i class="fas fa-compress"></i>');
-			 	$(options.el).addClass('maximize');
-			 	$(box).addClass('maximize');
-			 	$(box).addClass('top');
-			 	$('.description textarea', box).prop('disabled', false);
-			 	$('.grid', options.el).animate({ scrollTop: 0 }, 300);
-			}
-		});
-
-		$('.btn.edt', box).on('click', function() {
-			var id = $(this).attr('id');
-			options.editData.data = getData(id, popup.main.options.data);
-			options.editData.link = options.editData.baseLink + '/' + id;
-		 	popup.setup( options.editData );
-		});
-
-		$('.btn.dlt', box).on('click', function() {
-			var id = $(this).attr('id');
-
-	    	diamondAlert.setup({
-	    		class: 'dlt',
-	    		text: options.deleteData.alertQuestion,
-	    		buttons: [
-					{ text: 'Yep', id: 'yes', func: function(self) { 
-						var data = {};
-						data['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-						$.ajax({
-					        type: 'DELETE',
-					        url: options.deleteData.link + '/' + id,
-					        data: data,
-					        success: function(response) {
-				        		options.data = response;
-
-						    	self.main.diamondAlert.setup({
-						    		class: 'dlt',
-						    		text: options.deleteData.alertSuccess,
-						    		buttons: [
-										{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); self.main.loadBoxes(); } },
-									]
-								});
-					      	},
-					        error: function(xhr,ajaxOptions,throwError) {
-						    	self.main.diamondAlert.setup({
-						    		class: 'dlt',
-						    		text: throwError,
-						    		buttons: [
-										{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); } },
-									]
-								});
-							},
-					        complete: function(){
-					      	}
-					    }); 
-					}},
-					{ text: 'Nope', id: 'no', func: function(self) { self.popOut() } },
-				]
-			});
-	    });
-
-		$('.description .save', box).on('click', function() {
-			var data = {};
-			data['_token'] = $('meta[name="csrf-token"]').attr('content');
-			data['id'] = $(box).attr('id');
-			data['description'] = $('.description textarea', box).val();
-
-            $.ajax({
-                type: 'POST',
-                url: options.editData.baseLink + '/saveDescription',
-                data: data,
-		        success: function(response) {
-		        	options.data = response;
-			    	diamondAlert.setup({
-			    		class: 'edt',
-			    		text: options.editData.alertSuccess,
-			    		buttons: [
-							{ text: 'Okay', id: 'okay', func: function(self) { 
-								self.popOut(); 
-								self.main.loadBoxes(); } },
-						]
-					});
-		      	},
-	            error: function(xhr,ajaxOptions,throwError) {
-			    	diamondAlert.setup({
-			    		class: 'edt',
-			    		text: throwError,
-			    		buttons: [
-							{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); } },
-						]
-					});
-	    		},
-	            complete: function() {}
-		    });
-		});
+	updateBlocks: function() {
+		for (var i=0; i<construct.dataBlocks.length; i++) {
+			getBlockData(construct.dataBlocks[i]); 
+		}	
 	},
+	getBoxSize: function() { return (construct.grid.width() / construct.box.columns) - ((construct.box.spacing * (2 / construct.box.columns) + construct.box.spacing)); },
+	getBoxTop: function(i) { return Math.floor(i / construct.box.columns) * (construct.box.height + construct.box.spacing) + construct.box.spacing; },
+	getBoxLeft: function(i) { return (i % construct.box.columns) * this.getBoxSize() + (construct.box.spacing * (i % construct.box.columns + 1)); },
+	getElement: function() { return $('#' + construct.data['id'], construct.grid); },
+}
 
-	popup: {
-		main: null,
+function mirrorBox(options) {
+	construct = { 
 		el: null,
-		create: function( callback ) {
-			var cont = '';
-			cont += '<div class="popup">';
-			cont += 	'<div class="flex">';
-			cont += 		'<div class="row">';
-			cont += 			'<div class="box">';
-			cont += 				'<div class="close"><i class="fas fa-times"></i></div>';
-			cont +=					callback();
-			cont += 			'</div>';
-			cont += 		'</div>';
-			cont += 	'</div>';
-			cont += '</div>';
-			return cont;
-		},
-		popIn: function() {
-			$('.popup', this.el).fadeIn('fast', function() {
-				$('.popup', this.el).addClass('open');
-			});
-		},
-		popOut: function() {
-			$('.popup', this.el).fadeOut('fast', function() {
-				$('.popup', this.el).removeClass('open');
-				setTimeout( function() { $('.popup', this.el).remove(); }, 300);
-			});
-		},
-		setup: function(options) {
-			var self = this;
-			self.el.append( 
-				self.create( function() {
-					var cont = '';
-					cont += '<div class="title">' + options.title + '</div>';
-					cont += '<div class="scroll">';
+		grid: null,
+		box: null,
+		data: null,
+		dataBlocks: [], 
+	}
+	$.extend(construct, options);
+}
 
-					for (var i=0; i<options.inputs.length; i++) {
-						var input = options.inputs[i];
-						cont += '<div class="input-box ' + input['type'] + '">';
-						cont += 	'<label>' + input['name'] + '</label>';
-
-						if (input['type'] == 'textarea') {
-							if (options['data'] && options['data'][input['tag']]) {
-								cont += '<textarea id="' + input['tag'] + '" rows="8">' + options['data'][input['tag']] + '</textarea>';
-							} else {
-								cont += '<textarea id="' + input['tag'] + '" rows="8"></textarea>';
-							}
-
-						} else if (input['type'] == 'color') {
-							if (options['data'] && options['data'][input['tag']]) {
-								cont += '<input id="' + input['tag'] + '" type="text" value="' + options['data'][input['tag']] + '" autocomplete="off">';
-								cont += '<input type="color" value="' + options['data'][input['tag']] + '">';
-							} else {
-								cont += '<input id="' + input['tag'] + '" type="text" value="" autocomplete="off">';
-								cont += '<input type="color" value="">';
-							}
-
-						} else if (input['type'] == 'select') {
-							if (options['data'] && options['data'][input['tag']]) {
-								cont += '<select id="' + input['tag'] + '" value="' + options['data'][input['tag']] + '">';
-								cont += 	getSelectOptions(input['from'], options['data'][input['tag']]);
-								cont += '</select>';
-							} else { 
-								cont += '<select id="' + input['tag'] + '" value="0">';
-								cont += 	getSelectOptions(input['from']);
-								cont += '</select>';
-							}
-						
-						} else {
-							if (options['data'] && options['data'][input['tag']]) {
-								cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="' + options['data'][input['tag']] + '" autocomplete="off">';
-							} else {
-								cont += '<input id="' + input['tag'] + '" type="' + input['type'] + '" value="" autocomplete="off">';
-							}
-						}
-
-						cont += '</div>';
-					}
-
-					cont += '<div class="input-box submit">';
-					cont += 	'<i class="fas fa-cog"></i>';
-					cont += 	'<input type="submit" value="Save">';
-					cont += '</div>';
-					cont += '</div>';
-
-					return cont;
-				})
-			);
-
-			if (options.method == 'POST') diamondClass = 'add';
-			if (options.method == 'PUT') diamondClass = 'edt';
-
-			setTimeout( function() {
-				self.popIn();
-				inputBox( $('.popup') );
-				$('.popup .close', self.el).on('click', function() { self.popOut() });
-
-				$('.input-box.color input[type="text"]', self.el).on('change', function() {
-					$('input[type="color"]', $(this).parent()).val( $(this).val());
-				});
-				$('.input-box.color input[type="color"]', self.el).on('change', function() {
-					$('input[type="text"]', $(this).parent()).val( $(this).val() );
-				});
-
-				$('.popup input[type="submit"]', self.el).on('click', function() {
-					var btn = $(this);
-					$(btn).parent().addClass('load');
-
-					var data = {};
-					data['_token'] = $('meta[name="csrf-token"]').attr('content');
-
-					for (var i=0; i<options.inputs.length; i++) {
-						var tag = options.inputs[i]['tag'];
-						data[tag] = $('.popup #' + tag, self.el).val();
-					}
-
-		            $.ajax({
-		                type: options.method,
-		                url: options.link,
-		                data: data,
-				        success: function(response) {
-				        	self.main.options.data = response;
-
-					    	self.main.diamondAlert.setup({
-					    		class: diamondClass,
-					    		text: options.alertSuccess,
-					    		buttons: [
-									{ text: 'Okay', id: 'okay', func: function(self) { 
-										self.popOut(); 
-										self.main.loadBoxes(); } },
-								]
-							});
-				      	},
-			            error: function(xhr,ajaxOptions,throwError) {
-					    	self.main.diamondAlert.setup({
-					    		class: diamondClass,
-					    		text: throwError,
-					    		buttons: [
-									{ text: 'Okay', id: 'okay', func: function(self) { self.popOut(); } },
-								]
-							});
-			    		},
-			            complete: function(){
-							$(btn).parent().removeClass('load');
-				      	}
-				    });
-			    });
-			}, 100);
-		},
+$.extend(mirrorBox.prototype, {
+	buildBox: function(i) {
+		var cont = '';
+		cont += '<div class="box" id="' + construct.data['id'] + '" ';
+		cont += 	'style="';
+		cont += 	'width: ' + this.getBoxSize() + 'px;';
+		cont += 	'height: ' + construct.box.height + 'px;';
+		cont += 	'top: ' + this.getBoxTop(i) + 'px;';
+		cont += 	'left: ' + this.getBoxLeft(i) + 'px;';
+		cont += 	'margin-bottom: ' + construct.box.spacing + 'px;';
+		cont += 	'">';
+		cont += 	'<div class="box-gradient"></div>';
+		cont += 	'<div class="box-container">';
+		cont += 		'<div class="box-slash"></div>';
+		cont +=				this.getBoxData( construct.data );
+		cont += 		'<div class="btn-box">';
+		cont +=				'<div class="btn shw" id="' + construct.data['id'] + '"><i class="fas fa-expand"></i></div>';
+		cont +=				'<div class="btn edt" id="' + construct.data['id'] + '"><i class="fas fa-edit"></i></div>';
+		cont +=				'<div class="btn dlt" id="' + construct.data['id'] + '"><i class="fas fa-trash"></i></div>';
+		cont += 		'</div>';
+		cont += 	'</div>';
+		cont += '</div>';
+		return cont;
 	},
-	diamondAlert: {
-		main: null,
-		el: null,
-		popIn: function() {
-			$('.diamond-alert', this.el).fadeIn('fast', function() {
-				$('.diamond-alert', this.el).addClass('open');
-			});
-		},
-		popOut: function() {
-			$('.diamond-alert', this.el).fadeOut('fast', function() {
-				$('.diamond-alert', this.el).removeClass('open');
-				setTimeout( function() { $('.diamond-alert', this.el).remove(); }, 300);
-			});
-		},
-		setup: function( options ) {
-			var cont = '';
-			cont += '<div class="diamond-alert ' + options.class + '">';
-			cont += 	'<div class="flex">';
-			cont += 		'<div class="row">';
+	getBoxData: function(data) {
+		var cont = '';
+		for (var i=0; i<construct.box.content.length; i++) {
+			var content = construct.box.content[i];
 
-			cont += 			'<div class="box">';
-			cont += 				'<div class="flex">';
-			cont += 					'<div class="row">';
-			cont += 						'<div class="center">';
-			cont +=								'<div class="text">' + options.text + '</div>';
+			if (content['name'] == 'icon') {
+				cont += '<div class="icon">';
+				cont += 	'<i></i>';
+				cont += '</div>';
 
-			for (var i=0; i<options.buttons.length; i++) {
-				var btn = options.buttons[i];
-				cont +=	'<div class="btn" id="' + btn['id'] + '">';
-				cont +=		btn['text'];
+			} else if (content['name'] == 'image') {
+				cont += '<div class="image">';
+				cont += '</div>';
+
+			} else if (content['name'] == 'category') {
+				cont += '<div class="category">';
+				cont += '</div>';
+
+			} else if (content['name'] == 'affinity') {
+				cont += '<div class="affinity">';
+				cont += 	'<div class="ico">';
+				cont += 		'<i></i>';
+				cont += 	'</div>';
+				cont += '</div>';
+
+			} else if (content['name'] == 'name') {
+				cont += '<div class="name">';
+				cont += '</div>';
+
+			} else if (content['name'] == 'description') {
+				cont += '<div class="description">';
+				cont += 	'<div class="text"></div>';
+				cont += 	'<textarea></textarea>';
+				cont += 	'<div class="des-btn edit"><i class="fas fa-edit"></i></div>';
+				cont += 	'<div class="des-btn save"><i class="fas fa-save"></i></div>';
 				cont += '</div>';
 			}
-
-			cont += 						'</div>';
-			cont += 					'</div>';
-			cont += 				'</div>';
-
-			cont += 			'</div>';
-			cont += 		'</div>';
-			cont += 	'</div>';
-			cont += '</div>';
-
-			var self = this;
-			self.el.append(cont);
-			setTimeout( function() {
-				self.popIn();
-
-				buttons = options.buttons;
-				$('.diamond-alert .btn', self.el).on('click', function() {
-					var id = $(this).attr('id');
-					data = getData(id, buttons);
-					data.func(self);
-				});
-			},100);
-		},
+		}
+		return cont;
 	},
-};
+	updateBox: function() {
+		construct.el = this.getElement();
+		// $(box).css('animation-delay', delay + 's');
+		$(construct.el).css('border-top-color', construct.data[construct.box.colors.top]);
+		$(construct.el).css('border-bottom-color', construct.data[construct.box.colors.bot]);
+		$('.box-gradient', construct.el).css('background-image', 'linear-gradient(to bottom, ' + construct.data[construct.box.colors.top] + ', ' + construct.data[construct.box.colors.bot] + ')');
+		$('.box-slash', construct.el).css('background-color', construct.data[construct.box.colors.ico]);
+		$('.box-slash', construct.el).css('box-shadow', '0 0 10px ' + construct.data[construct.box.colors.ico]);
 
+		for (var i=0; i<construct.box.content.length; i++) {
+			var content = construct.box.content[i];
+
+			if (content['name'] == 'icon') {
+				$('.icon i', construct.el).attr('class', construct.data[content['tag']]);
+
+			} else if (content['name'] == 'image') {
+				if (construct.data[content['tag']]) {
+					$('.image', construct.el).css('background-image', 'url(' + construct.data[content['tag']] + ')');
+				} else {
+					$('.image', construct.el).css('background-image', 'url(' + nullImage + ')');
+				}
+
+			} else if (content['name'] == 'category') {
+				$('.category', construct.el).css('background-color', construct.data[options.gridColors.cat]);
+				if (content['tag']) {
+					$('.category', construct.el).html(construct.data[content['tag']]);
+				} else if (content['tags']) {
+					$('.category', construct.el).html(getContentTags(content['tags'], construct.data, content['seperator']));
+				}
+
+			} else if (content['name'] == 'affinity') {
+				$('.affinity', construct.el).css('background-color', construct.data[options.gridColors.aff]);
+				$('.affinity i', construct.el).attr('class', construct.data[content['tag']]);
+
+			} else if (content['name'] == 'name') {
+				if (content['tag']) {
+					$('.' + content['name'], construct.el).html(construct.data[content['tag']]);
+				} else if (content['tags']) {
+					$('.' + content['name'], construct.el).html(getContentTags(content['tags'], construct.data, content['seperator']));
+				}
+
+			} else if (content['name'] == 'description') {
+				// $('.' + content['name'] + ' .text', construct.el).html( this.getDescriptionBlocks(construct.data['id'], construct.data[content['tag']]) );
+			}
+		}
+	},
+	updateBlocks: function() {
+		for (var i=0; i<construct.dataBlocks.length; i++) {
+			getBlockData(construct.dataBlocks[i]); 
+		}	
+	},
+	getBoxSize: function() { return (construct.grid.width() / construct.box.columns) - ((construct.box.spacing * (2 / construct.box.columns) + construct.box.spacing)); },
+	getBoxTop: function(i) { return Math.floor(i / construct.box.columns) * (construct.box.height + construct.box.spacing) + construct.box.spacing; },
+	getBoxLeft: function(i) { return (i % construct.box.columns) * this.getBoxSize() + (construct.box.spacing * (i % construct.box.columns + 1)); },
+	getElement: function() { return $('#' + construct.data['id'], construct.grid); },
+
+	getDescriptionBlocks: function(dataId, des) {
+		var cont = '';
+
+		if (des) {
+			var desSplit = des.split('|');
+
+			for (var i=0; i<desSplit.length; i++) {
+				var split = desSplit[i].split('-');
+				var dataUrl = null;
+
+				if (split[0] == 'chr') dataUrl = url.origin + '/dash/characters/getData';
+				if (split[0] == 'aff') dataUrl = url.origin + '/dash/affinities/getData';
+				if (split[0] == 'div') dataUrl = url.origin + '/dash/divisions/getData';
+				if (split[0] == 'ori') dataUrl = url.origin + '/dash/origins/getData';
+
+				if (dataUrl) {
+					var id = dataId + '-' + i;
+					cont += '<span class="dataBlock" id="' + id + '"><i class="fas fa-cog fa-spin reload"></i></span>';
+
+					var data = {};
+					data['owner'] = dataId;
+					data['dataUrl'] = dataUrl;
+					data['_token'] = $('meta[name="csrf-token"]').attr('content');
+					data['block_id'] = id;
+					data['name'] = split[1];
+					data['alt'] = split[2];
+					construct.dataBlocks.push(data);
+
+				} else {
+					cont += desSplit[i];
+				}
+			}
+		}
+		return cont;
+	},
+	getBlockData: function(data) {
+		var self = this;
+	    $.ajax({
+	        type: 'POST',
+	        url: data['dataUrl'],
+			data: data,
+	        success: function(response) { self.getBlock(response['block_id'], response, response['alt']); },
+	        error: function(xhr,ajaxOptions,throwError) { console.log(data['block_id'] + ' Not Found')  },
+	        complete: function() {}
+	    });
+	},
+	getBlock: function(id, data, alt=null) {
+		var dataBlock = $('.dataBlock#' + id);
+		var cont = '';
+
+		if (data) {
+			if (data['color']) $(dataBlock).css('color', data['color']);
+			if (data['color_primary']) $(dataBlock).css('color', data['color_primary']);
+
+			if (data['icon']) cont += '<i class="' + data['icon'] + '"></i>';
+			if (alt) cont += alt;
+			else {
+				cont += data['name'];	
+				if (data['surname']) cont += " " + data['surname']
+			}
+
+		} else {
+			cont += "Not Found";
+		}
+
+		dataBlock.html(cont);
+	},
+});
 
 // INPUT BOX
 /*===================================================================*/
@@ -645,7 +468,14 @@ function inputBox(box) {
 		if ( $('input, textarea', el).val() != '' ){
 			$(el).addClass('filled');
 		}
-	
+
+		$('input[type="text"]', el).on('change', function() {
+			$('input[type="color"]', $(this).parent()).val( $(this).val());
+		});
+
+		$('input[type="color"]', el).on('change', function() {
+			$('input[type="text"]', $(this).parent()).val( $(this).val() );
+		});
 	});
 }
 
@@ -654,6 +484,14 @@ function inputBox(box) {
 function getData(id, data) {
 	for (var i=0; i<data.length; i++) {
 		if (data[i]['id'] == id) return data[i];
+	}
+	return false;
+}
+
+function getDatabyName(name, data) {
+	for (var i=0; i<data.length; i++) {
+		var namecomp = data[i]['name'].toLowerCase().replace(/\s/g, "");
+		if (namecomp == name) return data[i];
 	}
 	return false;
 }
@@ -667,7 +505,7 @@ function getContentTags(tags, item, seperator) {
 	}
 	return cont;
 }
-
+ 
 function getSelectOptions(data, select=null) {
 	var cont = '';
 	for (var i=0; i<data.length; i++) {
@@ -675,8 +513,6 @@ function getSelectOptions(data, select=null) {
 		cont += '<option value="' + d['id'] + '" ';
 		if (select) if (select == d['id']) cont += ' selected';
 		cont += 	'>' ;
-		cont += 	'<i class="' + d['icon'] + '"></i>';
-		cont += 	' - ';
 		cont += 	d['name'];
 		cont += '</option>';
 	}

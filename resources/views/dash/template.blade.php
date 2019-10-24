@@ -24,24 +24,30 @@
         }
     </style>
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"> -->
-    <script src="https://kit.fontawesome.com/0b16c14e67.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/0b16c14e67.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" type="text/css" href="{{ url('css/rpg-awesome.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url('css/font-awesome/all.css') }}">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 
     <!-- CSS -->
     <link href="{{ url('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url('css/multi-select.css') }}" rel="stylesheet">
+
     <link href="{{ url('css/dash/main.css') }}" rel="stylesheet">
-    <link href="{{ url('css/dash/popup-form.css') }}" rel="stylesheet">
+    <link href="{{ url('css/dash/mirrorgrid.css') }}" rel="stylesheet">
 
     <!-- jQuery -->
     <script src="{{ url('js/jquery.js') }}"></script>
-    <script src="{{ url('js/jquery.cookie.js') }}"></script>
-    <script src="{{ url('js/jquery.scrollTo.js') }}"></script>
+    <script src="{{ url('js/jquery.multi-select.js') }}"></script>
+    <script src="{{ url('js/velocity.js') }}"></script>
     <script src="{{ url('js/bootstrap.js') }}"></script>
+    <script src="{{ url('js/font-awesome/all.js') }}"></script>
+
     <script src="{{ url('js/dash/main.js') }}"></script>
-    <script src="{{ url('js/dash/popup-form.js') }}"></script>
+    <script src="{{ url('js/dash/mirrorgrid.js') }}"></script>
+    <!-- <script src="{{ url('js/dash/popup-form.js') }}"></script> -->
 
 </head>
 
